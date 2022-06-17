@@ -221,13 +221,14 @@ class InfiniteScroll {
 
     const {
       state: { rowLength: cachedRowLength = 0, columnLength: cachedColumnLength = 0 },
-      props: { rowLength = 0, columnLength = 0, reverse },
+      props: { rowLength = 0, columnLength = 0, reverse = {} },
       _scrollingContainerRef,
     } = this;
 
     if (!_scrollingContainerRef) return;
 
     const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = _scrollingContainerRef;
+    const { vertical, horizontal } = reverse;
 
     // if the scroll position is at zero and new data is loaded to the beginning of the list, you need to shift the scroll position
     const scrollToNewDataStart = (
@@ -237,16 +238,21 @@ class InfiniteScroll {
       newDataLength: number,
       cachedScrollSize: number,
       newScrollSize: number,
-      onScroll: (newPosition: number) => void,
-      onDataChange: () => void,
+      onScroll: (newPosition: number, loading: ScrollDirection) => void,
+      onDataChange: (loading: ScrollDirection) => void,
+      forwardDirection: ScrollDirection,
+      backDirection: ScrollDirection,
       reverse?: boolean
     ) => {
       if (cachedDataLength < newDataLength) {
-        if (Math.abs(scrollPosition) < clientSize) {
+        const reversedForwardDirection = reverse ? backDirection : forwardDirection;
+        const reversedBackDirection = reverse ? forwardDirection : backDirection;
+
+        if (Math.abs(scrollPosition) < clientSize && this.state.isLoading[reversedBackDirection]) {
           const signMultiplier = reverse ? -1 : 1;
-          onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier);
+          onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier, reversedBackDirection);
         }
-        onDataChange();
+        onDataChange(reversedForwardDirection);
       }
     };
 
@@ -257,20 +263,26 @@ class InfiniteScroll {
       rowLength,
       this.state.scrollHeight,
       scrollHeight,
-      (pos: number) =>
+      (pos: number, loadDirection) => {
         this._scroll({
           scrollTop: pos,
-        }),
-      () => {
+        });
+        this.state.isLoading = {
+          ...this.state.isLoading,
+          [loadDirection]: false,
+        };
+      },
+      (loadDirection) => {
         this.state.scrollHeight = scrollHeight;
         this.state.rowLength = rowLength;
         this.state.isLoading = {
           ...this.state.isLoading,
-          up: false,
-          down: false,
+          [loadDirection]: false,
         };
       },
-      reverse?.vertical
+      ScrollDirection.DOWN,
+      ScrollDirection.UP,
+      vertical
     );
 
     scrollToNewDataStart(
@@ -280,20 +292,26 @@ class InfiniteScroll {
       columnLength,
       this.state.scrollWidth,
       scrollWidth,
-      (pos: number) =>
+      (pos: number, loadDirection) => {
         this._scroll({
           scrollLeft: pos,
-        }),
-      () => {
+        });
+        this.state.isLoading = {
+          ...this.state.isLoading,
+          [loadDirection]: false,
+        };
+      },
+      (loadDirection) => {
         this.state.scrollWidth = scrollWidth;
         this.state.columnLength = columnLength;
         this.state.isLoading = {
           ...this.state.isLoading,
-          left: false,
-          right: false,
+          [loadDirection]: false,
         };
       },
-      reverse?.horizontal
+      ScrollDirection.RIGHT,
+      ScrollDirection.LEFT,
+      horizontal
     );
 
     this._checkOffsetAndLoadMore();

@@ -23,11 +23,6 @@ export interface ComputedScrollThreshold {
   horizontal: number;
 }
 
-export interface ReverseScrollDirection {
-  vertical?: boolean;
-  horizontal?: boolean;
-}
-
 export enum ScrollDirection {
   UP = 'up',
   DOWN = 'down',
@@ -66,7 +61,10 @@ export type UseInfiniteScrollProps = DatasetLength & {
     top?: number;
     left?: number;
   };
-  reverse?: ReverseScrollDirection;
+  reverse?: {
+    vertical?: boolean;
+    horizontal?: boolean;
+  };
 };
 
 export interface UseInfiniteScrollResult {
