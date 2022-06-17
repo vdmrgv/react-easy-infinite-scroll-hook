@@ -29,10 +29,10 @@ export interface ReverseScrollDirection {
 }
 
 export enum ScrollDirection {
-  UP = "up",
-  DOWN = "down",
-  LEFT = "left",
-  RIGHT = "right",
+  UP = 'up',
+  DOWN = 'down',
+  LEFT = 'left',
+  RIGHT = 'right',
 }
 
 export type ScrollDirectionState = Partial<Record<ScrollDirection, boolean>>;
@@ -49,7 +49,7 @@ export type ScrollParams = ScrollSize & ScrollPosition;
 
 export type LoadNextFn = (direction: ScrollDirection) => Promise<void>;
 
-export type EventListenerFn = (type: "scroll", callback: () => void) => void;
+export type EventListenerFn = (type: 'scroll', callback: () => void) => void;
 
 export type OnScrollFn = (value: Required<ScrollParams>) => void;
 
