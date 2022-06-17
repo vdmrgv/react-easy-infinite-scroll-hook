@@ -220,7 +220,11 @@ class InfiniteScroll {
     this.props = props;
 
     const {
-      state: { rowLength: cachedRowLength = 0, columnLength: cachedColumnLength = 0 },
+      state: {
+        rowLength: cachedRowLength = 0,
+        columnLength: cachedColumnLength = 0,
+        isLoading: { up, down, left, right },
+      },
       props: { rowLength = 0, columnLength = 0, reverse = {} },
       _scrollingContainerRef,
     } = this;
@@ -238,23 +242,22 @@ class InfiniteScroll {
       newDataLength: number,
       cachedScrollSize: number,
       newScrollSize: number,
-      onScroll: (newPosition: number, loading: ScrollDirection) => void,
-      onDataChange: (loading: ScrollDirection) => void,
-      forwardDirection: ScrollDirection,
-      backDirection: ScrollDirection,
+      onScroll: (newPosition: number) => void,
+      onDataChange: () => void,
+      isLoading: boolean,
       reverse?: boolean
     ) => {
-      if (cachedDataLength < newDataLength) {
-        const reversedForwardDirection = reverse ? backDirection : forwardDirection;
-        const reversedBackDirection = reverse ? forwardDirection : backDirection;
-
-        if (Math.abs(scrollPosition) < clientSize && this.state.isLoading[reversedBackDirection]) {
+      if (cachedDataLength < newDataLength && isLoading) {
+        if (Math.abs(scrollPosition) < clientSize) {
           const signMultiplier = reverse ? -1 : 1;
-          onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier, reversedBackDirection);
+          onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier);
         }
-        onDataChange(reversedForwardDirection);
+        onDataChange();
       }
     };
+
+    const verticalLoading = !!(up || down);
+    const horizontalLoading = !!(left || right);
 
     scrollToNewDataStart(
       scrollTop,
@@ -263,25 +266,19 @@ class InfiniteScroll {
       rowLength,
       this.state.scrollHeight,
       scrollHeight,
-      (pos: number, loadDirection) => {
+      (pos: number) => {
         this._scroll({
           scrollTop: pos,
         });
+      },
+      () => {
         this.state.isLoading = {
           ...this.state.isLoading,
-          [loadDirection]: false,
+          up: false,
+          down: false,
         };
       },
-      (loadDirection) => {
-        this.state.scrollHeight = scrollHeight;
-        this.state.rowLength = rowLength;
-        this.state.isLoading = {
-          ...this.state.isLoading,
-          [loadDirection]: false,
-        };
-      },
-      ScrollDirection.DOWN,
-      ScrollDirection.UP,
+      verticalLoading,
       vertical
     );
 
@@ -292,27 +289,30 @@ class InfiniteScroll {
       columnLength,
       this.state.scrollWidth,
       scrollWidth,
-      (pos: number, loadDirection) => {
+      (pos: number) => {
         this._scroll({
           scrollLeft: pos,
         });
+      },
+      () => {
         this.state.isLoading = {
           ...this.state.isLoading,
-          [loadDirection]: false,
+          left: false,
+          right: false,
         };
       },
-      (loadDirection) => {
-        this.state.scrollWidth = scrollWidth;
-        this.state.columnLength = columnLength;
-        this.state.isLoading = {
-          ...this.state.isLoading,
-          [loadDirection]: false,
-        };
-      },
-      ScrollDirection.RIGHT,
-      ScrollDirection.LEFT,
+      horizontalLoading,
       horizontal
     );
+
+    if (verticalLoading) {
+      this.state.scrollHeight = scrollHeight;
+      this.state.rowLength = rowLength;
+    }
+    if (horizontalLoading) {
+      this.state.scrollWidth = scrollWidth;
+      this.state.columnLength = columnLength;
+    }
 
     this._checkOffsetAndLoadMore();
   };
