@@ -225,7 +225,7 @@ class InfiniteScroll {
         columnLength: cachedColumnLength = 0,
         isLoading: { up, down, left, right },
       },
-      props: { rowLength = 0, columnLength = 0, reverse = {} },
+      props: { rowLength = 0, columnLength = 0, reverse = {}, hasMore },
       _scrollingContainerRef,
     } = this;
 
@@ -243,16 +243,23 @@ class InfiniteScroll {
       cachedScrollSize: number,
       newScrollSize: number,
       onScroll: (newPosition: number) => void,
-      onDataChange: () => void,
+      onChangeLoadState: () => void,
       isLoading: boolean,
+      canLoadMore: boolean,
       reverse?: boolean
     ) => {
-      if (cachedDataLength < newDataLength && isLoading) {
-        if (Math.abs(scrollPosition) < clientSize) {
-          const signMultiplier = reverse ? -1 : 1;
-          onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier);
-        }
-        onDataChange();
+      const noDataToLoad = isLoading && !canLoadMore;
+      const dataLoaded = cachedDataLength < newDataLength && isLoading;
+
+      // if new data is loaded and the scroll position is less than the visible area, reset the scroll position
+      if (dataLoaded && Math.abs(scrollPosition) < clientSize) {
+        const signMultiplier = reverse ? -1 : 1;
+        onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier);
+      }
+
+      // if new data has been loaded or changed or no more can be loaded, reset the load state
+      if (dataLoaded || noDataToLoad) {
+        onChangeLoadState();
       }
     };
 
@@ -279,6 +286,7 @@ class InfiniteScroll {
         };
       },
       verticalLoading,
+      up ? !!hasMore.up : !!hasMore.down,
       vertical
     );
 
@@ -302,6 +310,7 @@ class InfiniteScroll {
         };
       },
       horizontalLoading,
+      left ? !!hasMore.left : !!hasMore.right,
       horizontal
     );
 
