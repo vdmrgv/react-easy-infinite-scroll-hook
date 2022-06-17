@@ -33,24 +33,20 @@ class InfiniteScroll {
     };
   }
 
-  _hasContainer = function (this: InfiniteScroll): boolean {
-    const hasContainer = !!this._scrollingContainerRef;
-
-    if (!hasContainer) console.error('Somethig hepens with container! Reload the page!');
-
-    return hasContainer;
-  };
+  _validateScrollValue = (scrollPosition: number, scrollSize: number, fallbackValue?: number): number =>
+    Math.abs(scrollPosition) > scrollSize ? fallbackValue ?? scrollSize : scrollPosition;
 
   _scroll = function (this: InfiniteScroll, { scrollTop, scrollLeft }: ScrollPosition): void {
     if (!this._scrollingContainerRef) return;
     const { scrollHeight, scrollWidth } = this._scrollingContainerRef;
+
     if (scrollTop !== undefined)
-      this._scrollingContainerRef.scrollTop = Math.abs(scrollTop) > scrollHeight ? scrollHeight : scrollTop;
+      this._scrollingContainerRef.scrollTop = this._validateScrollValue(scrollTop, scrollHeight);
     if (scrollLeft !== undefined)
-      this._scrollingContainerRef.scrollLeft = Math.abs(scrollLeft) > scrollWidth ? scrollWidth : scrollLeft;
+      this._scrollingContainerRef.scrollLeft = this._validateScrollValue(scrollLeft, scrollWidth);
   };
 
-  _recomputeThreshold = function (this: InfiniteScroll): void {
+  _computeThreshold = function (this: InfiniteScroll): void {
     const {
       state: { clientWidth: cachedClientWidth, clientHeight: cachedClientHeight },
       props: { scrollThreshold = 1 },
@@ -71,12 +67,14 @@ class InfiniteScroll {
       horizontal: 0,
     };
 
+    // if the threshold is set as a string, we calculate the value in pixels
+    // otherwise, we calculate the percentage of the size of the container
     if (typeof scrollThreshold === 'string') {
       const thresholdValue = Math.abs(parseInt(scrollThreshold));
 
       computedThreshold = {
-        vertical: thresholdValue > scrollHeight ? clientHeight : thresholdValue,
-        horizontal: thresholdValue > scrollWidth ? clientWidth : thresholdValue,
+        vertical: this._validateScrollValue(thresholdValue, scrollHeight, clientHeight),
+        horizontal: this._validateScrollValue(thresholdValue, scrollWidth, clientWidth),
       };
     } else {
       const thresholdValue = scrollThreshold > 1 ? 1 : scrollThreshold <= 0 ? 0.1 : scrollThreshold;
@@ -92,30 +90,46 @@ class InfiniteScroll {
     this.state.clientHeight = clientHeight;
   };
 
-  _getOffset = function (this: InfiniteScroll): Required<ScrollOffsetValues> {
-    this._recomputeThreshold();
+  _getPossibleDirection = function (this: InfiniteScroll): Required<ScrollOffsetValues> {
+    this._computeThreshold();
 
     const {
-      state: { clientHeight, clientWidth, computedScrollThreshold },
-      props: { reverse },
+      state: {
+        clientHeight,
+        clientWidth,
+        computedScrollThreshold: { vertical: vThreshold, horizontal: hThreshold },
+      },
+      props: { reverse = {} },
       _scrollingContainerRef,
     } = this;
 
     const { scrollHeight, scrollWidth, scrollLeft, scrollTop } = _scrollingContainerRef!;
+    const { vertical, horizontal } = reverse;
+
+    const canLoadForward = (scrollPosition: number, threshold: number): boolean =>
+      Math.abs(scrollPosition) <= threshold;
+    const canLoadBack = (scrollPosition: number, scrollSize: number, clientSize: number, threshold: number): boolean =>
+      Math.abs(scrollPosition) >= Math.abs(scrollSize - clientSize - threshold);
 
     return {
-      [reverse?.vertical ? ScrollDirection.DOWN : ScrollDirection.UP]:
-        Math.abs(scrollTop) <= computedScrollThreshold.vertical,
-      [reverse?.vertical ? ScrollDirection.UP : ScrollDirection.DOWN]:
-        Math.abs(scrollTop) >= Math.abs(scrollHeight - clientHeight - computedScrollThreshold.vertical),
-      [reverse?.horizontal ? ScrollDirection.RIGHT : ScrollDirection.LEFT]:
-        Math.abs(scrollLeft) <= computedScrollThreshold.horizontal,
-      [reverse?.horizontal ? ScrollDirection.LEFT : ScrollDirection.RIGHT]:
-        Math.abs(scrollLeft) >= Math.abs(scrollWidth - clientWidth - computedScrollThreshold.horizontal),
+      [vertical ? ScrollDirection.DOWN : ScrollDirection.UP]: canLoadForward(scrollTop, vThreshold),
+      [vertical ? ScrollDirection.UP : ScrollDirection.DOWN]: canLoadBack(
+        scrollTop,
+        scrollHeight,
+        clientHeight,
+        vThreshold
+      ),
+      [horizontal ? ScrollDirection.RIGHT : ScrollDirection.LEFT]: canLoadForward(scrollLeft, hThreshold),
+      [horizontal ? ScrollDirection.LEFT : ScrollDirection.RIGHT]: canLoadBack(
+        scrollLeft,
+        scrollWidth,
+        clientWidth,
+        hThreshold
+      ),
     } as { [k in ScrollDirection]: boolean };
   };
 
-  _checkScrollOffsetAndLoadMore = function (this: InfiniteScroll): void {
+  _checkOffsetAndLoadMore = function (this: InfiniteScroll): void {
     const {
       state: { isLoading },
       props: { next, hasMore },
@@ -124,17 +138,17 @@ class InfiniteScroll {
 
     if (!_scrollingContainerRef) return;
 
-    const offset = this._getOffset();
+    const offset = this._getPossibleDirection();
 
-    const loadMore = (d1: ScrollDirection, d2: ScrollDirection) => {
-      if (!(isLoading[d1] || isLoading[d2])) {
-        const init1 = hasMore[d1] && offset![d1];
-        const init2 = !init1 && hasMore[d2] && offset![d2];
+    const loadMore = (direction1: ScrollDirection, direction2: ScrollDirection) => {
+      if (!(isLoading[direction1] || isLoading[direction2])) {
+        const canLoad1 = hasMore[direction1] && offset![direction1];
+        const canLoad2 = !canLoad1 && hasMore[direction2] && offset![direction2];
 
-        if (init1 || init2) {
-          const final = init1 ? d1 : d2;
-          this.state.isLoading = { ...this.state.isLoading, [final]: true };
-          next(final);
+        if (canLoad1 || canLoad2) {
+          const loadDirection = canLoad1 ? direction1 : direction2;
+          this.state.isLoading = { ...this.state.isLoading, [loadDirection]: true };
+          next(loadDirection);
         }
       }
     };
@@ -144,7 +158,7 @@ class InfiniteScroll {
   };
 
   _setRef = function (this: InfiniteScroll, ref: any): void {
-    // check does this ref contains react-virtualized _scrollingContainer or return element
+    // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
     const current = ref.Grid?._scrollingContainer ?? ref;
 
     if (
@@ -160,7 +174,7 @@ class InfiniteScroll {
         typeof current.removeEventListener === 'function'
       )
     ) {
-      console.error('Sorry I can`t use this container - try to use another DOM element.');
+      console.error('Sorry I can\'t use this container - try using a different DOM element.');
       return;
     }
 
@@ -182,7 +196,7 @@ class InfiniteScroll {
           scrollTop,
         });
 
-      this._checkScrollOffsetAndLoadMore();
+      this._checkOffsetAndLoadMore();
     };
 
     this.state.scrollHeight = this._scrollingContainerRef.scrollHeight;
@@ -199,7 +213,7 @@ class InfiniteScroll {
     this._scrollingContainerRef.addEventListener('scroll', onScrollListener);
     this.onCleanup = () => this._scrollingContainerRef?.removeEventListener('scroll', onScrollListener);
 
-    this._checkScrollOffsetAndLoadMore();
+    this._checkOffsetAndLoadMore();
   };
 
   _onPropsChange = function (this: InfiniteScroll, props: UseInfiniteScrollProps) {
@@ -215,43 +229,77 @@ class InfiniteScroll {
 
     const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = _scrollingContainerRef;
 
-    if (cachedRowLength < rowLength) {
-      if (Math.abs(scrollTop) < clientHeight) {
-        const signMultiplier = reverse?.vertical ? -1 : 1;
-        this._scroll({
-          scrollTop: scrollTop + (scrollHeight - this.state.scrollHeight) * signMultiplier,
-        });
+    // if the scroll position is at zero and new data is loaded to the beginning of the list, you need to shift the scroll position
+    const scrollToNewDataStart = (
+      scrollPosition: number,
+      clientSize: number,
+      cachedDataLength: number,
+      newDataLength: number,
+      cachedScrollSize: number,
+      newScrollSize: number,
+      onScroll: (newPosition: number) => void,
+      onDataChange: () => void,
+      reverse?: boolean
+    ) => {
+      if (cachedDataLength < newDataLength) {
+        if (Math.abs(scrollPosition) < clientSize) {
+          const signMultiplier = reverse ? -1 : 1;
+          onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier);
+        }
+        onDataChange();
       }
-      this.state.scrollHeight = scrollHeight;
-      this.state.rowLength = rowLength;
-      this.state.isLoading = {
-        ...this.state.isLoading,
-        up: false,
-        down: false,
-      };
-    }
+    };
 
-    if (cachedColumnLength < columnLength) {
-      if (Math.abs(scrollLeft) < clientWidth) {
-        const signMultiplier = reverse?.horizontal ? -1 : 1;
+    scrollToNewDataStart(
+      scrollTop,
+      clientHeight,
+      cachedRowLength,
+      rowLength,
+      this.state.scrollHeight,
+      scrollHeight,
+      (pos: number) =>
         this._scroll({
-          scrollLeft: scrollLeft + (scrollWidth - this.state.scrollWidth) * signMultiplier,
-        });
-      }
-      this.state.scrollWidth = scrollWidth;
-      this.state.columnLength = columnLength;
-      this.state.isLoading = {
-        ...this.state.isLoading,
-        left: false,
-        right: false,
-      };
-    }
+          scrollTop: pos,
+        }),
+      () => {
+        this.state.scrollHeight = scrollHeight;
+        this.state.rowLength = rowLength;
+        this.state.isLoading = {
+          ...this.state.isLoading,
+          up: false,
+          down: false,
+        };
+      },
+      reverse?.vertical
+    );
 
-    this._checkScrollOffsetAndLoadMore();
+    scrollToNewDataStart(
+      scrollLeft,
+      clientWidth,
+      cachedColumnLength,
+      columnLength,
+      this.state.scrollWidth,
+      scrollWidth,
+      (pos: number) =>
+        this._scroll({
+          scrollLeft: pos,
+        }),
+      () => {
+        this.state.scrollWidth = scrollWidth;
+        this.state.columnLength = columnLength;
+        this.state.isLoading = {
+          ...this.state.isLoading,
+          left: false,
+          right: false,
+        };
+      },
+      reverse?.horizontal
+    );
+
+    this._checkOffsetAndLoadMore();
   };
 
   setRef = this._setRef.bind(this);
-
   onPropsChange = this._onPropsChange.bind(this);
 }
 

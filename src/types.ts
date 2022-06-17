@@ -37,49 +37,37 @@ export enum ScrollDirection {
 
 export type ScrollDirectionState = Partial<Record<ScrollDirection, boolean>>;
 
-export interface HasMoreDataToLoadState {
-  hasMore: ScrollDirectionState;
-}
-
-export interface IsLoadingNextState {
-  isLoading: ScrollDirectionState;
-}
-
 export type ScrollParams = ScrollSize & ScrollPosition;
-
-export type LoadNextFn = (direction: ScrollDirection) => Promise<void>;
 
 export type EventListenerFn = (type: 'scroll', callback: () => void) => void;
 
-export type OnScrollFn = (value: Required<ScrollParams>) => void;
-
 export type SetRefFn = (ref: any) => void;
 
-export type ScrollContainer = Required<ScrollSize> & Required<ScrollPosition> & Required<ClientSize>;
-
-export type ScrollingContainerRef = ScrollContainer & {
-  addEventListener: EventListenerFn;
-  removeEventListener: EventListenerFn;
-};
+export type ScrollingContainerRef = Required<ScrollSize> &
+  Required<ScrollPosition> &
+  Required<ClientSize> & {
+    addEventListener: EventListenerFn;
+    removeEventListener: EventListenerFn;
+  };
 
 export type InfiniteScrollState = DatasetLength &
   Required<ScrollSize> &
-  Required<ClientSize> &
-  IsLoadingNextState & {
+  Required<ClientSize> & {
+    isLoading: ScrollDirectionState;
     computedScrollThreshold: ComputedScrollThreshold;
   };
 
-export type UseInfiniteScrollProps = DatasetLength &
-  HasMoreDataToLoadState & {
-    next: LoadNextFn;
-    onScroll?: OnScrollFn;
-    scrollThreshold?: number | string;
-    initialScroll?: {
-      top?: number;
-      left?: number;
-    };
-    reverse?: ReverseScrollDirection;
+export type UseInfiniteScrollProps = DatasetLength & {
+  hasMore: ScrollDirectionState;
+  next: (direction: ScrollDirection) => Promise<void>;
+  onScroll?: (value: Required<ScrollParams>) => void;
+  scrollThreshold?: number | string;
+  initialScroll?: {
+    top?: number;
+    left?: number;
   };
+  reverse?: ReverseScrollDirection;
+};
 
 export interface UseInfiniteScrollResult {
   setRef: SetRefFn;
