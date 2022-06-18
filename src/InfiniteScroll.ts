@@ -177,7 +177,7 @@ class InfiniteScroll {
     loadMore(ScrollDirection.LEFT, ScrollDirection.RIGHT);
   };
 
-  _setRef = function (this: InfiniteScroll, ref: any): void {
+  _setRef = function (this: InfiniteScroll, ref: any): any {
     // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
     const current = ref?.Grid?._scrollingContainer ?? ref;
 
@@ -235,6 +235,8 @@ class InfiniteScroll {
     this.onCleanup = () => this._scrollingContainerRef?.removeEventListener('scroll', onScrollListener);
 
     this._checkOffsetAndLoadMore();
+
+    return ref;
   };
 
   _onPropsChange = function (this: InfiniteScroll, props: UseInfiniteScrollProps) {

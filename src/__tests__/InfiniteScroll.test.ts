@@ -1,13 +1,13 @@
 import InfiniteScroll from '../InfiniteScroll';
 import { InfiniteScrollProps, ScrollingContainerRef, ScrollDirection } from '../types';
-import { createContainer, settleUpdate } from './utils';
+import { createContainer, createInfiniteScrollProps, settleUpdate } from './utils';
 
 describe('InfiniteScroll', () => {
-  const mockInfiniteScrollProps: InfiniteScrollProps = {
+  const mockInfiniteScrollProps = createInfiniteScrollProps({
     rowLength: 0,
     next: async () => {},
     hasMore: {},
-  };
+  });
 
   let instance: InfiniteScroll = new InfiniteScroll(mockInfiniteScrollProps);
   let container: ScrollingContainerRef | null = null;

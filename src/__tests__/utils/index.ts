@@ -1,4 +1,16 @@
-import { ScrollingContainerRef, ScrollSize, ScrollPosition, ClientSize, EventListenerFn } from '../../types';
+import {
+  ScrollingContainerRef,
+  ScrollSize,
+  ScrollPosition,
+  ClientSize,
+  EventListenerFn,
+  UseInfiniteScrollProps,
+  DatasetLength,
+  ScrollDirectionState,
+  ScrollDirection,
+  ScrollParams,
+  ScrollAxis,
+} from '../../types';
 
 type CreateContainerParams = ScrollSize &
   ScrollPosition &
@@ -27,4 +39,37 @@ export const createContainer = ({
   removeEventListener,
 });
 
-export const settleUpdate = async (time = 100) => new Promise<void>((res) => setTimeout(() => res(), time));
+type CreateInfiniteScrollProps = DatasetLength & {
+  hasMore?: ScrollDirectionState;
+  next?: (direction: ScrollDirection) => Promise<void>;
+  onScroll?: (value: Required<ScrollParams>) => void;
+  scrollThreshold?: number | string;
+  initialScroll?: {
+    top?: number;
+    left?: number;
+  };
+  reverse?: ScrollAxis<boolean>;
+};
+
+export const createInfiniteScrollProps = ({
+  hasMore = {
+    up: false,
+    down: false,
+    left: false,
+    right: false,
+  },
+  next = async () => {},
+  onScroll,
+  scrollThreshold,
+  initialScroll,
+  reverse,
+}: CreateInfiniteScrollProps): UseInfiniteScrollProps => ({
+  hasMore,
+  next,
+  onScroll,
+  scrollThreshold,
+  initialScroll,
+  reverse,
+});
+
+export const settleUpdate = async (time = 1) => new Promise<void>((res) => setTimeout(() => res(), time));
