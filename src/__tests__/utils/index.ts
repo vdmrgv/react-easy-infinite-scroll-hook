@@ -3,7 +3,6 @@ import {
   ScrollSize,
   ScrollPosition,
   ClientSize,
-  EventListenerFn,
   UseInfiniteScrollProps,
   DatasetLength,
   ScrollDirectionState,
@@ -12,12 +11,12 @@ import {
   ScrollAxis,
 } from '../../types';
 
-type CreateContainerParams = ScrollSize &
-  ScrollPosition &
-  ClientSize & {
-    addEventListener?: EventListenerFn;
-    removeEventListener?: EventListenerFn;
-  };
+type CreateContainerParams = ScrollSize & ScrollPosition & ClientSize;
+
+export type MockScrollingContainerRef = ScrollingContainerRef & {
+  scrollTo: (top?: number, left?: number) => void;
+  scroll?: () => void;
+};
 
 export const createContainer = ({
   scrollHeight = 200,
@@ -26,17 +25,24 @@ export const createContainer = ({
   scrollLeft = 0,
   clientHeight = 100,
   clientWidth = 100,
-  addEventListener = () => {},
-  removeEventListener = () => {},
-}: CreateContainerParams): ScrollingContainerRef => ({
+}: CreateContainerParams): MockScrollingContainerRef => ({
   scrollHeight,
   scrollWidth,
   scrollTop,
   scrollLeft,
   clientHeight,
   clientWidth,
-  addEventListener,
-  removeEventListener,
+  addEventListener: function (type, callback) {
+    this.scroll = callback;
+  },
+  removeEventListener: function () {
+    this.scroll = undefined;
+  },
+  scrollTo: function (top, left) {
+    if (top !== undefined) this.scrollTop = top;
+    if (left !== undefined) this.scrollLeft = left;
+    if (this.scroll) this.scroll();
+  },
 });
 
 type CreateInfiniteScrollProps = DatasetLength & {

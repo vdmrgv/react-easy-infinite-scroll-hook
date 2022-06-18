@@ -1,6 +1,6 @@
 import InfiniteScroll from '../InfiniteScroll';
-import { InfiniteScrollProps, ScrollingContainerRef, ScrollDirection } from '../types';
-import { createContainer, createInfiniteScrollProps, settleUpdate } from './utils';
+import { InfiniteScrollProps, ScrollDirection } from '../types';
+import { createContainer, createInfiniteScrollProps, settleUpdate, MockScrollingContainerRef } from './utils';
 
 describe('InfiniteScroll', () => {
   const mockInfiniteScrollProps = createInfiniteScrollProps({
@@ -10,7 +10,7 @@ describe('InfiniteScroll', () => {
   });
 
   let instance: InfiniteScroll = new InfiniteScroll(mockInfiniteScrollProps);
-  let container: ScrollingContainerRef | null = null;
+  let container: MockScrollingContainerRef | null = null;
 
   const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
 
@@ -196,6 +196,7 @@ describe('InfiniteScroll', () => {
         onCleanupListener!();
 
         expect(spyRemoveEventListener).toHaveBeenCalled();
+        expect(container?.scroll).toEqual(undefined);
       });
 
       it('should call "onScroll" callback', () => {
@@ -208,19 +209,11 @@ describe('InfiniteScroll', () => {
 
         const spyOnScroll = jest.spyOn(instanceProps, 'onScroll');
 
-        const fakeScrollEvent: { [k: string]: () => void } = {};
+        container = createContainer({});
 
-        const addEventListener = (type: string, callback: () => void) => {
-          fakeScrollEvent[type] = callback;
-        };
+        instance.setRef(container);
 
-        instance.setRef(
-          createContainer({
-            addEventListener,
-          })
-        );
-
-        fakeScrollEvent['scroll']();
+        container!.scroll!();
 
         expect(spyOnScroll).toHaveBeenCalled();
       });
