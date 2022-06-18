@@ -179,20 +179,21 @@ class InfiniteScroll {
 
   _setRef = function (this: InfiniteScroll, ref: any): void {
     // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
-    const current = ref.Grid?._scrollingContainer ?? ref;
+    const current = ref?.Grid?._scrollingContainer ?? ref;
 
     if (
-      current &&
-      !(
-        typeof current.scrollHeight === 'number' ||
-        typeof current.scrollWidth === 'number' ||
-        typeof current.scrollLeft === 'number' ||
-        typeof current.scrollTop === 'number' ||
-        typeof current.clientHeight === 'number' ||
-        typeof current.clientWidth === 'number' ||
-        typeof current.addEventListener === 'function' ||
-        typeof current.removeEventListener === 'function'
-      )
+      (current &&
+        !(
+          typeof current.scrollHeight === 'number' ||
+          typeof current.scrollWidth === 'number' ||
+          typeof current.scrollLeft === 'number' ||
+          typeof current.scrollTop === 'number' ||
+          typeof current.clientHeight === 'number' ||
+          typeof current.clientWidth === 'number' ||
+          typeof current.addEventListener === 'function' ||
+          typeof current.removeEventListener === 'function'
+        )) ||
+      !current
     ) {
       console.error('Sorry I can\'t use this container - try using a different DOM element.');
       return;
