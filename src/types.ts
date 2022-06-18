@@ -18,9 +18,9 @@ export interface ScrollPosition {
   scrollTop?: number;
 }
 
-export interface ComputedScrollThreshold {
-  vertical: number;
-  horizontal: number;
+export interface ScrollAxis<T> {
+  vertical?: T;
+  horizontal?: T;
 }
 
 export enum ScrollDirection {
@@ -48,8 +48,11 @@ export type ScrollingContainerRef = Required<ScrollSize> &
 export type InfiniteScrollState = DatasetLength &
   Required<ScrollSize> &
   Required<ClientSize> & {
-    isLoading: ScrollDirectionState;
-    computedScrollThreshold: ComputedScrollThreshold;
+    isLoading: {
+      start: Required<ScrollAxis<boolean>>;
+      end: Required<ScrollAxis<boolean>>;
+    };
+    computedScrollThreshold: Required<ScrollAxis<number>>;
   };
 
 export type UseInfiniteScrollProps = DatasetLength & {
@@ -61,10 +64,7 @@ export type UseInfiniteScrollProps = DatasetLength & {
     top?: number;
     left?: number;
   };
-  reverse?: {
-    vertical?: boolean;
-    horizontal?: boolean;
-  };
+  reverse?: ScrollAxis<boolean>;
 };
 
 export interface UseInfiniteScrollResult {

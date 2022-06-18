@@ -1,6 +1,6 @@
 import {
   InfiniteScrollState,
-  ComputedScrollThreshold,
+  ScrollAxis,
   ScrollDirection,
   ScrollingContainerRef,
   ScrollOffsetValues,
@@ -25,7 +25,16 @@ class InfiniteScroll {
       scrollWidth: 0,
       clientHeight: 0,
       clientWidth: 0,
-      isLoading: {},
+      isLoading: {
+        start: {
+          vertical: false,
+          horizontal: false,
+        },
+        end: {
+          vertical: false,
+          horizontal: false,
+        },
+      },
       computedScrollThreshold: {
         vertical: 0,
         horizontal: 0,
@@ -62,7 +71,7 @@ class InfiniteScroll {
 
     const { clientWidth, clientHeight, scrollHeight, scrollWidth } = _scrollingContainerRef;
 
-    let computedThreshold: ComputedScrollThreshold = {
+    let computedThreshold: Required<ScrollAxis<number>> = {
       vertical: 0,
       horizontal: 0,
     };
@@ -131,7 +140,9 @@ class InfiniteScroll {
 
   _checkOffsetAndLoadMore = function (this: InfiniteScroll): void {
     const {
-      state: { isLoading },
+      state: {
+        isLoading: { start },
+      },
       props: { next, hasMore },
       _scrollingContainerRef,
     } = this;
@@ -140,15 +151,18 @@ class InfiniteScroll {
 
     const offset = this._getPossibleDirection();
 
-    const loadMore = (direction1: ScrollDirection, direction2: ScrollDirection) => {
-      if (!(isLoading[direction1] || isLoading[direction2])) {
+    const loadMore = async (direction1: ScrollDirection, direction2: ScrollDirection) => {
+      const axis = direction1 === ScrollDirection.UP ? 'vertical' : 'horizontal';
+
+      if (!(start[axis] || start[axis])) {
         const canLoad1 = hasMore[direction1] && offset![direction1];
         const canLoad2 = !canLoad1 && hasMore[direction2] && offset![direction2];
 
         if (canLoad1 || canLoad2) {
           const loadDirection = canLoad1 ? direction1 : direction2;
-          this.state.isLoading = { ...this.state.isLoading, [loadDirection]: true };
-          next(loadDirection);
+          this.state.isLoading.start = { ...this.state.isLoading.start, [axis]: true };
+          await next(loadDirection);
+          this.state.isLoading.end = { ...this.state.isLoading.end, [axis]: true };
         }
       }
     };
@@ -223,9 +237,9 @@ class InfiniteScroll {
       state: {
         rowLength: cachedRowLength = 0,
         columnLength: cachedColumnLength = 0,
-        isLoading: { up, down, left, right },
+        isLoading: { start, end },
       },
-      props: { rowLength = 0, columnLength = 0, reverse = {}, hasMore },
+      props: { rowLength = 0, columnLength = 0, reverse = {} },
       _scrollingContainerRef,
     } = this;
 
@@ -243,28 +257,27 @@ class InfiniteScroll {
       cachedScrollSize: number,
       newScrollSize: number,
       onScroll: (newPosition: number) => void,
-      onChangeLoadState: () => void,
-      isLoading: boolean,
-      canLoadMore: boolean,
+      onLoadComplete: () => void,
+      isLoading: {
+        start: boolean;
+        end: boolean;
+      },
       reverse?: boolean
     ) => {
-      const noDataToLoad = isLoading && !canLoadMore;
-      const dataLoaded = cachedDataLength < newDataLength && isLoading;
+      const loadComplete = isLoading.start && isLoading.end;
+      const newDataReceived = cachedDataLength !== newDataLength && loadComplete;
 
       // if new data is loaded and the scroll position is less than the visible area, reset the scroll position
-      if (dataLoaded && Math.abs(scrollPosition) < clientSize) {
+      if (newDataReceived && Math.abs(scrollPosition) < clientSize) {
         const signMultiplier = reverse ? -1 : 1;
         onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier);
       }
 
-      // if new data has been loaded or changed or no more can be loaded, reset the load state
-      if (dataLoaded || noDataToLoad) {
-        onChangeLoadState();
+      // if the download was successful
+      if (loadComplete) {
+        onLoadComplete();
       }
     };
-
-    const verticalLoading = !!(up || down);
-    const horizontalLoading = !!(left || right);
 
     scrollToNewDataStart(
       scrollTop,
@@ -280,13 +293,20 @@ class InfiniteScroll {
       },
       () => {
         this.state.isLoading = {
-          ...this.state.isLoading,
-          up: false,
-          down: false,
+          start: {
+            ...this.state.isLoading.start,
+            vertical: false,
+          },
+          end: {
+            ...this.state.isLoading.end,
+            vertical: false,
+          },
         };
       },
-      verticalLoading,
-      up ? !!hasMore.up : !!hasMore.down,
+      {
+        start: start.vertical,
+        end: end.vertical,
+      },
       vertical
     );
 
@@ -304,24 +324,27 @@ class InfiniteScroll {
       },
       () => {
         this.state.isLoading = {
-          ...this.state.isLoading,
-          left: false,
-          right: false,
+          start: {
+            ...this.state.isLoading.start,
+            horizontal: false,
+          },
+          end: {
+            ...this.state.isLoading.end,
+            horizontal: false,
+          },
         };
       },
-      horizontalLoading,
-      left ? !!hasMore.left : !!hasMore.right,
+      {
+        start: start.horizontal,
+        end: end.horizontal,
+      },
       horizontal
     );
 
-    if (verticalLoading) {
-      this.state.scrollHeight = scrollHeight;
-      this.state.rowLength = rowLength;
-    }
-    if (horizontalLoading) {
-      this.state.scrollWidth = scrollWidth;
-      this.state.columnLength = columnLength;
-    }
+    this.state.scrollHeight = scrollHeight;
+    this.state.rowLength = rowLength;
+    this.state.scrollWidth = scrollWidth;
+    this.state.columnLength = columnLength;
 
     this._checkOffsetAndLoadMore();
   };
