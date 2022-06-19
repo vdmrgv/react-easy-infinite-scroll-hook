@@ -1,17 +1,16 @@
 # react-easy-infinite-scroll-hook
 
-![Tests](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/actions/workflows/tests.yml/badge.svg)
+![Test](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/actions/workflows/test.yml/badge.svg)
+[![GZipped size][npm-minzip-svg]][bundlephobia-url]
+[![Version Badge][npm-version-svg]][package-url]
+[![Downloads][downloads-image]][downloads-url]
 
 A hook that will save you from endless scrolling problems! Infinite scrolling that really works and is very easy to integrate!
 This hook allows you to create simple, lightweight components with infinite scrolling in all directions, supporting both windowed and scrollable elements.
 
 ## Features
 
-[![GZipped size][npm-minzip-svg]][bundlephobia-url]
-[![Version Badge][npm-version-svg]][package-url]
-[![GZipped size][npm-minzip-svg]][bundlephobia-url]
-[![Test][test-image]][test-url] [![License][license-image]][license-url]
-[![Downloads][downloads-image]][downloads-url]
+
 
 - ⏬ **Universal** - Ability to use all types of scrollable elements or [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
 - 📦 **Support for all loading directions** - You can scroll the component indefinitely in the direction you want or all at once (`up`, `down`, `left`, `right`)
@@ -22,7 +21,7 @@ This hook allows you to create simple, lightweight components with infinite scro
   project
 - ✅ **Fully unit tested** - `100%` test coverage
 - 🌳 **Tree-shakeable** - Only include the parts you use
-- 💥 **Lightweight** - Around `~1.8kB`
+- 💥 **Lightweight** - Around `~1.9kB`
 
 ## Install
 
@@ -92,3 +91,15 @@ After initialization, this hook returns a `setRef` function, which you must pass
 ## Troubleshooting
 1. What should I do if I have an endless call `next` function?
 - Try checking your element and make sure it has a fixed size (the size does not increase after receiving new data, only the size of the scrollbar increases) and the overflow can be scrolled in the right direction.
+
+[package-url]: https://npmjs.org/package/react-easy-infinite-scroll-hook
+[npm-version-svg]: https://img.shields.io/npm/v/react-easy-infinite-scroll-hook.svg
+[npm-minzip-svg]:
+  https://img.shields.io/bundlephobia/minzip/react-easy-infinite-scroll-hook.svg
+[bundlephobia-url]:
+  https://bundlephobia.com/result?p=react-easy-infinite-scroll-hook
+[license-image]: http://img.shields.io/npm/l/react-easy-infinite-scroll-hook.svg
+[license-url]: LICENSE
+[downloads-image]: http://img.shields.io/npm/dm/react-easy-infinite-scroll-hook.svg
+[downloads-url]:
+  http://npm-stat.com/charts.html?package=react-easy-infinite-scroll-hook
