@@ -1,8 +1,8 @@
 {
-  "name": "react-infinite-scroll-hook",
+  "name": "react-easy-infinite-scroll-hook",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "An awesome Infinite Scroll hook in react. It supports all directions and easily integrates into all scrollable components!",
+  "description": "A hook that will save you from endless scrolling problems!",
   "author": "Vadim Rogov <vadimrogovd@gmail.com>",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -38,15 +38,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vdmrgv/react-infinite-scroll-hook.git"
+    "url": "git+https://github.com/vdmrgv/react-easy-infinite-scroll-hook.git"
   },
   "keywords": [
     "react"
   ],
   "bugs": {
-    "url": "https://github.com/vdmrgv/react-infinite-scroll-hook/issues"
+    "url": "https://github.com/vdmrgv/react-easy-infinite-scroll-hook/issues"
   },
-  "homepage": "https://github.com/vdmrgv/react-infinite-scroll-hook#readme",
+  "homepage": "https://github.com/vdmrgv/react-easy-infinite-scroll-hook#readme",
   "devDependencies": {
     "@babel/core": "^7.18.5",
     "@babel/preset-env": "^7.18.2",

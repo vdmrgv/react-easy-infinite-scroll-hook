@@ -154,24 +154,21 @@ class InfiniteScroll {
     const offset = this._getPossibleDirection();
 
     const loadMore = async (direction1: ScrollDirection, direction2: ScrollDirection) => {
-      let isLoading = false;
       const axis = direction1 === ScrollDirection.UP ? 'vertical' : 'horizontal';
 
-      try {
-        if (!(start[axis] || start[axis])) {
-          const canLoad1 = hasMore[direction1] && offset![direction1];
-          const canLoad2 = !canLoad1 && hasMore[direction2] && offset![direction2];
+      if (!(start[axis] || start[axis])) {
+        const canLoad1 = hasMore[direction1] && offset![direction1];
+        const canLoad2 = !canLoad1 && hasMore[direction2] && offset![direction2];
 
-          if (canLoad1 || canLoad2) {
+        if (canLoad1 || canLoad2) {
+          try {
             const loadDirection = canLoad1 ? direction1 : direction2;
-            isLoading = true;
-
-            this.state.isLoading.start[axis] = isLoading;
+            this.state.isLoading.start[axis] = true;
             await next(loadDirection);
+          } finally {
+            this.state.isLoading.end[axis] = true;
           }
         }
-      } finally {
-        this.state.isLoading.end[axis] = isLoading;
       }
     };
 
