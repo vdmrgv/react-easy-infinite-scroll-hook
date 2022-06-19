@@ -34,6 +34,8 @@ This hook allows you to create simple, lightweight components with infinite scro
 
 ## Usage
 
+### Simple Example
+
 [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb)
 
 ```js
@@ -59,6 +61,42 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
       ))}
       {isLoading && <div>Loading...</div>}
     </div>
+  );
+};
+```
+
+### Virtualized Example (react-virtualized)
+
+[![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)
+
+```js
+import { useInfiniteScroll } from 'react-easy-infinite-scroll-hook';
+import { List } from 'react-virtualized';
+
+const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
+  const { setRef } = useInfiniteScroll({
+    next,
+    rowLength: items.length,
+    hasMore: { down: canLoadMore },
+  });
+
+  return (
+    <List
+      ref={setRef}
+      width={500}
+      height={500}
+      rowHeight={60}
+      rowCount={data.length}
+      rowRenderer={({ key, index, style }) => {
+        const item = data[index];
+
+        return (
+          <div key={key} style={style}>
+            {item}
+          </div>
+        );
+      }}
+    />
   );
 };
 ```
