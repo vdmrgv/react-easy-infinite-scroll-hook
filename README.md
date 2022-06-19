@@ -56,7 +56,7 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
 
 ## API
 
-After initialization, this hook returns a `setRef` function, which you must pass to your element, for example: `<div ref={setRef}>...</div>`.
+After initialization, this hook returns a `setRef` function, which you must pass to your element `ref`.
 
 ### Props
 
