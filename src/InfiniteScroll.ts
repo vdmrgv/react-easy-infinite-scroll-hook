@@ -42,8 +42,10 @@ class InfiniteScroll {
     };
   }
 
-  _validateScrollValue = (scrollPosition: number, scrollSize: number, fallbackValue?: number): number =>
-    Math.abs(scrollPosition) > scrollSize ? fallbackValue ?? scrollSize : scrollPosition;
+  _validateScrollValue = (scrollPosition: number, scrollSize: number, fallbackValue?: number): number => {
+    const sign = scrollPosition < 0 ? -1 : 1;
+    return Math.abs(scrollPosition) > scrollSize ? fallbackValue ?? scrollSize * sign : scrollPosition;
+  };
 
   _scroll = function (this: InfiniteScroll, { scrollTop, scrollLeft }: ScrollPosition): void {
     if (!this._scrollingContainerRef) return;
@@ -152,18 +154,24 @@ class InfiniteScroll {
     const offset = this._getPossibleDirection();
 
     const loadMore = async (direction1: ScrollDirection, direction2: ScrollDirection) => {
+      let isLoading = false;
       const axis = direction1 === ScrollDirection.UP ? 'vertical' : 'horizontal';
 
-      if (!(start[axis] || start[axis])) {
-        const canLoad1 = hasMore[direction1] && offset![direction1];
-        const canLoad2 = !canLoad1 && hasMore[direction2] && offset![direction2];
+      try {
+        if (!(start[axis] || start[axis])) {
+          const canLoad1 = hasMore[direction1] && offset![direction1];
+          const canLoad2 = !canLoad1 && hasMore[direction2] && offset![direction2];
 
-        if (canLoad1 || canLoad2) {
-          const loadDirection = canLoad1 ? direction1 : direction2;
-          this.state.isLoading.start = { ...this.state.isLoading.start, [axis]: true };
-          await next(loadDirection);
-          this.state.isLoading.end = { ...this.state.isLoading.end, [axis]: true };
+          if (canLoad1 || canLoad2) {
+            const loadDirection = canLoad1 ? direction1 : direction2;
+            isLoading = true;
+
+            this.state.isLoading.start[axis] = isLoading;
+            await next(loadDirection);
+          }
         }
+      } finally {
+        this.state.isLoading.end[axis] = isLoading;
       }
     };
 
@@ -173,20 +181,21 @@ class InfiniteScroll {
 
   _setRef = function (this: InfiniteScroll, ref: any): void {
     // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
-    const current = ref.Grid?._scrollingContainer ?? ref;
+    const current = ref?.Grid?._scrollingContainer ?? ref;
 
     if (
-      current &&
-      !(
-        typeof current.scrollHeight === 'number' ||
-        typeof current.scrollWidth === 'number' ||
-        typeof current.scrollLeft === 'number' ||
-        typeof current.scrollTop === 'number' ||
-        typeof current.clientHeight === 'number' ||
-        typeof current.clientWidth === 'number' ||
-        typeof current.addEventListener === 'function' ||
-        typeof current.removeEventListener === 'function'
-      )
+      (current &&
+        !(
+          typeof current.scrollHeight === 'number' ||
+          typeof current.scrollWidth === 'number' ||
+          typeof current.scrollLeft === 'number' ||
+          typeof current.scrollTop === 'number' ||
+          typeof current.clientHeight === 'number' ||
+          typeof current.clientWidth === 'number' ||
+          typeof current.addEventListener === 'function' ||
+          typeof current.removeEventListener === 'function'
+        )) ||
+      !current
     ) {
       console.error('Sorry I can\'t use this container - try using a different DOM element.');
       return;
