@@ -1,9 +1,17 @@
 # react-easy-infinite-scroll-hook
 
+![Tests](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/actions/workflows/node.js.yml/badge.svg)
+
 A hook that will save you from endless scrolling problems! Infinite scrolling that really works and is very easy to integrate!
 This hook allows you to create simple, lightweight components with infinite scrolling in all directions, supporting both windowed and scrollable elements.
 
 ## Features
+
+[![GZipped size][npm-minzip-svg]][bundlephobia-url]
+[![Version Badge][npm-version-svg]][package-url]
+[![GZipped size][npm-minzip-svg]][bundlephobia-url]
+[![Test][test-image]][test-url] [![License][license-image]][license-url]
+[![Downloads][downloads-image]][downloads-url]
 
 - ⏬ **Universal** - Ability to use all types of scrollable elements or [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
 - 📦 **Support for all loading directions** - You can scroll the component indefinitely in the direction you want or all at once (`up`, `down`, `left`, `right`)
