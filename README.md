@@ -14,7 +14,7 @@ This hook allows you to create simple, lightweight components with infinite scro
   project
 - ✅ **Fully unit tested** - `100%` test coverage
 - 🌳 **Tree-shakeable** - Only include the parts you use
-- 💥 **Lightweight** - Around `~1.5kB`
+- 💥 **Lightweight** - Around `~1.8kB`
 
 ## Install
 
