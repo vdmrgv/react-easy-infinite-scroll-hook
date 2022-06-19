@@ -60,16 +60,16 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ### Props
 
-| Name            | Required | Description                                                                                                                                                                            | Type     | Default Value |
-| --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------- | ------------------------ | -------- | --- |
-| next            | Yes      | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction: 'up'                                              | 'down'   | 'left'        | 'rigth'): Promise<void>` | Function |     |
-| hasMore         | Yes      | Whether there are more items to be loaded. Expect object with directions to load `{ [k: 'up'                                                                                           | 'down'   | 'left'        | 'right']: boolean }`     | object   |     |
-| rowLength       |          | Number of items in a `vertical` list (scroll axis `Y`)                                                                                                                                 | number   |               |
-| columnLength    |          | Number of items in a `horizontal` list (scroll axis `X`)                                                                                                                               | number   |               |
-| onScroll        |          | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number }): void`                                                     | Function |               |
-| initialScroll   |          | The initial scroll position of the element, which is applied after the ref has been initialized                                                                                        | object   |               |
-| reverse         |          | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'`                           | object   |               |
-| scrollThreshold |          | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the element value `0.6 = 60%` | number   | string        | 1                        |
+| Name  | Required | Description | Type  | Default Value |
+| ----- | -------- | ----------- | ----- | ------------- |
+| next  | Yes      | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction): Promise<void>` | Function | |
+| hasMore | Yes | Whether there are more items to be loaded. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`   | object | |
+| rowLength | | Number of items in a `vertical` list (scroll axis `Y`) | number | |
+| columnLength | | Number of items in a `horizontal` list (scroll axis `X`) | number | |
+| onScroll | | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number }): void` | Function | |
+| initialScroll | | The initial scroll position of the element, which is applied after the ref has been initialized | object | |
+| reverse | | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'` | object | |
+| scrollThreshold | | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the element value `0.6 = 60%` | number or string | 1 |
 
 ## Friends
 
@@ -77,5 +77,8 @@ After initialization, this hook returns a `setRef` function, which you must pass
 - [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
 
 ## FAQ
-
+1. Can I use it with `flex-direction: 'row-reverse'`?
+- Yes, just pass `reverse: { vertical: true }` to the props.
 ## Troubleshooting
+1. What should I do if I have an endless call `next` function?
+- Try checking your element and make sure it has a fixed size (the size does not increase after receiving new data, only the size of the scrollbar increases) and the overflow can be scrolled in the right direction.
