@@ -125,10 +125,8 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ## FAQ
 1. Can I use it with `flex-direction: 'row-reverse'`?
-- Yes, just pass `reverse: { vertical: true }` to the props.
-## Troubleshooting
-1. What should I do if I have an endless call `next` function?
-- Try checking your element and make sure it has a fixed size (the size does not increase after receiving new data, only the size of the scrollbar increases) and the overflow can be scrolled in the right direction.
+  - Yes, just pass `reverse: { vertical: true }` to the props.
+
 
 [package-url]: https://npmjs.org/package/react-easy-infinite-scroll-hook
 [npm-version-svg]: https://img.shields.io/npm/v/react-easy-infinite-scroll-hook.svg
