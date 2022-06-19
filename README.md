@@ -120,13 +120,16 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ## Friends
 
-- any DOM element with scroll
+- Any DOM element with scroll
 - [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
 
 ## FAQ
 1. Can I use it with `flex-direction: 'row-reverse'`?
   - Yes, just pass `reverse: { vertical: true }` to the props.
 
+## License
+
+MIT © [vdmrgv](https://github.com/vdmrgv)
 
 [package-url]: https://npmjs.org/package/react-easy-infinite-scroll-hook
 [npm-version-svg]: https://img.shields.io/npm/v/react-easy-infinite-scroll-hook.svg
