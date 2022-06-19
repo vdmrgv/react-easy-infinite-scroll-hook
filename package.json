@@ -43,6 +43,9 @@
   "keywords": [
     "react",
     "react-hooks",
+    "react infinite scroll",
+    "react infinite scroll hook",
+    "useInfiniteScroll",
     "infinite-scroll",
     "react-component",
     "flex",
