@@ -42,8 +42,10 @@ class InfiniteScroll {
     };
   }
 
-  _validateScrollValue = (scrollPosition: number, scrollSize: number, fallbackValue?: number): number =>
-    Math.abs(scrollPosition) > scrollSize ? fallbackValue ?? scrollSize : scrollPosition;
+  _validateScrollValue = (scrollPosition: number, scrollSize: number, fallbackValue?: number): number => {
+    const sign = scrollPosition < 0 ? -1 : 1;
+    return Math.abs(scrollPosition) > scrollSize ? fallbackValue ?? scrollSize * sign : scrollPosition;
+  };
 
   _scroll = function (this: InfiniteScroll, { scrollTop, scrollLeft }: ScrollPosition): void {
     if (!this._scrollingContainerRef) return;
@@ -177,7 +179,7 @@ class InfiniteScroll {
     loadMore(ScrollDirection.LEFT, ScrollDirection.RIGHT);
   };
 
-  _setRef = function (this: InfiniteScroll, ref: any): any {
+  _setRef = function (this: InfiniteScroll, ref: any): void {
     // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
     const current = ref?.Grid?._scrollingContainer ?? ref;
 
@@ -235,8 +237,6 @@ class InfiniteScroll {
     this.onCleanup = () => this._scrollingContainerRef?.removeEventListener('scroll', onScrollListener);
 
     this._checkOffsetAndLoadMore();
-
-    return ref;
   };
 
   _onPropsChange = function (this: InfiniteScroll, props: UseInfiniteScrollProps) {

@@ -165,8 +165,8 @@ describe('InfiniteScroll', () => {
           expect(container?.scrollTop).not.toEqual(100000);
           expect(container?.scrollLeft).not.toEqual(100000);
 
-          expect(container?.scrollTop).toEqual(container?.scrollHeight);
-          expect(container?.scrollLeft).toEqual(container?.scrollWidth);
+          expect(container?.scrollTop).toEqual(-container!.scrollHeight);
+          expect(container?.scrollLeft).toEqual(-container!.scrollWidth);
         });
       });
     });

@@ -11,7 +11,7 @@ import {
   ScrollAxis,
 } from '../../types';
 
-type CreateContainerParams = ScrollSize & ScrollPosition & ClientSize;
+export type CreateContainerParams = ScrollSize & ScrollPosition & ClientSize;
 
 export type MockScrollingContainerRef = ScrollingContainerRef & {
   scrollTo: (top?: number, left?: number) => void;
@@ -45,7 +45,7 @@ export const createContainer = ({
   },
 });
 
-type CreateInfiniteScrollProps = DatasetLength & {
+export type CreateInfiniteScrollProps = DatasetLength & {
   hasMore?: ScrollDirectionState;
   next?: (direction: ScrollDirection) => Promise<void>;
   onScroll?: (value: Required<ScrollParams>) => void;
