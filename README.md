@@ -27,6 +27,8 @@ This hook allows you to create simple, lightweight components with infinite scro
 
 ## Usage
 
+[![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb)
+
 ```js
 import { useInfiniteScroll } from 'react-easy-infinite-scroll-hook';
 
