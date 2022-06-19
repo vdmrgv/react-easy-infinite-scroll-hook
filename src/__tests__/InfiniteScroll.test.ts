@@ -253,42 +253,90 @@ describe('InfiniteScroll', () => {
         expect(newProps.columnLength).toEqual(state.columnLength);
       });
 
-      it('should update the threshold if the size of the container has been changed', () => {
-        const {
-          state: {
-            clientHeight: instHeight,
-            clientWidth: instWidth,
-            computedScrollThreshold: { vertical, horizontal },
-          },
-          onPropsChange,
-        } = instance;
-        const { clientHeight, clientWidth } = container!;
+      describe('calculate offset threshold', () => {
+        it('should calculate the threshold in "%"', () => {
+          const { onPropsChange } = instance;
 
-        expect(clientHeight).toEqual(instHeight);
-        expect(clientWidth).toEqual(instWidth);
+          const newHeight = 155;
+          const newWidth = 60;
 
-        // default scroll threshold is 100% of client size
-        // clientHeight = 200
-        // clientWidth = 200
-        expect(clientHeight + clientWidth).toEqual(horizontal + vertical);
+          container!.clientHeight = newHeight;
+          container!.clientWidth = newWidth;
 
-        const newHeight = 155;
-        const newWidth = 60;
+          onPropsChange({
+            ...instance.props,
+            scrollThreshold: 0.4,
+          });
 
-        container!.clientHeight = newHeight;
-        container!.clientWidth = newWidth;
+          const {
+            state: {
+              computedScrollThreshold: { vertical, horizontal },
+            },
+          } = instance;
 
-        onPropsChange(instance.props);
+          expect(newHeight * 0.4 + newWidth * 0.4).toEqual(horizontal + vertical);
+        });
 
-        const {
-          clientHeight: updatedHeight,
-          clientWidth: updatedWidth,
-          computedScrollThreshold: { vertical: vThreshold, horizontal: hThreshold },
-        } = instance.state;
+        it('should calculate the threshold in "px"', () => {
+          const { onPropsChange } = instance;
 
-        expect(newHeight).toEqual(updatedHeight);
-        expect(newWidth).toEqual(updatedWidth);
-        expect(newHeight + newWidth).toEqual(vThreshold + hThreshold);
+          const newHeight = 155;
+          const newWidth = 60;
+
+          container!.clientHeight = newHeight;
+          container!.clientWidth = newWidth;
+
+          onPropsChange({
+            ...instance.props,
+            scrollThreshold: '20px',
+          });
+
+          const {
+            state: {
+              computedScrollThreshold: { vertical, horizontal },
+            },
+          } = instance;
+
+          expect(20 + 20).toEqual(horizontal + vertical);
+        });
+
+        it('should update the threshold if the size of the container has been changed', () => {
+          const {
+            state: {
+              clientHeight: instHeight,
+              clientWidth: instWidth,
+              computedScrollThreshold: { vertical, horizontal },
+            },
+            onPropsChange,
+          } = instance;
+          const { clientHeight, clientWidth } = container!;
+
+          expect(clientHeight).toEqual(instHeight);
+          expect(clientWidth).toEqual(instWidth);
+
+          // default scroll threshold is 100% of client size
+          // clientHeight = 200
+          // clientWidth = 200
+          expect(clientHeight + clientWidth).toEqual(horizontal + vertical);
+
+          const newHeight = 155;
+          const newWidth = 60;
+
+          container!.clientHeight = newHeight;
+          container!.clientWidth = newWidth;
+
+          onPropsChange(instance.props);
+
+          const {
+            clientHeight: updatedHeight,
+            clientWidth: updatedWidth,
+            computedScrollThreshold: { vertical: vThreshold, horizontal: hThreshold },
+          } = instance.state;
+
+          expect(newHeight).toEqual(updatedHeight);
+          expect(newWidth).toEqual(updatedWidth);
+          expect(newHeight + newWidth).toEqual(vThreshold + hThreshold);
+        });
       });
     });
 
