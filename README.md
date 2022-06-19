@@ -125,7 +125,7 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ## FAQ
 1. Can I use it with `flex-direction: 'row-reverse'`?
-  - Yes, just pass `reverse: { vertical: true }` to the props.
+> Yes, just pass `reverse: { vertical: true }` to the props.
 
 ## License
 
