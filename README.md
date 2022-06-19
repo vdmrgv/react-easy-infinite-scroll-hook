@@ -86,7 +86,7 @@ const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next 
       width={500}
       height={500}
       rowHeight={60}
-      rowCount={data.length}
+      rowCount={items.length}
       rowRenderer={({ key, index, style }) => {
         const item = data[index];
 
