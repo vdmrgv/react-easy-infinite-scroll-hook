@@ -1,7 +1,7 @@
 # react-easy-infinite-scroll-hook
 
 A hook that will save you from endless scrolling problems! Infinite scrolling that really works and is very easy to integrate!
-This hook allows you to create a simple, lightweight components with infinite scrolling, supporting both windowed and scrollable elements.
+This hook allows you to create simple, lightweight components with infinite scrolling in all directions, supporting both windowed and scrollable elements.
 
 ## Features
 
