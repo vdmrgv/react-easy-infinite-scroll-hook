@@ -67,7 +67,9 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
 
 ### Virtualized Example (react-virtualized)
 
-[![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)
+| List | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)  |
+| :---:   | :-: |
+| Grid | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-grid-rlmfd9?file=/src/App.tsx) |
 
 ```js
 import { useInfiniteScroll } from 'react-easy-infinite-scroll-hook';
