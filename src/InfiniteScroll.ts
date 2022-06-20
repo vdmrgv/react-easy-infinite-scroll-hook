@@ -177,8 +177,10 @@ class InfiniteScroll {
   };
 
   _setRef = function (this: InfiniteScroll, ref: any): void {
+    if (this._scrollingContainerRef) return;
+
     // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
-    const current = ref?.Grid?._scrollingContainer ?? ref;
+    const current = ref?._scrollingContainer ?? ref?.Grid?._scrollingContainer ?? ref;
 
     if (
       (current &&
