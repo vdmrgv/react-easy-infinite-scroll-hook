@@ -127,9 +127,9 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ## FAQ
 
-### Can I use it with `flex-direction: 'row-reverse'`?
+### Can I use it with `flex-direction: 'column-reverse'`?
 
-> Yes, just pass `reverse: { vertical: true }` to the props.
+> Yes, just pass `reverse: { vertical: true }` to props for `flex-direction: 'column-reverse'` or `reverse: { horizontal: true }` for `flex-direction: 'row-reverse'`.
 
 ### How to use it with `react-virtualized` `MultiGrid` component?
 
