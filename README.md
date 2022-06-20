@@ -124,8 +124,41 @@ After initialization, this hook returns a `setRef` function, which you must pass
 - [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
 
 ## FAQ
-1. Can I use it with `flex-direction: 'row-reverse'`?
-> Yes, just pass `reverse: { vertical: true }` to the props.
+
+### Can I use it with `flex-direction: 'row-reverse'`?
+Yes, just pass `reverse: { vertical: true }` to the props.
+
+### How to use it with `react-virtualized` `MultiGrid` component?
+`MultiGrid` is a complex component with a lot of scrollable containers, and to use it you must specify the correct container for the `useRef` function:
+
+```js
+import React, { useCallback } from 'react';
+import { useInfiniteScroll } from 'react-easy-infinite-scroll-hook';
+import { MultiGrid } from 'react-virtualized';
+
+const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
+  const { setRef } = useInfiniteScroll({
+    next,
+    columnLength: items.length,
+    hasMore: { right: canLoadMore },
+  });
+
+  // Use `useCallback` so we don't recreate the function on each render - Could result in infinite loop
+  const selectRef = useCallback(
+    (node) => {
+      setRef(ref._bottomRightGrid)
+    },
+    [setRef],
+  );
+
+  return (
+    <MultiGrid
+      ref={selectRef}
+      { ...rest}
+    />
+  );
+};
+```
 
 ## License
 
