@@ -39,7 +39,7 @@ This hook allows you to create simple, lightweight components with infinite scro
 [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb)
 
 ```js
-import { useInfiniteScroll } from 'react-easy-infinite-scroll-hook';
+import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 
 const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
   const { setRef } = useInfiniteScroll({
@@ -70,9 +70,10 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
 | List | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)  |
 | :---:   | :-: |
 | Grid | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-grid-rlmfd9?file=/src/App.tsx) |
+<br />
 
 ```js
-import { useInfiniteScroll } from 'react-easy-infinite-scroll-hook';
+import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import { List } from 'react-virtualized';
 
 const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
@@ -128,17 +129,17 @@ After initialization, this hook returns a `setRef` function, which you must pass
 ## FAQ
 
 ### Can I use it with `flex-direction: 'row-reverse'`?
-Yes, just pass `reverse: { vertical: true }` to the props.
+> Yes, just pass `reverse: { vertical: true }` to the props.
 
 ### How to use it with `react-virtualized` `MultiGrid` component?
-`MultiGrid` is a complex component with a lot of scrollable containers, and to use it you must specify the correct container for the `useRef` function:
+> `MultiGrid` is a complex component with a lot of scrollable containers, and to use it you must specify the correct container for the `useRef` function:
 
 ```js
 import React, { useCallback } from 'react';
-import { useInfiniteScroll } from 'react-easy-infinite-scroll-hook';
+import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import { MultiGrid } from 'react-virtualized';
 
-const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
+const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, next }) => {
   const { setRef } = useInfiniteScroll({
     next,
     columnLength: items.length,
