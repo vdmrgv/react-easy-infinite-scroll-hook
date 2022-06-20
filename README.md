@@ -10,8 +10,6 @@ This hook allows you to create simple, lightweight components with infinite scro
 
 ## Features
 
-
-
 - ⏬ **Universal** - Ability to use all types of scrollable elements or [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
 - 📦 **Support for all loading directions** - You can scroll the component indefinitely in the direction you want or all at once (`up`, `down`, `left`, `right`)
 - 📏 **No need to specify heights** - No need to pass the dimensions of the component, scrollbar or element
@@ -67,9 +65,10 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
 
 ### Virtualized Example (react-virtualized)
 
-| List | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)  |
-| :---:   | :-: |
+| List |            [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)             |
+| :--: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | Grid | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-grid-rlmfd9?file=/src/App.tsx) |
+
 <br />
 
 ```js
@@ -110,16 +109,16 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ### Props
 
-| Name  | Required | Description | Type  | Default Value |
-| ----- | -------- | ----------- | ----- | ------------- |
-| next  | Yes      | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction): Promise<void>` | Function | |
-| hasMore | Yes | Whether there are more items to be loaded. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`   | object | |
-| rowLength | Condition | Number of items in a `vertical` list (scroll axis `Y`). Required if you are using `vertical` scroll. | number | |
-| columnLength | Condition | Number of items in a `horizontal` list (scroll axis `X`). Required if you are using `horizontal` scroll. | number | |
-| onScroll | | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }): void` | Function | |
-| initialScroll | | The initial scroll position of the element, which is applied after the ref has been initialized | object | |
-| reverse | | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'` | object | |
-| scrollThreshold | | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the element value `0.6 = 60%` | number or string | 1 |
+| Name            | Required  | Description                                                                                                                                                                                      | Type             | Default Value |
+| --------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------- | ------------- |
+| next            | Yes       | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction): Promise<void>`                                             | Function         |               |
+| hasMore         | Yes       | Whether there are more items to be loaded. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`                                                         | object           |               |
+| rowLength       | Condition | Number of items in a `vertical` list (scroll axis `Y`). Required if you are using `vertical` scroll.                                                                                             | number           |               |
+| columnLength    | Condition | Number of items in a `horizontal` list (scroll axis `X`). Required if you are using `horizontal` scroll.                                                                                         | number           |               |
+| onScroll        |           | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }): void` | Function         |               |
+| initialScroll   |           | The initial scroll position of the element, which is applied after the ref has been initialized                                                                                                  | object           |               |
+| reverse         |           | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'`                                     | object           |               |
+| scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the element value `0.6 = 60%`           | number or string | 1             |
 
 ## Friends
 
@@ -129,10 +128,12 @@ After initialization, this hook returns a `setRef` function, which you must pass
 ## FAQ
 
 ### Can I use it with `flex-direction: 'row-reverse'`?
+
 > Yes, just pass `reverse: { vertical: true }` to the props.
 
 ### How to use it with `react-virtualized` `MultiGrid` component?
-> `MultiGrid` is a complex component with a lot of scrollable containers, and to use it you must specify the correct container for the `useRef` function:
+
+> `MultiGrid` is a complex component with a lot of scrollable containers, and to use it you must specify the correct container for the `setRef` function:
 
 ```js
 import React, { useCallback } from 'react';
@@ -149,17 +150,12 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
   // Use `useCallback` so we don't recreate the function on each render - Could result in infinite loop
   const selectRef = useCallback(
     (node) => {
-      setRef(node._bottomRightGrid)
+      setRef(node._bottomRightGrid);
     },
-    [setRef],
+    [setRef]
   );
 
-  return (
-    <MultiGrid
-      ref={selectRef}
-      { ...rest}
-    />
-  );
+  return <MultiGrid ref={selectRef} {...rest} />;
 };
 ```
 
@@ -169,12 +165,9 @@ MIT © [vdmrgv](https://github.com/vdmrgv)
 
 [package-url]: https://npmjs.org/package/react-easy-infinite-scroll-hook
 [npm-version-svg]: https://img.shields.io/npm/v/react-easy-infinite-scroll-hook.svg
-[npm-minzip-svg]:
-  https://img.shields.io/bundlephobia/minzip/react-easy-infinite-scroll-hook.svg
-[bundlephobia-url]:
-  https://bundlephobia.com/result?p=react-easy-infinite-scroll-hook
+[npm-minzip-svg]: https://img.shields.io/bundlephobia/minzip/react-easy-infinite-scroll-hook.svg
+[bundlephobia-url]: https://bundlephobia.com/result?p=react-easy-infinite-scroll-hook
 [license-image]: http://img.shields.io/npm/l/react-easy-infinite-scroll-hook.svg
 [license-url]: LICENSE
 [downloads-image]: http://img.shields.io/npm/dm/react-easy-infinite-scroll-hook.svg
-[downloads-url]:
-  http://npm-stat.com/charts.html?package=react-easy-infinite-scroll-hook
+[downloads-url]: http://npm-stat.com/charts.html?package=react-easy-infinite-scroll-hook
