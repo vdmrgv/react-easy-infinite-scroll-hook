@@ -148,7 +148,7 @@ const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next 
   // Use `useCallback` so we don't recreate the function on each render - Could result in infinite loop
   const selectRef = useCallback(
     (node) => {
-      setRef(ref._bottomRightGrid)
+      setRef(node._bottomRightGrid)
     },
     [setRef],
   );
