@@ -4,8 +4,8 @@ import InfiniteScroll from './InfiniteScroll';
 
 const useInfiniteScroll = (props: UseInfiniteScrollProps): UseInfiniteScrollResult => {
   const {
-    rowLength,
-    columnLength,
+    rowCount,
+    columnCount,
     hasMore: { up, down, left, right },
   } = props;
   const {
@@ -13,7 +13,7 @@ const useInfiniteScroll = (props: UseInfiniteScrollProps): UseInfiniteScrollResu
   } = useRef<InfiniteScroll>(new InfiniteScroll(props));
 
   useEffect(() => onCleanup, []);
-  useEffect(() => onPropsChange(props), [rowLength, columnLength, up, down, left, right]);
+  useEffect(() => onPropsChange(props), [rowCount, columnCount, up, down, left, right]);
 
   return {
     setRef,

@@ -4,7 +4,7 @@ import { createContainer, createInfiniteScrollProps, settleUpdate, MockScrolling
 
 describe('InfiniteScroll', () => {
   const mockInfiniteScrollProps = createInfiniteScrollProps({
-    rowLength: 0,
+    rowCount: 0,
     next: async () => {},
     hasMore: {},
   });
@@ -226,21 +226,21 @@ describe('InfiniteScroll', () => {
     });
 
     describe('state updates', () => {
-      it('should update "scrollHeight", "scrollWidth", "rowLength", "columnLength" on each call', () => {
+      it('should update "scrollHeight", "scrollWidth", "rowCount", "columnCount" on each call', () => {
         const { props, state, onPropsChange } = instance;
         const { scrollHeight, scrollWidth } = container!;
 
         expect(scrollHeight).toEqual(state.scrollHeight);
         expect(scrollWidth).toEqual(state.scrollWidth);
-        expect(props.rowLength).toEqual(state.rowLength);
-        expect(props.columnLength).toEqual(state.columnLength);
+        expect(props.rowCount).toEqual(state.rowCount);
+        expect(props.columnCount).toEqual(state.columnCount);
 
         container!.scrollHeight = 55;
         container!.scrollWidth = 55;
         const newProps = {
           ...instance.props,
-          rowLength: 1000,
-          columnLength: 100,
+          rowCount: 1000,
+          columnCount: 100,
         };
 
         onPropsChange(newProps);
@@ -249,8 +249,8 @@ describe('InfiniteScroll', () => {
 
         expect(newScrollHeight).toEqual(state.scrollHeight);
         expect(newScrollWidth).toEqual(state.scrollWidth);
-        expect(newProps.rowLength).toEqual(state.rowLength);
-        expect(newProps.columnLength).toEqual(state.columnLength);
+        expect(newProps.rowCount).toEqual(state.rowCount);
+        expect(newProps.columnCount).toEqual(state.columnCount);
       });
 
       describe('calculate offset threshold', () => {
@@ -627,7 +627,7 @@ describe('InfiniteScroll', () => {
 
             onPropsChange({
               ...newProps,
-              rowLength: 20,
+              rowCount: 20,
             });
 
             expect(container!.scrollTop).toEqual(container!.scrollHeight / 2);
@@ -650,7 +650,7 @@ describe('InfiniteScroll', () => {
 
             onPropsChange({
               ...newProps,
-              rowLength: 20,
+              rowCount: 20,
             });
 
             expect(container!.scrollTop).toEqual(-container!.scrollHeight / 2);
@@ -674,7 +674,7 @@ describe('InfiniteScroll', () => {
 
             onPropsChange({
               ...newProps,
-              columnLength: 20,
+              columnCount: 20,
             });
 
             expect(container!.scrollLeft).toEqual(container!.scrollWidth / 2);
@@ -697,7 +697,7 @@ describe('InfiniteScroll', () => {
 
             onPropsChange({
               ...newProps,
-              columnLength: 20,
+              columnCount: 20,
             });
 
             expect(container!.scrollLeft).toEqual(-container!.scrollWidth / 2);

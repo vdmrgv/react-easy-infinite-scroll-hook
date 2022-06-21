@@ -4,8 +4,8 @@ export interface ClientSize {
 }
 
 export interface DatasetLength {
-  rowLength?: number;
-  columnLength?: number;
+  rowCount?: number;
+  columnCount?: number;
 }
 
 export interface ScrollSize {
