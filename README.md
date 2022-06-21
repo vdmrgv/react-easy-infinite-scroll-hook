@@ -4,7 +4,7 @@
 ![NPM license](https://img.shields.io/npm/l/react-easy-infinite-scroll-hook.svg?style=flat)
 ![Test](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/actions/workflows/test.yml/badge.svg)
 [![GZipped size][npm-minzip-svg]][bundlephobia-url]
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![PRs Welcome](https://badgen.net/badge/PRs/welcome/cyan)](http://makeapullrequest.com)
 [![NPM total downloads](https://img.shields.io/npm/dt/react-easy-infinite-scroll-hook.svg?style=flat)](https://npmcharts.com/compare/react-easy-infinite-scroll-hook?minimal=true)
 [![Downloads][downloads-image]][downloads-url]
 
