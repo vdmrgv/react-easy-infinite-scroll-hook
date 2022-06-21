@@ -19,8 +19,8 @@ class InfiniteScroll {
   constructor(props: InfiniteScrollProps) {
     this.props = props;
     this.state = {
-      rowLength: props.rowLength,
-      columnLength: props.columnLength,
+      rowCount: props.rowCount,
+      columnCount: props.columnCount,
       scrollHeight: 0,
       scrollWidth: 0,
       clientHeight: 0,
@@ -241,11 +241,11 @@ class InfiniteScroll {
 
     const {
       state: {
-        rowLength: cachedRowLength = 0,
-        columnLength: cachedColumnLength = 0,
+        rowCount: cachedRowLength = 0,
+        columnCount: cachedColumnLength = 0,
         isLoading: { start, end },
       },
-      props: { rowLength = 0, columnLength = 0, reverse = {} },
+      props: { rowCount = 0, columnCount = 0, reverse = {} },
       _scrollingContainerRef,
     } = this;
 
@@ -289,7 +289,7 @@ class InfiniteScroll {
       scrollTop,
       clientHeight,
       cachedRowLength,
-      rowLength,
+      rowCount,
       this.state.scrollHeight,
       scrollHeight,
       (pos: number) => {
@@ -320,7 +320,7 @@ class InfiniteScroll {
       scrollLeft,
       clientWidth,
       cachedColumnLength,
-      columnLength,
+      columnCount,
       this.state.scrollWidth,
       scrollWidth,
       (pos: number) => {
@@ -348,9 +348,9 @@ class InfiniteScroll {
     );
 
     this.state.scrollHeight = scrollHeight;
-    this.state.rowLength = rowLength;
+    this.state.rowCount = rowCount;
     this.state.scrollWidth = scrollWidth;
-    this.state.columnLength = columnLength;
+    this.state.columnCount = columnCount;
 
     this._checkOffsetAndLoadMore();
   };
