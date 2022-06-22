@@ -14,7 +14,7 @@ This hook allows you to create simple, lightweight components with infinite scro
 
 ## Features
 
-- ⏬ **Universal** - Ability to use all types of scrollable elements or [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
+- ⏬ **Universal** - Ability to use all types of scrollable elements or any [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
 - 📦 **Support for all loading directions** - You can scroll the component indefinitely in the direction you want or all at once (`up`, `down`, `left`, `right`)
 - 📏 **No need to specify heights** - No need to pass the dimensions of the component, scrollbar or element
 - 💬 **Support for "chat history"** - Reverse mode includes
@@ -68,6 +68,10 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
 ```
 
 ### Virtualized Example (react-virtualized)
+
+This hook supports all [react-virtualized](https://www.npmjs.com/package/react-virtualized) components (`Collection`, `Grid`, `MultiGrid`, `List`, `Masonry`, `Table`).
+
+Try it live:
 
 | List |            [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)             |
 | :--: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
