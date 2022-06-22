@@ -104,7 +104,7 @@ const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next 
           );
         }}
       />
-    {isLoading && <div>Loading...</div>}
+      {isLoading && <div>Loading...</div>}
     </div>
   );
 };
