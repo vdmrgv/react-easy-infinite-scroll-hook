@@ -87,22 +87,25 @@ const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next 
   });
 
   return (
-    <List
-      ref={setRef}
-      width={500}
-      height={500}
-      rowHeight={60}
-      rowCount={items.length}
-      rowRenderer={({ key, index, style }) => {
-        const item = data[index];
+    <div>
+      <List
+        ref={setRef}
+        width={500}
+        height={500}
+        rowHeight={60}
+        rowCount={items.length}
+        rowRenderer={({ key, index, style }) => {
+          const item = data[index];
 
-        return (
-          <div key={key} style={style}>
-            {item}
-          </div>
-        );
-      }}
-    />
+          return (
+            <div key={key} style={style}>
+              {item}
+            </div>
+          );
+        }}
+      />
+    {isLoading && <div>Loading...</div>}
+    </div>
   );
 };
 ```
@@ -159,7 +162,15 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
     [setRef]
   );
 
-  return <MultiGrid ref={selectRef} {...rest} />;
+  return (
+    <div>
+      <MultiGrid
+        ref={selectRef}
+        {...props}
+       />
+      {isLoading && <div>Loading...</div>}
+    </div>
+  );
 };
 ```
 
