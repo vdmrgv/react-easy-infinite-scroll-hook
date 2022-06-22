@@ -47,8 +47,14 @@
     "react infinite scroll hook",
     "useInfiniteScroll",
     "infinite-scroll",
+    "scrolling",
+    "infinite",
+    "scroll",
     "react-component",
     "flex",
+    "flexbox",
+    "list",
+    "grid",
     "react-virtualized"
   ],
   "bugs": {
