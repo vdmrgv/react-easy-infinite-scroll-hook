@@ -22,8 +22,12 @@ This hook allows you to create simple, lightweight components with infinite scro
 - 🛠 **Written in TypeScript** - It'll fit right into your existing TypeScript
   project
 - ✅ **Fully unit tested** - `100%` test coverage
+- 👫 **Cross-browser** - Works out-of-the-box for most browsers, regardless of version.
+- 📲 **Mobile-friendly** - Supports mobile devices and touch screens.
 - 🌳 **Tree-shakeable** - Only include the parts you use
 - 💥 **Lightweight** - Around `~1.9kB`
+- 💨 **No dependencies**
+
 
 ## Install
 
