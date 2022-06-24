@@ -18,12 +18,12 @@ This hook allows you to create simple, lightweight components with infinite scro
 - 📦 **Support for all loading directions** - You can scroll the component indefinitely in the direction you want or all at once (`up`, `down`, `left`, `right`)
 - 📏 **No need to specify heights** - No need to pass the dimensions of the component, scrollbar or element
 - 💬 **Support for "chat history"** - Reverse mode includes
+- 👫 **Cross-browser** - Works out-of-the-box for most browsers, regardless of version.
 - ⚙️ **Matches native API** - Intuitive to use
 - 🛠 **Written in TypeScript** - It'll fit right into your existing TypeScript
   project
-- ✅ **Fully unit tested** - `100%` test coverage
-- 👫 **Cross-browser** - Works out-of-the-box for most browsers, regardless of version.
 - 📲 **Mobile-friendly** - Supports mobile devices and touch screens.
+- ✅ **Fully unit tested** - `100%` test coverage
 - 🌳 **Tree-shakeable** - Only include the parts you use
 - 💥 **Lightweight** - Around `~1.9kB`
 - 💨 **No dependencies**
