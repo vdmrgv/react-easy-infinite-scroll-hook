@@ -177,9 +177,13 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
 };
 ```
 
+## Contributions
+
+Learn how to [contribute](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/CONTRIBUTING.md)
+
 ## License
 
-MIT © [vdmrgv](https://github.com/vdmrgv)
+[MIT](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/LICENSE) © [vdmrgv](https://github.com/vdmrgv)
 
 [package-url]: https://npmjs.org/package/react-easy-infinite-scroll-hook
 [npm-version-svg]: https://img.shields.io/npm/v/react-easy-infinite-scroll-hook.svg
