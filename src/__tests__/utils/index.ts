@@ -8,7 +8,6 @@ import {
   ScrollDirectionState,
   ScrollDirection,
   ScrollParams,
-  ScrollAxis,
 } from '../../types';
 
 export type CreateContainerParams = ScrollSize & ScrollPosition & ClientSize;
@@ -54,7 +53,10 @@ export type CreateInfiniteScrollProps = DatasetLength & {
     top?: number;
     left?: number;
   };
-  reverse?: ScrollAxis<boolean>;
+  reverse?: {
+    column?: boolean;
+    row?: boolean;
+  };
 };
 
 export const createInfiniteScrollProps = ({

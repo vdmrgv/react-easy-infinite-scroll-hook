@@ -64,7 +64,10 @@ export type UseInfiniteScrollProps = DatasetLength & {
     top?: number;
     left?: number;
   };
-  reverse?: ScrollAxis<boolean>;
+  reverse?: {
+    column?: boolean;
+    row?: boolean;
+  };
 };
 
 export interface UseInfiniteScrollResult {

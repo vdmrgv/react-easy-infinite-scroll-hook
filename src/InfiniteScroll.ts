@@ -115,7 +115,7 @@ class InfiniteScroll {
     } = this;
 
     const { scrollHeight, scrollWidth, scrollLeft, scrollTop } = _scrollingContainerRef!;
-    const { vertical, horizontal } = reverse;
+    const { column, row } = reverse;
 
     const canLoadForward = (scrollPosition: number, threshold: number): boolean =>
       Math.abs(scrollPosition) <= threshold;
@@ -123,15 +123,15 @@ class InfiniteScroll {
       Math.abs(scrollPosition) >= Math.abs(scrollSize - clientSize - threshold);
 
     return {
-      [vertical ? ScrollDirection.DOWN : ScrollDirection.UP]: canLoadForward(scrollTop, vThreshold),
-      [vertical ? ScrollDirection.UP : ScrollDirection.DOWN]: canLoadBack(
+      [column ? ScrollDirection.DOWN : ScrollDirection.UP]: canLoadForward(scrollTop, vThreshold),
+      [column ? ScrollDirection.UP : ScrollDirection.DOWN]: canLoadBack(
         scrollTop,
         scrollHeight,
         clientHeight,
         vThreshold
       ),
-      [horizontal ? ScrollDirection.RIGHT : ScrollDirection.LEFT]: canLoadForward(scrollLeft, hThreshold),
-      [horizontal ? ScrollDirection.LEFT : ScrollDirection.RIGHT]: canLoadBack(
+      [row ? ScrollDirection.RIGHT : ScrollDirection.LEFT]: canLoadForward(scrollLeft, hThreshold),
+      [row ? ScrollDirection.LEFT : ScrollDirection.RIGHT]: canLoadBack(
         scrollLeft,
         scrollWidth,
         clientWidth,
@@ -252,7 +252,7 @@ class InfiniteScroll {
     if (!_scrollingContainerRef) return;
 
     const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = _scrollingContainerRef;
-    const { vertical, horizontal } = reverse;
+    const { column, row } = reverse;
 
     // if the scroll position is at zero and new data is loaded to the beginning of the list, you need to shift the scroll position
     const scrollToNewDataStart = (
@@ -313,7 +313,7 @@ class InfiniteScroll {
         start: start.vertical,
         end: end.vertical,
       },
-      vertical
+      column
     );
 
     scrollToNewDataStart(
@@ -344,7 +344,7 @@ class InfiniteScroll {
         start: start.horizontal,
         end: end.horizontal,
       },
-      horizontal
+      row
     );
 
     this.state.scrollHeight = scrollHeight;

@@ -8,7 +8,6 @@
 [![NPM total downloads](https://img.shields.io/npm/dt/react-easy-infinite-scroll-hook.svg?style=flat)](https://npmcharts.com/compare/react-easy-infinite-scroll-hook?minimal=true)
 [![Downloads][downloads-image]][downloads-url]
 
-
 A hook that will save you from endless scrolling problems! Infinite scrolling that really works and is very easy to integrate!
 This hook allows you to create simple, lightweight components with infinite scrolling in all directions, supporting both windowed and scrollable elements.
 
@@ -27,7 +26,6 @@ This hook allows you to create simple, lightweight components with infinite scro
 - 🌳 **Tree-shakeable** - Only include the parts you use
 - 💥 **Lightweight** - Around `~1.9kB`
 - 💨 **No dependencies**
-
 
 ## Install
 
@@ -144,7 +142,7 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ### Can I use it with `flex-direction: 'column-reverse'`?
 
-> Yes, just pass `reverse: { vertical: true }` to props for `flex-direction: 'column-reverse'` or `reverse: { horizontal: true }` for `flex-direction: 'row-reverse'`.
+> Yes, just pass `reverse: { column: true }` to props for `flex-direction: 'column-reverse'` or `reverse: { row: true }` for `flex-direction: 'row-reverse'`.
 
 ### How to use it with `react-virtualized` `MultiGrid` component?
 
@@ -172,10 +170,7 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
 
   return (
     <div>
-      <MultiGrid
-        ref={selectRef}
-        {...props}
-       />
+      <MultiGrid ref={selectRef} {...props} />
       {isLoading && <div>Loading...</div>}
     </div>
   );

@@ -457,7 +457,7 @@ describe('InfiniteScroll', () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { down: true },
-            reverse: { vertical: true },
+            reverse: { column: true },
           };
 
           const spyNext = jest.spyOn(newProps, 'next');
@@ -473,7 +473,7 @@ describe('InfiniteScroll', () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { right: true },
-            reverse: { horizontal: true },
+            reverse: { row: true },
           };
 
           const spyNext = jest.spyOn(newProps, 'next');
@@ -489,7 +489,7 @@ describe('InfiniteScroll', () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { up: true },
-            reverse: { vertical: true },
+            reverse: { column: true },
           };
 
           const spyNext = jest.spyOn(newProps, 'next');
@@ -507,7 +507,7 @@ describe('InfiniteScroll', () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { left: true },
-            reverse: { horizontal: true },
+            reverse: { row: true },
           };
 
           const spyNext = jest.spyOn(newProps, 'next');
@@ -637,7 +637,7 @@ describe('InfiniteScroll', () => {
             const newProps: InfiniteScrollProps = {
               ...instance.props,
               hasMore: { down: true },
-              reverse: { vertical: true },
+              reverse: { column: true },
             };
 
             const { onPropsChange } = instance;
@@ -684,7 +684,7 @@ describe('InfiniteScroll', () => {
             const newProps: InfiniteScrollProps = {
               ...instance.props,
               hasMore: { right: true },
-              reverse: { horizontal: true },
+              reverse: { row: true },
             };
 
             const { onPropsChange } = instance;
