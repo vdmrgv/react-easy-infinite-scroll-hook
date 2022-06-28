@@ -245,11 +245,21 @@ class InfiniteScroll {
         columnCount: cachedColumnLength = 0,
         isLoading: { start, end },
       },
-      props: { rowCount = 0, columnCount = 0, reverse = {} },
+      props: { rowCount, columnCount, reverse = {}, hasMore },
       _scrollingContainerRef,
     } = this;
 
     if (!_scrollingContainerRef) return;
+
+    if (rowCount === undefined && (hasMore.down || hasMore.up))
+      console.warn(
+        `You provided props with "hasMore: { up: ${!!hasMore.up}, down: ${!!hasMore.down} } but "rowCount" is "undefined"`
+      );
+
+    if (columnCount === undefined && (hasMore.left || hasMore.right))
+      console.warn(
+        `You provided props with "hasMore: { left: ${!!hasMore.left}, right: ${!!hasMore.right} } but "columnCount" is "undefined"`
+      );
 
     const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = _scrollingContainerRef;
     const { column, row } = reverse;
@@ -279,7 +289,7 @@ class InfiniteScroll {
         onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier);
       }
 
-      // if the download was successful
+      // if the download is over
       if (loadComplete) {
         onLoadComplete();
       }
@@ -289,7 +299,7 @@ class InfiniteScroll {
       scrollTop,
       clientHeight,
       cachedRowLength,
-      rowCount,
+      rowCount ?? 0,
       this.state.scrollHeight,
       scrollHeight,
       (pos: number) => {
@@ -320,7 +330,7 @@ class InfiniteScroll {
       scrollLeft,
       clientWidth,
       cachedColumnLength,
-      columnCount,
+      columnCount ?? 0,
       this.state.scrollWidth,
       scrollWidth,
       (pos: number) => {
