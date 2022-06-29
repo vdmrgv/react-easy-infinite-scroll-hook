@@ -253,12 +253,12 @@ class InfiniteScroll {
 
     if (rowCount === undefined && (hasMore.down || hasMore.up))
       console.warn(
-        `You provided props with "hasMore: { up: ${!!hasMore.up}, down: ${!!hasMore.down} } but "rowCount" is "undefined"`
+        `You provided props with "hasMore: { up: ${!!hasMore.up}, down: ${!!hasMore.down} }" but "rowCount" is "undefined"`
       );
 
     if (columnCount === undefined && (hasMore.left || hasMore.right))
       console.warn(
-        `You provided props with "hasMore: { left: ${!!hasMore.left}, right: ${!!hasMore.right} } but "columnCount" is "undefined"`
+        `You provided props with "hasMore: { left: ${!!hasMore.left}, right: ${!!hasMore.right} }" but "columnCount" is "undefined"`
       );
 
     const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = _scrollingContainerRef;
