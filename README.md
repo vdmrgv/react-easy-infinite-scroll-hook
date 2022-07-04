@@ -47,13 +47,13 @@ import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 
 const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
   const { setRef } = useInfiniteScroll({
-    // function to fetch more items
+    // Function to fetch more items
     next,
-    // the number of items loaded if you use the "Y-scroll" axis ("up" and "down")
+    // The number of items loaded if you use the "Y-scroll" axis ("up" and "down")
     // if you are using the "X-scroll" axis ("left" and "right") use "columnCount" instead
-    // you can also use "columnCount" and "rowCount" if you use "Y-scroll" and "X-scroll" at the same time
+    // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time
     rowCount: items.length,
-    // should load more items in the specified direction
+    // If marked "true" in the specified direction, it will try to load more items if the threshold is reached
     // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
     hasMore: { down: canLoadMore },
   });
