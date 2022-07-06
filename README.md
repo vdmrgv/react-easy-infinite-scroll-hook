@@ -24,7 +24,7 @@ This hook allows you to create simple, lightweight components with infinite scro
 - 📲 **Mobile-friendly** - Supports mobile devices and touch screens.
 - ✅ **Fully unit tested** - `100%` test coverage
 - 🌳 **Tree-shakeable** - Only include the parts you use
-- 💥 **Lightweight** - Around `~1.9kB`
+- 💥 **Lightweight** - Around `~2kB`
 - 💨 **No dependencies**
 
 ## Install
