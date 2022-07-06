@@ -130,14 +130,14 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 | Name            | Required  | Description                                                                                                                                                                                      | Type             | Default Value |
 | --------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------- | ------------- |
-| next            | Yes       | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction): Promise<void>`                                             | Function         |               |
+| next            | Yes       | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction) => Promise<void>`                                             | Function         |               |
 | hasMore         | Yes       | Whether there are more items to be loaded. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`                                                         | object           |               |
 | rowCount        | Condition | Number of items in a `vertical` list (scroll axis `Y`). Required if you are using `vertical` scroll.                                                                                             | number           |               |
 | columnCount     | Condition | Number of items in a `horizontal` list (scroll axis `X`). Required if you are using `horizontal` scroll.                                                                                         | number           |               |
-| onScroll        |           | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }): void` | Function         |               |
+| onScroll        |           | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }) => void` | Function         |               |
 | initialScroll   |           | The initial scroll position of the element, which is applied after the ref has been initialized                                                                                                  | object           |               |
 | reverse         |           | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'`                                     | object           |               |
-| scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the element value `0.6 = 60%`           | number or string | 1             |
+| scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the container size `from 0.1 to 1` (`1` is `100%`)           | number or string | 1             |
 
 ## Friends
 
