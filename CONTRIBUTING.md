@@ -39,4 +39,4 @@ We prefix our commit messages with one of the following to signify the kind of c
 You can report issues on our [bug tracker](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/issues). Please search for existing issues and follow the issue template when opening an issue.
 
 ## License
-By contributing to React Native Clipboard, you agree that your contributions will be licensed under the **MIT** license.
+By contributing to [react-easy-infinite-scroll-hook](https://github.com/vdmrgv/react-easy-infinite-scroll-hook), you agree that your contributions will be licensed under the **MIT** license.
