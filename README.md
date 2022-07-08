@@ -40,6 +40,8 @@ This hook allows you to create simple, lightweight components with infinite scro
 
 ### Simple Example
 
+You can create infinite scrolling in any direction and in any pair, for example: `up-down`, `down-right`, `etc.` and even `all` at once.
+
 [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb)
 
 ```js
@@ -81,9 +83,10 @@ This hook supports all [react-virtualized](https://www.npmjs.com/package/react-v
 
 Try it live:
 
-| List |            [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)             |
-| :--: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| Grid | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-grid-rlmfd9?file=/src/App.tsx) |
+| Component | Description | Link |
+| :--: | -- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| List | Virtualized `List` component with infinite scroll | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)             |
+| Grid | Virtualized `Grid` component with infinite scroll `down` and `right` | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-grid-rlmfd9?file=/src/App.tsx) |
 
 <br />
 
