@@ -143,7 +143,7 @@ class InfiniteScroll {
   _checkOffsetAndLoadMore = function (this: InfiniteScroll): void {
     const {
       state: {
-        isLoading: { start },
+        isLoading: { start, end },
       },
       props: { next, hasMore },
       _scrollingContainerRef,
@@ -156,7 +156,7 @@ class InfiniteScroll {
     const loadMore = async (direction1: ScrollDirection, direction2: ScrollDirection) => {
       const axis = direction1 === ScrollDirection.UP ? 'vertical' : 'horizontal';
 
-      if (!(start[axis] || start[axis])) {
+      if (!(start[axis] || end[axis])) {
         const canLoad1 = hasMore[direction1] && offset![direction1];
         const canLoad2 = !canLoad1 && hasMore[direction2] && offset![direction2];
 
