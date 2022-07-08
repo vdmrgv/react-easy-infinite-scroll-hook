@@ -14,7 +14,7 @@ This hook allows you to create simple, lightweight components with infinite scro
 ## Features
 
 - ⏬ **Universal** - Ability to use all types of scrollable elements or any [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
-- 📦 **Support for all loading directions** - You can scroll the component indefinitely in the direction you want or all at once (`up`, `down`, `left`, `right`)
+- 📦 **Support for all loading directions** - You can infinitely scroll a component in any direction or in all directions at once (`up`, `down`, `left`, `right`)
 - 📏 **No need to specify heights** - No need to pass the dimensions of the component, scrollbar or element
 - 💬 **Support for "chat history"** - Reverse mode includes
 - 👫 **Cross-browser** - Works out-of-the-box for most browsers, regardless of version.
@@ -128,16 +128,16 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ### Props
 
-| Name            | Required  | Description                                                                                                                                                                                      | Type             | Default Value |
-| --------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------- | ------------- |
-| next            | Yes       | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction) => Promise<void>`                                             | Function         |               |
-| hasMore         | Yes       | Whether there are more items to be loaded. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`                                                         | object           |               |
-| rowCount        | Condition | Number of items in a `vertical` list (scroll axis `Y`). Required if you are using `vertical` scroll.                                                                                             | number           |               |
-| columnCount     | Condition | Number of items in a `horizontal` list (scroll axis `X`). Required if you are using `horizontal` scroll.                                                                                         | number           |               |
-| onScroll        |           | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }) => void` | Function         |               |
-| initialScroll   |           | The initial scroll position of the element, which is applied after the ref has been initialized                                                                                                  | object           |               |
-| reverse         |           | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'`                                     | object           |               |
-| scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the container size `from 0.1 to 1` (`1` is `100%`)           | number or string | 1             |
+| Name            | Required  | Description                                                                                                                                                                                                 | Type             | Default Value |
+| --------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------- |
+| next            | Yes       | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction) => Promise<void>`                                                      | Function         |               |
+| hasMore         | Yes       | If marked "true" in the specified direction, it will try to load more items if the threshold is reached. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`      | object           |               |
+| rowCount        | Condition | Number of items in a `vertical` list (scroll axis `Y`). Required if you are using `vertical` scroll.                                                                                                        | number           |               |
+| columnCount     | Condition | Number of items in a `horizontal` list (scroll axis `X`). Required if you are using `horizontal` scroll.                                                                                                    | number           |               |
+| onScroll        |           | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }) => void`          | Function         |               |
+| initialScroll   |           | The initial scroll position of the element, which is applied after the ref has been initialized                                                                                                             | object           |               |
+| reverse         |           | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'`                                                | object           |               |
+| scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the container size `from 0.1 to 1` (`1` is `100%`) | number or string | 1             |
 
 ## Friends
 
