@@ -1,5 +1,3 @@
-**Working on your first Pull Request?** You can learn how from this _free_ series [How to Contribute to an Open Source Project on GitHub]()
-
 # Contributing to [react-easy-infinite-scroll-hook](https://github.com/vdmrgv/react-easy-infinite-scroll-hook)
 
 ## Development Process
