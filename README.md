@@ -55,6 +55,7 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
     // if you are using the "X-scroll" axis ("left" and "right") use "columnCount" instead
     // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time
     rowCount: items.length,
+    // Whether there are more items to load
     // If marked "true" in the specified direction, it will try to load more items if the threshold is reached
     // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
     hasMore: { down: canLoadMore },
@@ -134,7 +135,7 @@ After initialization, this hook returns a `setRef` function, which you must pass
 | Name            | Required  | Description                                                                                                                                                                                                 | Type             | Default Value |
 | --------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------- |
 | next            | Yes       | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction) => Promise<void>`                                                      | Function         |               |
-| hasMore         | Yes       | If marked "true" in the specified direction, it will try to load more items if the threshold is reached. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`      | object           |               |
+| hasMore         | Yes       | Whether there are more items to load. If marked `true` in the specified direction, it will try to load more items if the threshold is reached. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`      | object           |               |
 | rowCount        | Condition | Number of items in a `vertical` list (scroll axis `Y`). Required if you are using `vertical` scroll.                                                                                                        | number           |               |
 | columnCount     | Condition | Number of items in a `horizontal` list (scroll axis `X`). Required if you are using `horizontal` scroll.                                                                                                    | number           |               |
 | onScroll        |           | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }) => void`          | Function         |               |
