@@ -38,7 +38,7 @@ This hook allows you to create simple, lightweight components with infinite scro
 
 ## Usage
 
-You can create infinite scrolling in any direction and in any pair, for example: `up-down`, `down-right`, `etc.` and even `all` at once.
+You can create infinite scrolling in `any direction` and in `any pair`, for example: `up-down`, `down-right`, `etc.` and even `all at once`.
 
 ### Simple Example
 
