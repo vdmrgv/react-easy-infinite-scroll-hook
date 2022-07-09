@@ -56,7 +56,7 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
     // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time
     rowCount: items.length,
     // Whether there are more items to load
-    // If marked "true" in the specified direction, it will try to load more items if the threshold is reached
+    // if marked "true" in the specified direction, it will try to load more items if the threshold is reached
     // support for all directions "up", "down", "left", "right", both individually and in all directions at the same time
     hasMore: { down: canLoadMore },
   });
