@@ -52,6 +52,7 @@ export type InfiniteScrollState = DatasetLength &
       start: Required<ScrollAxis<boolean>>;
       end: Required<ScrollAxis<boolean>>;
     };
+    thresholdReached: ScrollDirectionState;
     computedScrollThreshold: Required<ScrollAxis<number>>;
   };
 
@@ -76,7 +77,7 @@ export interface UseInfiniteScrollResult {
 
 export type InfiniteScrollProps = UseInfiniteScrollProps;
 
-export type ScrollOffsetValues = Required<ScrollDirectionState> | null;
+export type ScrollOffsetValues = Required<ScrollDirectionState>;
 
 export interface InfiniteScroll {
   props: InfiniteScrollProps;
