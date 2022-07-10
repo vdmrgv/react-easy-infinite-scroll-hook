@@ -17,6 +17,7 @@ describe('InfiniteScroll', () => {
   beforeEach(() => {
     instance = new InfiniteScroll(mockInfiniteScrollProps);
     container = createContainer({});
+    jest.spyOn(console, 'warn').mockImplementation(() => null);
   });
 
   describe('initialize "_scrollingContainerRef" via "setRef', () => {
@@ -226,7 +227,7 @@ describe('InfiniteScroll', () => {
     });
 
     describe('state updates', () => {
-      it('should update "scrollHeight", "scrollWidth", "rowCount", "columnCount" on each call', () => {
+      it('should update "scrollHeight", "scrollWidth", "rowCount", "columnCount" on each call', async () => {
         const { props, state, onPropsChange } = instance;
         const { scrollHeight, scrollWidth } = container!;
 
@@ -241,9 +242,13 @@ describe('InfiniteScroll', () => {
           ...instance.props,
           rowCount: 1000,
           columnCount: 100,
+          hasMore: { up: true, left: true },
         };
 
         onPropsChange(newProps);
+        container!.scroll!();
+
+        await settleUpdate(10);
 
         const { scrollHeight: newScrollHeight, scrollWidth: newScrollWidth } = container!;
 
@@ -254,7 +259,7 @@ describe('InfiniteScroll', () => {
       });
 
       describe('calculate offset threshold', () => {
-        it('should calculate the threshold in "%"', () => {
+        it('should calculate the threshold in "%"', async () => {
           const { onPropsChange } = instance;
 
           const newHeight = 155;
@@ -268,6 +273,10 @@ describe('InfiniteScroll', () => {
             scrollThreshold: 0.4,
           });
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           const {
             state: {
               computedScrollThreshold: { vertical, horizontal },
@@ -277,7 +286,7 @@ describe('InfiniteScroll', () => {
           expect(newHeight * 0.4 + newWidth * 0.4).toEqual(horizontal + vertical);
         });
 
-        it('should calculate the threshold in "px"', () => {
+        it('should calculate the threshold in "px"', async () => {
           const { onPropsChange } = instance;
 
           const newHeight = 155;
@@ -291,6 +300,10 @@ describe('InfiniteScroll', () => {
             scrollThreshold: '20px',
           });
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           const {
             state: {
               computedScrollThreshold: { vertical, horizontal },
@@ -300,7 +313,7 @@ describe('InfiniteScroll', () => {
           expect(20 + 20).toEqual(horizontal + vertical);
         });
 
-        it('should update the threshold if the size of the container has been changed', () => {
+        it('should update the threshold if the size of the container has been changed', async () => {
           const {
             state: {
               clientHeight: instHeight,
@@ -326,6 +339,10 @@ describe('InfiniteScroll', () => {
           container!.clientWidth = newWidth;
 
           onPropsChange(instance.props);
+
+          container!.scroll!();
+
+          await settleUpdate(10);
 
           const {
             clientHeight: updatedHeight,
@@ -364,6 +381,10 @@ describe('InfiniteScroll', () => {
           hasMore: { up: true },
         });
 
+        container!.scroll!();
+
+        await settleUpdate(10);
+
         const {
           state: {
             isLoading: { start: upStart, end: upEnd },
@@ -387,7 +408,7 @@ describe('InfiniteScroll', () => {
       });
 
       describe('normal direction', () => {
-        test(ScrollDirection.UP, () => {
+        test(ScrollDirection.UP, async () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { up: true },
@@ -399,10 +420,14 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           expect(spyNext).toBeCalledTimes(1);
         });
 
-        test(ScrollDirection.LEFT, () => {
+        test(ScrollDirection.LEFT, async () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { left: true },
@@ -414,10 +439,14 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           expect(spyNext).toBeCalledTimes(1);
         });
 
-        test(ScrollDirection.DOWN, () => {
+        test(ScrollDirection.DOWN, async () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { down: true },
@@ -431,10 +460,14 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           expect(spyNext).toBeCalledTimes(1);
         });
 
-        test(ScrollDirection.RIGHT, () => {
+        test(ScrollDirection.RIGHT, async () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { right: true },
@@ -448,12 +481,16 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           expect(spyNext).toBeCalledTimes(1);
         });
       });
 
       describe('reverse direction', () => {
-        test(ScrollDirection.DOWN, () => {
+        test(ScrollDirection.DOWN, async () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { down: true },
@@ -466,10 +503,14 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           expect(spyNext).toBeCalledTimes(1);
         });
 
-        test(ScrollDirection.RIGHT, () => {
+        test(ScrollDirection.RIGHT, async () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { right: true },
@@ -482,10 +523,14 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           expect(spyNext).toBeCalledTimes(1);
         });
 
-        test(ScrollDirection.UP, () => {
+        test(ScrollDirection.UP, async () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { up: true },
@@ -500,10 +545,14 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           expect(spyNext).toBeCalledTimes(1);
         });
 
-        test(ScrollDirection.LEFT, () => {
+        test(ScrollDirection.LEFT, async () => {
           const newProps: InfiniteScrollProps = {
             ...instance.props,
             hasMore: { left: true },
@@ -518,12 +567,16 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           expect(spyNext).toBeCalledTimes(1);
         });
       });
 
       describe('load only one direction on the same axis at a time', () => {
-        test('"vertical" axis', () => {
+        test('"vertical" axis', async () => {
           let continueLoading = () => {};
           const next = () =>
             new Promise<void>((res) => {
@@ -542,16 +595,24 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           container!.scrollTop = container!.scrollHeight;
 
           onPropsChange(newProps);
+
+          container!.scroll!();
+
+          await settleUpdate(10);
 
           continueLoading();
 
           expect(spyNext).toBeCalledTimes(1);
         });
 
-        test('"horizontal" axis', () => {
+        test('"horizontal" axis', async () => {
           let continueLoading = () => {};
           const next = () =>
             new Promise<void>((res) => {
@@ -570,9 +631,17 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
+          container!.scroll!();
+
+          await settleUpdate(10);
+
           container!.scrollLeft = container!.scrollWidth;
 
           onPropsChange(newProps);
+
+          container!.scroll!();
+
+          await settleUpdate(10);
 
           continueLoading();
 
@@ -580,7 +649,7 @@ describe('InfiniteScroll', () => {
         });
       });
 
-      test(`load direction on the cross axis at a time (for example: ${ScrollDirection.DOWN} and ${ScrollDirection.LEFT})`, () => {
+      test(`load direction on the cross axis at a time (for example: ${ScrollDirection.DOWN} and ${ScrollDirection.LEFT})`, async () => {
         const newProps: InfiniteScrollProps = {
           ...instance.props,
           hasMore: { up: true, left: true },
@@ -592,10 +661,14 @@ describe('InfiniteScroll', () => {
 
         onPropsChange(newProps);
 
+        container!.scroll!();
+
+        await settleUpdate(10);
+
         expect(spyNext).toBeCalledTimes(2);
       });
 
-      it('shouldn\'t call "next" if hasMore is "false"', () => {
+      it('shouldn\'t call "next" if hasMore is "false"', async () => {
         const newProps: InfiniteScrollProps = {
           ...instance.props,
         };
@@ -606,6 +679,10 @@ describe('InfiniteScroll', () => {
 
         onPropsChange(newProps);
 
+        container!.scroll!();
+
+        await settleUpdate(10);
+
         expect(spyNext).not.toBeCalled();
       });
 
@@ -615,20 +692,17 @@ describe('InfiniteScroll', () => {
             const newProps: InfiniteScrollProps = {
               ...instance.props,
               hasMore: { up: true },
+              rowCount: 20,
             };
 
             const { onPropsChange } = instance;
 
             onPropsChange(newProps);
 
-            await settleUpdate();
-
             container!.scrollHeight = container!.scrollHeight * 2;
+            container!.scroll!();
 
-            onPropsChange({
-              ...newProps,
-              rowCount: 20,
-            });
+            await settleUpdate(10);
 
             expect(container!.scrollTop).toEqual(container!.scrollHeight / 2);
           });
@@ -638,20 +712,17 @@ describe('InfiniteScroll', () => {
               ...instance.props,
               hasMore: { down: true },
               reverse: { column: true },
+              rowCount: 20,
             };
 
             const { onPropsChange } = instance;
 
             onPropsChange(newProps);
 
-            await settleUpdate();
-
             container!.scrollHeight = container!.scrollHeight * 2;
+            container!.scroll!();
 
-            onPropsChange({
-              ...newProps,
-              rowCount: 20,
-            });
+            await settleUpdate(10);
 
             expect(container!.scrollTop).toEqual(-container!.scrollHeight / 2);
           });
@@ -662,20 +733,17 @@ describe('InfiniteScroll', () => {
             const newProps: InfiniteScrollProps = {
               ...instance.props,
               hasMore: { left: true },
+              columnCount: 20,
             };
 
             const { onPropsChange } = instance;
 
             onPropsChange(newProps);
 
-            await settleUpdate();
-
             container!.scrollWidth = container!.scrollWidth * 2;
+            container!.scroll!();
 
-            onPropsChange({
-              ...newProps,
-              columnCount: 20,
-            });
+            await settleUpdate(10);
 
             expect(container!.scrollLeft).toEqual(container!.scrollWidth / 2);
           });
@@ -685,20 +753,17 @@ describe('InfiniteScroll', () => {
               ...instance.props,
               hasMore: { right: true },
               reverse: { row: true },
+              columnCount: 20,
             };
 
             const { onPropsChange } = instance;
 
             onPropsChange(newProps);
 
-            await settleUpdate();
-
             container!.scrollWidth = container!.scrollWidth * 2;
+            container!.scroll!();
 
-            onPropsChange({
-              ...newProps,
-              columnCount: 20,
-            });
+            await settleUpdate(10);
 
             expect(container!.scrollLeft).toEqual(-container!.scrollWidth / 2);
           });

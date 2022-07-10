@@ -39,6 +39,7 @@ class InfiniteScroll {
         vertical: 0,
         horizontal: 0,
       },
+      thresholdReached: {},
     };
   }
 
@@ -144,6 +145,7 @@ class InfiniteScroll {
     const {
       state: {
         isLoading: { start, end },
+        thresholdReached,
       },
       props: { next, hasMore },
       _scrollingContainerRef,
@@ -153,20 +155,28 @@ class InfiniteScroll {
 
     const offset = this._getPossibleDirection();
 
+    const resetThreshold = (d: ScrollDirection) => {
+      if (!offset[d] && this.state.thresholdReached[d]) this.state.thresholdReached[d] = false;
+    };
+
+    Object.values(ScrollDirection).forEach((d) => resetThreshold(d));
+
     const loadMore = async (direction1: ScrollDirection, direction2: ScrollDirection) => {
       const axis = direction1 === ScrollDirection.UP ? 'vertical' : 'horizontal';
 
       if (!(start[axis] || end[axis])) {
-        const canLoad1 = hasMore[direction1] && offset![direction1];
-        const canLoad2 = !canLoad1 && hasMore[direction2] && offset![direction2];
+        const canLoad1 = hasMore[direction1] && !thresholdReached[direction1] && offset![direction1];
+        const canLoad2 = !canLoad1 && hasMore[direction2] && !thresholdReached[direction2] && offset![direction2];
 
         if (canLoad1 || canLoad2) {
           try {
             const loadDirection = canLoad1 ? direction1 : direction2;
+            this.state.thresholdReached[loadDirection] = true;
             this.state.isLoading.start[axis] = true;
             await next(loadDirection);
           } finally {
             this.state.isLoading.end[axis] = true;
+            setTimeout(() => this._onPropsChange(), 0);
           }
         }
       }
@@ -236,8 +246,8 @@ class InfiniteScroll {
     this._checkOffsetAndLoadMore();
   };
 
-  _onPropsChange = function (this: InfiniteScroll, props: UseInfiniteScrollProps) {
-    this.props = props;
+  _onPropsChange = function (this: InfiniteScroll, props?: UseInfiniteScrollProps) {
+    if (props) this.props = props;
 
     const {
       state: {
@@ -318,6 +328,8 @@ class InfiniteScroll {
             vertical: false,
           },
         };
+        this.state.scrollHeight = scrollHeight;
+        this.state.rowCount = rowCount;
       },
       {
         start: start.vertical,
@@ -349,6 +361,8 @@ class InfiniteScroll {
             horizontal: false,
           },
         };
+        this.state.scrollWidth = scrollWidth;
+        this.state.columnCount = columnCount;
       },
       {
         start: start.horizontal,
@@ -356,13 +370,6 @@ class InfiniteScroll {
       },
       row
     );
-
-    this.state.scrollHeight = scrollHeight;
-    this.state.rowCount = rowCount;
-    this.state.scrollWidth = scrollWidth;
-    this.state.columnCount = columnCount;
-
-    this._checkOffsetAndLoadMore();
   };
 
   setRef = this._setRef.bind(this);
