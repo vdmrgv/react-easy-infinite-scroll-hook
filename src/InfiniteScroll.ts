@@ -7,6 +7,7 @@ import {
   InfiniteScrollProps,
   UseInfiniteScrollProps,
   ScrollPosition,
+  ScrollAxisName,
 } from './types';
 
 class InfiniteScroll {
@@ -102,7 +103,7 @@ class InfiniteScroll {
     this.state.clientHeight = clientHeight;
   };
 
-  _getPossibleDirection = function (this: InfiniteScroll): Required<ScrollOffsetValues> {
+  _getPossibleDirections = function (this: InfiniteScroll): Required<ScrollOffsetValues> {
     this._computeThreshold();
 
     const {
@@ -141,19 +142,49 @@ class InfiniteScroll {
     } as { [k in ScrollDirection]: boolean };
   };
 
-  _checkOffsetAndLoadMore = function (this: InfiniteScroll): void {
+  _loadByDirection = async function (
+    this: InfiniteScroll,
+    direction1: ScrollDirection,
+    direction2: ScrollDirection,
+    offset: Required<ScrollOffsetValues>
+  ): Promise<void> {
     const {
       state: {
         isLoading: { start, end },
         thresholdReached,
       },
       props: { next, hasMore },
-      _scrollingContainerRef,
     } = this;
+
+    const axis = direction1 === ScrollDirection.UP ? 'vertical' : 'horizontal';
+
+    // if the download has not started
+    if (!(start[axis] || end[axis])) {
+      const canLoad1 = hasMore[direction1] && !thresholdReached[direction1] && offset![direction1];
+      const canLoad2 = !canLoad1 && hasMore[direction2] && !thresholdReached[direction2] && offset![direction2];
+
+      if (canLoad1 || canLoad2) {
+        try {
+          const loadDirection = canLoad1 ? direction1 : direction2;
+          this.state.thresholdReached[loadDirection] = true;
+          this.state.isLoading.start[axis] = true;
+          await next(loadDirection);
+        } finally {
+          this.state.isLoading.end[axis] = true;
+
+          // make an axis check after the download is complete
+          setTimeout(() => this._onLoadComplete(axis), 0);
+        }
+      }
+    }
+  };
+
+  _checkOffsetAndLoadMore = function (this: InfiniteScroll): void {
+    const { _scrollingContainerRef } = this;
 
     if (!_scrollingContainerRef) return;
 
-    const offset = this._getPossibleDirection();
+    const offset = this._getPossibleDirections();
 
     const resetThreshold = (d: ScrollDirection) => {
       if (!offset[d] && this.state.thresholdReached[d]) this.state.thresholdReached[d] = false;
@@ -161,29 +192,8 @@ class InfiniteScroll {
 
     Object.values(ScrollDirection).forEach((d) => resetThreshold(d));
 
-    const loadMore = async (direction1: ScrollDirection, direction2: ScrollDirection) => {
-      const axis = direction1 === ScrollDirection.UP ? 'vertical' : 'horizontal';
-
-      if (!(start[axis] || end[axis])) {
-        const canLoad1 = hasMore[direction1] && !thresholdReached[direction1] && offset![direction1];
-        const canLoad2 = !canLoad1 && hasMore[direction2] && !thresholdReached[direction2] && offset![direction2];
-
-        if (canLoad1 || canLoad2) {
-          try {
-            const loadDirection = canLoad1 ? direction1 : direction2;
-            this.state.thresholdReached[loadDirection] = true;
-            this.state.isLoading.start[axis] = true;
-            await next(loadDirection);
-          } finally {
-            this.state.isLoading.end[axis] = true;
-            setTimeout(() => this._onPropsChange(), 0);
-          }
-        }
-      }
-    };
-
-    loadMore(ScrollDirection.UP, ScrollDirection.DOWN);
-    loadMore(ScrollDirection.LEFT, ScrollDirection.RIGHT);
+    this._loadByDirection(ScrollDirection.UP, ScrollDirection.DOWN, offset);
+    this._loadByDirection(ScrollDirection.LEFT, ScrollDirection.RIGHT, offset);
   };
 
   _setRef = function (this: InfiniteScroll, ref: any): void {
@@ -229,6 +239,8 @@ class InfiniteScroll {
       this._checkOffsetAndLoadMore();
     };
 
+    this.state.rowCount = this.props.rowCount;
+    this.state.columnCount = this.props.columnCount;
     this.state.scrollHeight = this._scrollingContainerRef.scrollHeight;
     this.state.scrollWidth = this._scrollingContainerRef.scrollWidth;
 
@@ -243,19 +255,70 @@ class InfiniteScroll {
     this._scrollingContainerRef.addEventListener('scroll', onScrollListener);
     this.onCleanup = () => this._scrollingContainerRef?.removeEventListener('scroll', onScrollListener);
 
+    // initial loading
     this._checkOffsetAndLoadMore();
   };
 
-  _onPropsChange = function (this: InfiniteScroll, props?: UseInfiniteScrollProps) {
-    if (props) this.props = props;
+  _onLoadComplete = function (this: InfiniteScroll, axis: `${ScrollAxisName}`) {
+    if (!this._scrollingContainerRef) return;
+
+    const isVertical = axis === ScrollAxisName.VERTICAL;
 
     const {
       state: {
-        rowCount: cachedRowLength = 0,
-        columnCount: cachedColumnLength = 0,
+        rowCount: cachedRowCount = 0,
+        columnCount: cachedColumnCount = 0,
+        scrollHeight: cachedScrollHeight,
+        scrollWidth: cachedScrollWidth,
+      },
+      props: { rowCount = 0, columnCount = 0, reverse = {} },
+      _scrollingContainerRef,
+    } = this;
+    const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = _scrollingContainerRef;
+
+    // make a scroll check depending on the axis
+    const cachedDataLength = isVertical ? cachedRowCount : cachedColumnCount;
+    const newDataLength = isVertical ? rowCount : columnCount;
+    const newDataReceived = cachedDataLength !== newDataLength;
+    const scrollPosition = isVertical ? scrollTop : scrollLeft;
+    const scrollSize = isVertical ? scrollHeight : scrollWidth;
+    const cachedScrollSize = isVertical ? cachedScrollHeight : cachedScrollWidth;
+    const clientSize = isVertical ? clientHeight : clientWidth;
+
+    // if new data is loaded and the scroll position is less than the visible area, reset the scroll position
+    // if the scroll position is at zero and new data is loaded to the beginning of the list, you need to shift the scroll position
+    if (newDataReceived && Math.abs(scrollPosition) < clientSize) {
+      const signMultiplier = reverse[isVertical ? 'column' : 'row'] ? -1 : 1;
+      this._scroll({
+        [`scroll${isVertical ? 'Top' : 'Left'}`]: scrollPosition + (scrollSize - cachedScrollSize) * signMultiplier,
+      });
+    }
+
+    // download is over
+    this.state.isLoading = {
+      start: {
+        ...this.state.isLoading.start,
+        [axis]: false,
+      },
+      end: {
+        ...this.state.isLoading.end,
+        [axis]: false,
+      },
+    };
+    this.state[isVertical ? 'scrollHeight' : 'scrollWidth'] = scrollSize;
+    this.state[isVertical ? 'rowCount' : 'columnCount'] = newDataLength;
+
+    this._checkOffsetAndLoadMore();
+  };
+
+  _onPropsChange = function (this: InfiniteScroll, props: UseInfiniteScrollProps) {
+    this.props = props;
+
+    const {
+      state: {
         isLoading: { start, end },
       },
-      props: { rowCount, columnCount, reverse = {}, hasMore },
+      props: { rowCount, columnCount, hasMore },
       _scrollingContainerRef,
     } = this;
 
@@ -271,105 +334,10 @@ class InfiniteScroll {
         `You provided props with "hasMore: { left: ${!!hasMore.left}, right: ${!!hasMore.right} }" but "columnCount" is "undefined"`
       );
 
-    const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = _scrollingContainerRef;
-    const { column, row } = reverse;
-
-    // if the scroll position is at zero and new data is loaded to the beginning of the list, you need to shift the scroll position
-    const scrollToNewDataStart = (
-      scrollPosition: number,
-      clientSize: number,
-      cachedDataLength: number,
-      newDataLength: number,
-      cachedScrollSize: number,
-      newScrollSize: number,
-      onScroll: (newPosition: number) => void,
-      onLoadComplete: () => void,
-      isLoading: {
-        start: boolean;
-        end: boolean;
-      },
-      reverse?: boolean
-    ) => {
-      const loadComplete = isLoading.start && isLoading.end;
-      const newDataReceived = cachedDataLength !== newDataLength && loadComplete;
-
-      // if new data is loaded and the scroll position is less than the visible area, reset the scroll position
-      if (newDataReceived && Math.abs(scrollPosition) < clientSize) {
-        const signMultiplier = reverse ? -1 : 1;
-        onScroll(scrollPosition + (newScrollSize - cachedScrollSize) * signMultiplier);
-      }
-
-      // if the download is over
-      if (loadComplete) {
-        onLoadComplete();
-      }
-    };
-
-    scrollToNewDataStart(
-      scrollTop,
-      clientHeight,
-      cachedRowLength,
-      rowCount ?? 0,
-      this.state.scrollHeight,
-      scrollHeight,
-      (pos: number) => {
-        this._scroll({
-          scrollTop: pos,
-        });
-      },
-      () => {
-        this.state.isLoading = {
-          start: {
-            ...this.state.isLoading.start,
-            vertical: false,
-          },
-          end: {
-            ...this.state.isLoading.end,
-            vertical: false,
-          },
-        };
-        this.state.scrollHeight = scrollHeight;
-        this.state.rowCount = rowCount;
-      },
-      {
-        start: start.vertical,
-        end: end.vertical,
-      },
-      column
-    );
-
-    scrollToNewDataStart(
-      scrollLeft,
-      clientWidth,
-      cachedColumnLength,
-      columnCount ?? 0,
-      this.state.scrollWidth,
-      scrollWidth,
-      (pos: number) => {
-        this._scroll({
-          scrollLeft: pos,
-        });
-      },
-      () => {
-        this.state.isLoading = {
-          start: {
-            ...this.state.isLoading.start,
-            horizontal: false,
-          },
-          end: {
-            ...this.state.isLoading.end,
-            horizontal: false,
-          },
-        };
-        this.state.scrollWidth = scrollWidth;
-        this.state.columnCount = columnCount;
-      },
-      {
-        start: start.horizontal,
-        end: end.horizontal,
-      },
-      row
-    );
+    // if all downloads are complete try to download more
+    if (!(start.vertical || start.horizontal || end.vertical || end.horizontal)) {
+      this._checkOffsetAndLoadMore();
+    }
   };
 
   setRef = this._setRef.bind(this);
