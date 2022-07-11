@@ -11,6 +11,10 @@ describe('InfiniteScroll', () => {
 
   let instance: InfiniteScroll = new InfiniteScroll(mockInfiniteScrollProps);
   let container: MockScrollingContainerRef | null = null;
+  const update = async () => {
+    container!.scroll!();
+    await settleUpdate(10);
+  };
 
   const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
 
@@ -200,7 +204,7 @@ describe('InfiniteScroll', () => {
         expect(container?.scroll).toEqual(undefined);
       });
 
-      it('should call "onScroll" callback', () => {
+      it('should call "onScroll" callback', async () => {
         const instanceProps: InfiniteScrollProps = {
           ...mockInfiniteScrollProps,
           onScroll: () => {},
@@ -214,7 +218,7 @@ describe('InfiniteScroll', () => {
 
         instance.setRef(container);
 
-        container!.scroll!();
+        await update();
 
         expect(spyOnScroll).toHaveBeenCalled();
       });
@@ -246,9 +250,8 @@ describe('InfiniteScroll', () => {
         };
 
         onPropsChange(newProps);
-        container!.scroll!();
 
-        await settleUpdate(10);
+        await update();
 
         const { scrollHeight: newScrollHeight, scrollWidth: newScrollWidth } = container!;
 
@@ -273,9 +276,7 @@ describe('InfiniteScroll', () => {
             scrollThreshold: 0.4,
           });
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           const {
             state: {
@@ -300,9 +301,7 @@ describe('InfiniteScroll', () => {
             scrollThreshold: '20px',
           });
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           const {
             state: {
@@ -340,9 +339,7 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(instance.props);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           const {
             clientHeight: updatedHeight,
@@ -381,9 +378,7 @@ describe('InfiniteScroll', () => {
           hasMore: { up: true },
         });
 
-        container!.scroll!();
-
-        await settleUpdate(10);
+        await update();
 
         const {
           state: {
@@ -420,9 +415,7 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           expect(spyNext).toBeCalledTimes(1);
         });
@@ -439,9 +432,7 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           expect(spyNext).toBeCalledTimes(1);
         });
@@ -460,9 +451,7 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           expect(spyNext).toBeCalledTimes(1);
         });
@@ -481,9 +470,7 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           expect(spyNext).toBeCalledTimes(1);
         });
@@ -503,9 +490,7 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           expect(spyNext).toBeCalledTimes(1);
         });
@@ -523,9 +508,7 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           expect(spyNext).toBeCalledTimes(1);
         });
@@ -545,9 +528,7 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           expect(spyNext).toBeCalledTimes(1);
         });
@@ -567,9 +548,7 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           expect(spyNext).toBeCalledTimes(1);
         });
@@ -595,17 +574,13 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           container!.scrollTop = container!.scrollHeight;
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           continueLoading();
 
@@ -631,17 +606,13 @@ describe('InfiniteScroll', () => {
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           container!.scrollLeft = container!.scrollWidth;
 
           onPropsChange(newProps);
 
-          container!.scroll!();
-
-          await settleUpdate(10);
+          await update();
 
           continueLoading();
 
@@ -661,9 +632,7 @@ describe('InfiniteScroll', () => {
 
         onPropsChange(newProps);
 
-        container!.scroll!();
-
-        await settleUpdate(10);
+        await update();
 
         expect(spyNext).toBeCalledTimes(2);
       });
@@ -679,9 +648,7 @@ describe('InfiniteScroll', () => {
 
         onPropsChange(newProps);
 
-        container!.scroll!();
-
-        await settleUpdate(10);
+        await update();
 
         expect(spyNext).not.toBeCalled();
       });
@@ -700,9 +667,8 @@ describe('InfiniteScroll', () => {
             onPropsChange(newProps);
 
             container!.scrollHeight = container!.scrollHeight * 2;
-            container!.scroll!();
 
-            await settleUpdate(10);
+            await update();
 
             expect(container!.scrollTop).toEqual(container!.scrollHeight / 2);
           });
@@ -720,9 +686,8 @@ describe('InfiniteScroll', () => {
             onPropsChange(newProps);
 
             container!.scrollHeight = container!.scrollHeight * 2;
-            container!.scroll!();
 
-            await settleUpdate(10);
+            await update();
 
             expect(container!.scrollTop).toEqual(-container!.scrollHeight / 2);
           });
@@ -741,9 +706,8 @@ describe('InfiniteScroll', () => {
             onPropsChange(newProps);
 
             container!.scrollWidth = container!.scrollWidth * 2;
-            container!.scroll!();
 
-            await settleUpdate(10);
+            await update();
 
             expect(container!.scrollLeft).toEqual(container!.scrollWidth / 2);
           });
@@ -761,9 +725,8 @@ describe('InfiniteScroll', () => {
             onPropsChange(newProps);
 
             container!.scrollWidth = container!.scrollWidth * 2;
-            container!.scroll!();
 
-            await settleUpdate(10);
+            await update();
 
             expect(container!.scrollLeft).toEqual(-container!.scrollWidth / 2);
           });
