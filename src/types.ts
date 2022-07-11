@@ -18,9 +18,14 @@ export interface ScrollPosition {
   scrollTop?: number;
 }
 
+export enum ScrollAxisName {
+  VERTICAL = 'vertical',
+  HORIZONTAL = 'horizontal',
+}
+
 export interface ScrollAxis<T> {
-  vertical?: T;
-  horizontal?: T;
+  [ScrollAxisName.VERTICAL]?: T;
+  [ScrollAxisName.HORIZONTAL]?: T;
 }
 
 export enum ScrollDirection {

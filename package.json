@@ -18,7 +18,8 @@
     "prettier:check": "prettier --check 'src/**/*'",
     "prettify": "prettier --write 'src/**/*'",
     "ts-check": "tsc -p tsconfig.json --noEmit",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "yarn test --coverage"
   },
   "lint-staged": {
     "*.{js,json,md}": [
