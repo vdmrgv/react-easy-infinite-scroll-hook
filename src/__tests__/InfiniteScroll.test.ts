@@ -16,12 +16,12 @@ describe('InfiniteScroll', () => {
     await settleUpdate(10);
   };
 
-  const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+  const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+  const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => null);
 
   beforeEach(() => {
     instance = new InfiniteScroll(mockInfiniteScrollProps);
     container = createContainer({});
-    jest.spyOn(console, 'warn').mockImplementation(() => null);
   });
 
   describe('initialize "_scrollingContainerRef" via "setRef', () => {
@@ -38,7 +38,7 @@ describe('InfiniteScroll', () => {
 
         const { _scrollingContainerRef: updatedSrollingContainerRef } = instance;
 
-        expect(consoleSpy).not.toHaveBeenCalled();
+        expect(consoleErrorSpy).not.toHaveBeenCalled();
         expect(JSON.stringify(updatedSrollingContainerRef)).toEqual(JSON.stringify(container));
       });
 
@@ -51,7 +51,7 @@ describe('InfiniteScroll', () => {
 
         const { _scrollingContainerRef: updatedSrollingContainerRef } = instance;
 
-        expect(consoleSpy).not.toHaveBeenCalled();
+        expect(consoleErrorSpy).not.toHaveBeenCalled();
         expect(JSON.stringify(updatedSrollingContainerRef)).toEqual(JSON.stringify(container));
       });
     });
@@ -63,8 +63,40 @@ describe('InfiniteScroll', () => {
 
       const { _scrollingContainerRef: updatedSrollingContainerRef } = instance;
 
-      expect(consoleSpy).toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalled();
       expect(JSON.stringify(updatedSrollingContainerRef)).not.toEqual(JSON.stringify(container));
+    });
+
+    it('should update instance without warning', () => {
+      const props = {
+        ...mockInfiniteScrollProps,
+        rowCount: 0,
+        columnCount: 0,
+        hasMore: { up: true, down: true, left: true, right: true },
+      };
+
+      const { setRef, onPropsChange } = new InfiniteScroll(props);
+
+      setRef(container);
+      onPropsChange(props);
+
+      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+
+    it('should update instance with warning', () => {
+      const props = {
+        ...mockInfiniteScrollProps,
+        rowCount: undefined,
+        columnCount: undefined,
+        hasMore: { up: true, left: true },
+      };
+
+      const { setRef, onPropsChange } = new InfiniteScroll(props);
+
+      setRef(container);
+      onPropsChange(props);
+
+      expect(consoleWarnSpy).toBeCalledTimes(2);
     });
 
     describe('scroll container to new position', () => {
