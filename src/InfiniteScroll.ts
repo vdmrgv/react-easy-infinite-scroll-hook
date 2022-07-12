@@ -147,7 +147,7 @@ class InfiniteScroll {
       props: { next, hasMore },
     } = this;
 
-    const axis = direction1 === ScrollDirection.UP ? 'vertical' : 'horizontal';
+    const axis = direction1 === ScrollDirection.UP ? ScrollAxisName.VERTICAL : ScrollAxisName.HORIZONTAL;
 
     // if the download has not started
     if (!isLoading[axis]) {
