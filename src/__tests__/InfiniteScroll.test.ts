@@ -396,13 +396,10 @@ describe('InfiniteScroll', () => {
 
         const {
           onPropsChange,
-          state: {
-            isLoading: { start, end },
-          },
+          state: { isLoading },
         } = instance;
 
-        expect(start).toEqual({ vertical: false, horizontal: false });
-        expect(end).toEqual({ vertical: false, horizontal: false });
+        expect(isLoading).toEqual({ vertical: false, horizontal: false });
 
         onPropsChange({
           ...instance.props,
@@ -413,25 +410,19 @@ describe('InfiniteScroll', () => {
         await update();
 
         const {
-          state: {
-            isLoading: { start: upStart, end: upEnd },
-          },
+          state: { isLoading: upIsLoading },
         } = instance;
 
-        expect(upStart).toEqual({ vertical: true, horizontal: false });
-        expect(upEnd).toEqual({ vertical: false, horizontal: false });
+        expect(upIsLoading).toEqual({ vertical: true, horizontal: false });
 
         continueLoading();
-        await settleUpdate();
+        await update();
 
         const {
-          state: {
-            isLoading: { start: finalStart, end: finalEnd },
-          },
+          state: { isLoading: finalIsLoading },
         } = instance;
 
-        expect(finalStart).toEqual({ vertical: true, horizontal: false });
-        expect(finalEnd).toEqual({ vertical: true, horizontal: false });
+        expect(finalIsLoading).toEqual({ vertical: false, horizontal: false });
       });
 
       describe('normal direction', () => {

@@ -53,10 +53,7 @@ export type ScrollingContainerRef = Required<ScrollSize> &
 export type InfiniteScrollState = DatasetLength &
   Required<ScrollSize> &
   Required<ClientSize> & {
-    isLoading: {
-      start: Required<ScrollAxis<boolean>>;
-      end: Required<ScrollAxis<boolean>>;
-    };
+    isLoading: Required<ScrollAxis<boolean>>;
     thresholdReached: ScrollDirectionState;
     computedScrollThreshold: Required<ScrollAxis<number>>;
   };

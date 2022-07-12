@@ -27,14 +27,8 @@ class InfiniteScroll {
       clientHeight: 0,
       clientWidth: 0,
       isLoading: {
-        start: {
-          vertical: false,
-          horizontal: false,
-        },
-        end: {
-          vertical: false,
-          horizontal: false,
-        },
+        vertical: false,
+        horizontal: false,
       },
       computedScrollThreshold: {
         vertical: 0,
@@ -149,17 +143,14 @@ class InfiniteScroll {
     offset: Required<ScrollOffsetValues>
   ): Promise<void> {
     const {
-      state: {
-        isLoading: { start, end },
-        thresholdReached,
-      },
+      state: { isLoading, thresholdReached },
       props: { next, hasMore },
     } = this;
 
     const axis = direction1 === ScrollDirection.UP ? 'vertical' : 'horizontal';
 
     // if the download has not started
-    if (!(start[axis] || end[axis])) {
+    if (!isLoading[axis]) {
       const canLoad1 = hasMore[direction1] && !thresholdReached[direction1] && offset![direction1];
       const canLoad2 = !canLoad1 && hasMore[direction2] && !thresholdReached[direction2] && offset![direction2];
 
@@ -167,11 +158,9 @@ class InfiniteScroll {
         try {
           const loadDirection = canLoad1 ? direction1 : direction2;
           this.state.thresholdReached[loadDirection] = true;
-          this.state.isLoading.start[axis] = true;
+          this.state.isLoading[axis] = true;
           await next(loadDirection);
         } finally {
-          this.state.isLoading.end[axis] = true;
-
           // make an axis check after the download is complete
           setTimeout(() => this._onLoadComplete(axis), 0);
         }
@@ -296,14 +285,8 @@ class InfiniteScroll {
 
     // download is over
     this.state.isLoading = {
-      start: {
-        ...this.state.isLoading.start,
-        [axis]: false,
-      },
-      end: {
-        ...this.state.isLoading.end,
-        [axis]: false,
-      },
+      ...this.state.isLoading,
+      [axis]: false,
     };
     this.state[isVertical ? 'scrollHeight' : 'scrollWidth'] = scrollSize;
     this.state[isVertical ? 'rowCount' : 'columnCount'] = newDataLength;
@@ -315,9 +298,7 @@ class InfiniteScroll {
     this.props = props;
 
     const {
-      state: {
-        isLoading: { start, end },
-      },
+      state: { isLoading },
       props: { rowCount, columnCount, hasMore },
       _scrollingContainerRef,
     } = this;
@@ -334,8 +315,7 @@ class InfiniteScroll {
         `You provided props with "hasMore: { left: ${!!hasMore.left}, right: ${!!hasMore.right} }" but "columnCount" is "undefined"`
       );
 
-    // if all downloads are complete try to download more
-    if (!(start.vertical || start.horizontal || end.vertical || end.horizontal)) {
+    if (!(isLoading.vertical && isLoading.horizontal)) {
       this._checkOffsetAndLoadMore();
     }
   };
