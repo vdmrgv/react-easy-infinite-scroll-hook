@@ -213,12 +213,14 @@ class InfiniteScroll {
       if (!this._scrollingContainerRef) return;
 
       const {
-        _scrollingContainerRef: { scrollHeight, scrollWidth, scrollLeft, scrollTop },
+        _scrollingContainerRef: { scrollHeight, scrollWidth, scrollLeft, scrollTop, clientHeight, clientWidth },
         props: { onScroll },
       } = this;
 
       if (onScroll)
         onScroll({
+          clientHeight,
+          clientWidth,
           scrollHeight,
           scrollWidth,
           scrollLeft,

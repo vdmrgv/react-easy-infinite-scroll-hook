@@ -37,7 +37,7 @@ export enum ScrollDirection {
 
 export type ScrollDirectionState = Partial<Record<ScrollDirection, boolean>>;
 
-export type ScrollParams = ScrollSize & ScrollPosition;
+export type ScrollParams = ScrollSize & ScrollPosition & ClientSize;
 
 export type EventListenerFn = (type: 'scroll', callback: () => void) => void;
 
