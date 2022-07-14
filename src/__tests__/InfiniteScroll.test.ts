@@ -399,7 +399,7 @@ describe('InfiniteScroll', () => {
           state: { isLoading },
         } = instance;
 
-        expect(isLoading).toEqual({ vertical: false, horizontal: false });
+        expect(isLoading).toEqual(false);
 
         onPropsChange({
           ...instance.props,
@@ -413,7 +413,7 @@ describe('InfiniteScroll', () => {
           state: { isLoading: upIsLoading },
         } = instance;
 
-        expect(upIsLoading).toEqual({ vertical: true, horizontal: false });
+        expect(upIsLoading).toEqual(true);
 
         continueLoading();
         await update();
@@ -422,7 +422,7 @@ describe('InfiniteScroll', () => {
           state: { isLoading: finalIsLoading },
         } = instance;
 
-        expect(finalIsLoading).toEqual({ vertical: false, horizontal: false });
+        expect(finalIsLoading).toEqual(false);
       });
 
       describe('normal direction', () => {

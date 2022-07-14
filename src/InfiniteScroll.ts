@@ -26,10 +26,7 @@ class InfiniteScroll {
       scrollWidth: 0,
       clientHeight: 0,
       clientWidth: 0,
-      isLoading: {
-        vertical: false,
-        horizontal: false,
-      },
+      isLoading: false,
       computedScrollThreshold: {
         vertical: 0,
         horizontal: 0,
@@ -150,7 +147,7 @@ class InfiniteScroll {
     const axis = direction1 === ScrollDirection.UP ? ScrollAxisName.VERTICAL : ScrollAxisName.HORIZONTAL;
 
     // if the download has not started
-    if (!(isLoading.vertical || isLoading.horizontal)) {
+    if (!isLoading) {
       const canLoad1 = hasMore[direction1] && !thresholdReached[direction1] && offset![direction1];
       const canLoad2 = !canLoad1 && hasMore[direction2] && !thresholdReached[direction2] && offset![direction2];
 
@@ -158,7 +155,7 @@ class InfiniteScroll {
         try {
           const loadDirection = canLoad1 ? direction1 : direction2;
           this.state.thresholdReached[loadDirection] = true;
-          this.state.isLoading[axis] = true;
+          this.state.isLoading = true;
           await next(loadDirection);
         } finally {
           // make an axis check after the download is complete
@@ -286,16 +283,11 @@ class InfiniteScroll {
     }
 
     // download is over
-    this.state.isLoading = {
-      ...this.state.isLoading,
-      [axis]: false,
-    };
+    this.state.isLoading = false;
     this.state[isVertical ? 'scrollHeight' : 'scrollWidth'] = scrollSize;
     this.state[isVertical ? 'rowCount' : 'columnCount'] = newDataLength;
 
-    if (!(this.state.isLoading.vertical || this.state.isLoading.horizontal)) {
-      this._checkOffsetAndLoadMore();
-    }
+    this._checkOffsetAndLoadMore();
   };
 
   _onPropsChange = function (this: InfiniteScroll, props: UseInfiniteScrollProps) {
@@ -319,7 +311,7 @@ class InfiniteScroll {
         `You provided props with "hasMore: { left: ${!!hasMore.left}, right: ${!!hasMore.right} }" but "columnCount" is "undefined"`
       );
 
-    if (!(isLoading.vertical || isLoading.horizontal)) {
+    if (!isLoading) {
       this._checkOffsetAndLoadMore();
     }
   };
