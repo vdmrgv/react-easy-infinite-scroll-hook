@@ -138,8 +138,8 @@ class InfiniteScroll {
 
   _loadByDirection = async function (
     this: InfiniteScroll,
-    direction1: ScrollDirection,
-    direction2: ScrollDirection,
+    direction1: ScrollDirection.UP | ScrollDirection.LEFT,
+    direction2: ScrollDirection.DOWN | ScrollDirection.RIGHT,
     offset: Required<ScrollOffsetValues>
   ): Promise<void> {
     const {
@@ -150,7 +150,7 @@ class InfiniteScroll {
     const axis = direction1 === ScrollDirection.UP ? ScrollAxisName.VERTICAL : ScrollAxisName.HORIZONTAL;
 
     // if the download has not started
-    if (!isLoading[axis]) {
+    if (!(isLoading.vertical || isLoading.horizontal)) {
       const canLoad1 = hasMore[direction1] && !thresholdReached[direction1] && offset![direction1];
       const canLoad2 = !canLoad1 && hasMore[direction2] && !thresholdReached[direction2] && offset![direction2];
 
@@ -293,7 +293,9 @@ class InfiniteScroll {
     this.state[isVertical ? 'scrollHeight' : 'scrollWidth'] = scrollSize;
     this.state[isVertical ? 'rowCount' : 'columnCount'] = newDataLength;
 
-    this._checkOffsetAndLoadMore();
+    if (!(this.state.isLoading.vertical || this.state.isLoading.horizontal)) {
+      this._checkOffsetAndLoadMore();
+    }
   };
 
   _onPropsChange = function (this: InfiniteScroll, props: UseInfiniteScrollProps) {
@@ -317,7 +319,7 @@ class InfiniteScroll {
         `You provided props with "hasMore: { left: ${!!hasMore.left}, right: ${!!hasMore.right} }" but "columnCount" is "undefined"`
       );
 
-    if (!(isLoading.vertical && isLoading.horizontal)) {
+    if (!(isLoading.vertical || isLoading.horizontal)) {
       this._checkOffsetAndLoadMore();
     }
   };
