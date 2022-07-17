@@ -11,9 +11,9 @@ describe('InfiniteScroll', () => {
 
   let instance: InfiniteScroll = new InfiniteScroll(mockInfiniteScrollProps);
   let container: MockScrollingContainerRef | null = null;
-  const update = async () => {
+  const update = async (time = 10) => {
     container!.scroll!();
-    await settleUpdate(10);
+    await settleUpdate(time);
   };
 
   const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
@@ -283,7 +283,7 @@ describe('InfiniteScroll', () => {
 
         onPropsChange(newProps);
 
-        await update();
+        await update(200);
 
         const { scrollHeight: newScrollHeight, scrollWidth: newScrollWidth } = container!;
 
@@ -655,7 +655,7 @@ describe('InfiniteScroll', () => {
 
         onPropsChange(newProps);
 
-        await update();
+        await update(200);
 
         expect(spyNext).toBeCalledTimes(2);
       });
