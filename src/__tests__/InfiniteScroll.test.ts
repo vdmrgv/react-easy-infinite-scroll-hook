@@ -11,7 +11,7 @@ describe('InfiniteScroll', () => {
 
   let instance: InfiniteScroll = new InfiniteScroll(mockInfiniteScrollProps);
   let container: MockScrollingContainerRef | null = null;
-  const update = async (time = 10) => {
+  const update = async (time = 150) => {
     container!.scroll!();
     await settleUpdate(time);
   };
