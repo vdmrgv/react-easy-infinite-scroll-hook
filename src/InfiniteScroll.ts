@@ -288,7 +288,7 @@ class InfiniteScroll {
     this.state[isVertical ? 'rowCount' : 'columnCount'] = newDataLength;
 
     // wait a tick to try useEffect
-    setTimeout(() => this._checkOffsetAndLoadMore(), 0);
+    setTimeout(() => this._checkOffsetAndLoadMore(), 100);
   };
 
   _onPropsChange = function (this: InfiniteScroll, props: UseInfiniteScrollProps) {
