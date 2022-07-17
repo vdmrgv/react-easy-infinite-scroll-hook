@@ -7,13 +7,14 @@ const useInfiniteScroll = (props: UseInfiniteScrollProps): UseInfiniteScrollResu
     rowCount,
     columnCount,
     hasMore: { up, down, left, right },
+    next,
   } = props;
   const {
     current: { setRef, onPropsChange, onCleanup },
   } = useRef<InfiniteScroll>(new InfiniteScroll(props));
 
   useEffect(() => onCleanup, []);
-  useEffect(() => onPropsChange(props), [rowCount, columnCount, up, down, left, right]);
+  useEffect(() => onPropsChange(props), [rowCount, columnCount, up, down, left, right, next]);
 
   return {
     setRef,

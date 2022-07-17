@@ -287,7 +287,8 @@ class InfiniteScroll {
     this.state[isVertical ? 'scrollHeight' : 'scrollWidth'] = scrollSize;
     this.state[isVertical ? 'rowCount' : 'columnCount'] = newDataLength;
 
-    this._checkOffsetAndLoadMore();
+    // wait a tick to try useEffect
+    setTimeout(() => this._checkOffsetAndLoadMore(), 0);
   };
 
   _onPropsChange = function (this: InfiniteScroll, props: UseInfiniteScrollProps) {
