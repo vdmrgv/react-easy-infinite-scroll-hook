@@ -7,6 +7,7 @@ All work on this repository happens directly on GitHub. Contributors send pull r
 1. Fork the repo and create your branch from `main` (a guide on [how to fork a repository](https://help.github.com/articles/fork-a-repo/)).
 2. Run `yarn` to install all required dependencies.
 3. Now you are ready to make your changes!
+4. Check out [this](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/DEVELOPMENT.md) tutorial on how to test your changes locally.
 
 ## Tests & Verifications
 Currently we use `eslint` with `prettier` for linting and formatting the code, and `jest` for unit testing. They all run just before committing changes to `git`, but you must use them locally when making changes.
