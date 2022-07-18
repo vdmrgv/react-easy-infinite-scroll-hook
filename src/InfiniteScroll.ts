@@ -247,7 +247,7 @@ class InfiniteScroll {
     this._checkOffsetAndLoadMore();
   };
 
-  _onLoadComplete = function (this: InfiniteScroll, axis: `${ScrollAxisName}`) {
+  _onLoadComplete = function (this: InfiniteScroll, axis: ScrollAxisName) {
     if (!this._scrollingContainerRef) return;
 
     const isVertical = axis === ScrollAxisName.VERTICAL;

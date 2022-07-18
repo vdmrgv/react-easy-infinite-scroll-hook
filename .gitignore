@@ -3,6 +3,7 @@
 
 # testing
 /coverage
+/examples
 
 # production
 /dist
