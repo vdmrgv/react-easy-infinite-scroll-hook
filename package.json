@@ -9,7 +9,7 @@
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "prepare": "husky install",
     "build": "rimraf dist && rollup -c",
