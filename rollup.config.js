@@ -1,4 +1,5 @@
 import resolve from '@rollup/plugin-node-resolve';
+import { babel } from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
@@ -24,10 +25,15 @@ export default [
     plugins: [
       external(),
       resolve(),
+      babel({
+        babelHelpers: 'bundled',
+        exclude: ['**/__tests__', '**/*.test.ts', 'node_modules/**'],
+      }),
       commonjs(),
       typescript({
         tsconfig: './tsconfig.json',
         exclude: ['**/__tests__', '**/*.test.ts'],
+        sourceMap: false,
       }),
       terser(),
     ],
