@@ -10,3 +10,4 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    versioning-strategy: increase-if-necessary
