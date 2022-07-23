@@ -33,6 +33,7 @@ export default [
       typescript({
         tsconfig: './tsconfig.json',
         exclude: ['**/__tests__', '**/*.test.ts'],
+        sourceMap: false,
       }),
       terser(),
     ],
