@@ -57,6 +57,29 @@ describe('InfiniteScroll', () => {
         expect(consoleErrorSpy).not.toHaveBeenCalled();
         expect(JSON.stringify(updatedSrollingContainerRef?.scrollingElement)).toEqual(JSON.stringify(container));
       });
+
+      test('set "document" as "_scrollingContainerRef"', () => {
+        instance = new InfiniteScroll({
+          ...mockInfiniteScrollProps,
+          windowScroll: true,
+        });
+
+        // mock document.scrollingElement
+        // @ts-ignore
+        document.scrollingElement = createContainer({});
+
+        const { setRef, _scrollingContainerRef } = instance;
+        expect(_scrollingContainerRef).toEqual(undefined);
+
+        setRef(null);
+
+        const { _scrollingContainerRef: updatedSrollingContainerRef } = instance;
+
+        expect(consoleErrorSpy).not.toHaveBeenCalled();
+        expect(JSON.stringify(updatedSrollingContainerRef?.scrollingElement)).toEqual(
+          JSON.stringify(document.scrollingElement)
+        );
+      });
     });
 
     it('should update instance with error', () => {
