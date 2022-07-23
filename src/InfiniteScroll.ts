@@ -41,13 +41,13 @@ class InfiniteScroll {
   };
 
   _scroll = function (this: InfiniteScroll, { scrollTop, scrollLeft }: ScrollPosition): void {
-    if (!this._scrollingContainerRef) return;
-    const { scrollHeight, scrollWidth } = this._scrollingContainerRef;
+    if (!this._scrollingContainerRef?.scrollingElement) return;
+    const { scrollHeight, scrollWidth } = this._scrollingContainerRef.scrollingElement;
 
     if (scrollTop !== undefined)
-      this._scrollingContainerRef.scrollTop = this._validateScrollValue(scrollTop, scrollHeight);
+      this._scrollingContainerRef.scrollingElement.scrollTop = this._validateScrollValue(scrollTop, scrollHeight);
     if (scrollLeft !== undefined)
-      this._scrollingContainerRef.scrollLeft = this._validateScrollValue(scrollLeft, scrollWidth);
+      this._scrollingContainerRef.scrollingElement.scrollLeft = this._validateScrollValue(scrollLeft, scrollWidth);
   };
 
   _computeThreshold = function (this: InfiniteScroll): void {
@@ -58,13 +58,13 @@ class InfiniteScroll {
     } = this;
 
     if (
-      !_scrollingContainerRef ||
-      (cachedClientWidth === _scrollingContainerRef.clientWidth &&
-        cachedClientHeight === _scrollingContainerRef.clientHeight)
+      !_scrollingContainerRef?.scrollingElement ||
+      (cachedClientWidth === _scrollingContainerRef.scrollingElement.clientWidth &&
+        cachedClientHeight === _scrollingContainerRef.scrollingElement.clientHeight)
     )
       return;
 
-    const { clientWidth, clientHeight, scrollHeight, scrollWidth } = _scrollingContainerRef;
+    const { clientWidth, clientHeight, scrollHeight, scrollWidth } = _scrollingContainerRef.scrollingElement;
 
     let computedThreshold: Required<ScrollAxis<number>> = {
       vertical: 0,
@@ -107,7 +107,7 @@ class InfiniteScroll {
       _scrollingContainerRef,
     } = this;
 
-    const { scrollHeight, scrollWidth, scrollLeft, scrollTop } = _scrollingContainerRef!;
+    const { scrollHeight, scrollWidth, scrollLeft, scrollTop } = _scrollingContainerRef!.scrollingElement!;
     const { column, row } = reverse;
 
     const canLoadForward = (scrollPosition: number, threshold: number): boolean =>
@@ -183,36 +183,54 @@ class InfiniteScroll {
   };
 
   _setRef = function (this: InfiniteScroll, ref: any): void {
-    // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
-    const current = ref?._scrollingContainer ?? ref?.Grid?._scrollingContainer ?? ref;
+    const scrollingContainerRef: ScrollingContainerRef = {
+      scrollingElement: null,
+      registerEventListener: null,
+    };
+
+    if (!this.props.windowScroll) {
+      // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
+      const current = ref?._scrollingContainer ?? ref?.Grid?._scrollingContainer ?? ref;
+      scrollingContainerRef.scrollingElement = current;
+      scrollingContainerRef.registerEventListener = current;
+    } else {
+      scrollingContainerRef.scrollingElement = document.scrollingElement;
+      scrollingContainerRef.registerEventListener = document;
+    }
+
+    const { scrollingElement, registerEventListener } = scrollingContainerRef;
 
     if (
-      (current &&
+      (scrollingElement &&
+        registerEventListener &&
         !(
-          typeof current.scrollHeight === 'number' ||
-          typeof current.scrollWidth === 'number' ||
-          typeof current.scrollLeft === 'number' ||
-          typeof current.scrollTop === 'number' ||
-          typeof current.clientHeight === 'number' ||
-          typeof current.clientWidth === 'number' ||
-          typeof current.addEventListener === 'function' ||
-          typeof current.removeEventListener === 'function'
+          typeof scrollingElement.scrollHeight === 'number' &&
+          typeof scrollingElement.scrollWidth === 'number' &&
+          typeof scrollingElement.scrollLeft === 'number' &&
+          typeof scrollingElement.scrollTop === 'number' &&
+          typeof scrollingElement.clientHeight === 'number' &&
+          typeof scrollingElement.clientWidth === 'number' &&
+          typeof registerEventListener.addEventListener === 'function' &&
+          typeof registerEventListener.removeEventListener === 'function'
         )) ||
-      !current
+      !scrollingElement ||
+      !registerEventListener
     ) {
       console.error('Sorry I can\'t use this container - try using a different DOM element.');
       return;
     }
 
-    this._scrollingContainerRef = current as ScrollingContainerRef;
+    this._scrollingContainerRef = scrollingContainerRef;
 
     const onScrollListener = () => {
-      if (!this._scrollingContainerRef) return;
+      if (!this._scrollingContainerRef?.scrollingElement) return;
 
       const {
-        _scrollingContainerRef: { scrollHeight, scrollWidth, scrollLeft, scrollTop, clientHeight, clientWidth },
+        _scrollingContainerRef: { scrollingElement },
         props: { onScroll },
       } = this;
+
+      const { scrollHeight, scrollWidth, scrollLeft, scrollTop, clientHeight, clientWidth } = scrollingElement;
 
       if (onScroll)
         onScroll({
@@ -229,8 +247,8 @@ class InfiniteScroll {
 
     this.state.rowCount = this.props.rowCount;
     this.state.columnCount = this.props.columnCount;
-    this.state.scrollHeight = this._scrollingContainerRef.scrollHeight;
-    this.state.scrollWidth = this._scrollingContainerRef.scrollWidth;
+    this.state.scrollHeight = this._scrollingContainerRef.scrollingElement!.scrollHeight;
+    this.state.scrollWidth = this._scrollingContainerRef.scrollingElement!.scrollWidth;
 
     const { initialScroll } = this.props;
 
@@ -240,15 +258,16 @@ class InfiniteScroll {
         scrollLeft: initialScroll.left,
       });
 
-    this._scrollingContainerRef.addEventListener('scroll', onScrollListener);
-    this.onCleanup = () => this._scrollingContainerRef?.removeEventListener('scroll', onScrollListener);
+    this._scrollingContainerRef.registerEventListener!.addEventListener('scroll', onScrollListener);
+    this.onCleanup = () =>
+      this._scrollingContainerRef?.registerEventListener?.removeEventListener('scroll', onScrollListener);
 
     // initial loading
     this._checkOffsetAndLoadMore();
   };
 
   _onLoadComplete = function (this: InfiniteScroll, axis: ScrollAxisName) {
-    if (!this._scrollingContainerRef) return;
+    if (!this._scrollingContainerRef?.scrollingElement) return;
 
     const isVertical = axis === ScrollAxisName.VERTICAL;
 
@@ -262,7 +281,8 @@ class InfiniteScroll {
       props: { rowCount = 0, columnCount = 0, reverse = {} },
       _scrollingContainerRef,
     } = this;
-    const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = _scrollingContainerRef;
+    const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } =
+      _scrollingContainerRef.scrollingElement!;
 
     // make a scroll check depending on the axis
     const cachedDataLength = isVertical ? cachedRowCount : cachedColumnCount;

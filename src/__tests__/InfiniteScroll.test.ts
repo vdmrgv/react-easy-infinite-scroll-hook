@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import InfiniteScroll from '../InfiniteScroll';
 import { InfiniteScrollProps, ScrollDirection } from '../types';
-import { createContainer, createInfiniteScrollProps, settleUpdate, MockScrollingContainerRef } from './utils';
+import { createContainer, createInfiniteScrollProps, settleUpdate, MockScrollingElementRef } from './utils';
 
 describe('InfiniteScroll', () => {
   const mockInfiniteScrollProps = createInfiniteScrollProps({
@@ -10,8 +11,8 @@ describe('InfiniteScroll', () => {
   });
 
   let instance: InfiniteScroll = new InfiniteScroll(mockInfiniteScrollProps);
-  let container: MockScrollingContainerRef | null = null;
-  const update = async (time = 150) => {
+  let container: MockScrollingElementRef | null = null;
+  const update = async (time = 0) => {
     container!.scroll!();
     await settleUpdate(time);
   };
@@ -22,6 +23,8 @@ describe('InfiniteScroll', () => {
   beforeEach(() => {
     instance = new InfiniteScroll(mockInfiniteScrollProps);
     container = createContainer({});
+    // @ts-ignore
+    jest.spyOn(window, 'setTimeout').mockImplementation((callback: (args: void) => void) => callback());
   });
 
   describe('initialize "_scrollingContainerRef" via "setRef', () => {
@@ -39,7 +42,7 @@ describe('InfiniteScroll', () => {
         const { _scrollingContainerRef: updatedSrollingContainerRef } = instance;
 
         expect(consoleErrorSpy).not.toHaveBeenCalled();
-        expect(JSON.stringify(updatedSrollingContainerRef)).toEqual(JSON.stringify(container));
+        expect(JSON.stringify(updatedSrollingContainerRef?.scrollingElement)).toEqual(JSON.stringify(container));
       });
 
       test('set react-virtualized component', () => {
@@ -52,7 +55,30 @@ describe('InfiniteScroll', () => {
         const { _scrollingContainerRef: updatedSrollingContainerRef } = instance;
 
         expect(consoleErrorSpy).not.toHaveBeenCalled();
-        expect(JSON.stringify(updatedSrollingContainerRef)).toEqual(JSON.stringify(container));
+        expect(JSON.stringify(updatedSrollingContainerRef?.scrollingElement)).toEqual(JSON.stringify(container));
+      });
+
+      test('set "document" as "_scrollingContainerRef"', () => {
+        instance = new InfiniteScroll({
+          ...mockInfiniteScrollProps,
+          windowScroll: true,
+        });
+
+        // mock document.scrollingElement
+        // @ts-ignore
+        document.scrollingElement = createContainer({});
+
+        const { setRef, _scrollingContainerRef } = instance;
+        expect(_scrollingContainerRef).toEqual(undefined);
+
+        setRef(null);
+
+        const { _scrollingContainerRef: updatedSrollingContainerRef } = instance;
+
+        expect(consoleErrorSpy).not.toHaveBeenCalled();
+        expect(JSON.stringify(updatedSrollingContainerRef?.scrollingElement)).toEqual(
+          JSON.stringify(document.scrollingElement)
+        );
       });
     });
 

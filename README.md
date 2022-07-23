@@ -133,7 +133,7 @@ After initialization, this hook returns a `setRef` function, which you must pass
 ### Props
 
 | Name            | Required  | Description                                                                                                                                                                                                 | Type             | Default Value |
-| --------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------- |
+| --------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | :-----------: |
 | next            | Yes       | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction) => Promise<void>`                                                      | Function         |               |
 | hasMore         | Yes       | Whether there are more items to load. If marked `true` in the specified direction, it will try to load more items if the threshold is reached. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`      | object           |               |
 | rowCount        | Condition | Number of items in a `vertical` list (scroll axis `Y`). Required if you are using `vertical` scroll.                                                                                                        | number           |               |
@@ -141,7 +141,8 @@ After initialization, this hook returns a `setRef` function, which you must pass
 | onScroll        |           | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }) => void`          | Function         |               |
 | initialScroll   |           | The initial scroll position of the element, which is applied after the ref has been initialized                                                                                                             | object           |               |
 | reverse         |           | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'`                                                | object           |               |
-| scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the container size `from 0.1 to 1` (`1` is `100%`) | number or string | 1             |
+| scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the container size `from 0.1 to 1` (`1` is `100%`) | number or string | `1`            |
+| windowScroll |           | When set to `true`, uses a window as the scroll element. If you are using scroll window don't use `setRef` function | boolean | `false`            |
 
 ## Friends
 
@@ -187,13 +188,18 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
 };
 ```
 
-## Contributions
+### Can I use it with other virtualized or components libraries?
 
-Learn how to [contribute](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/CONTRIBUTING.md)
+> Yes you can! To use it with other libraries you must specify the correct DOM element for the `setRef` function.
+
+
+## Contributing
+
+Please read through our [contributing guidelines](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
 
 ## License
 
-[MIT](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/LICENSE) © [vdmrgv](https://github.com/vdmrgv)
+Code released under the [MIT License][license-url] © [Vadim Rogov](https://github.com/vdmrgv).
 
 [package-url]: https://npmjs.org/package/react-easy-infinite-scroll-hook
 [npm-version-svg]: https://img.shields.io/npm/v/react-easy-infinite-scroll-hook.svg
