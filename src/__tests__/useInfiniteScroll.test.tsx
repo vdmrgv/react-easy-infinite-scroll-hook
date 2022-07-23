@@ -1,6 +1,12 @@
 import { renderHook } from '@testing-library/react';
 import useInfiniteScroll from '../useInfiniteScroll';
-import { createContainer, CreateContainerParams, CreateInfiniteScrollProps, createInfiniteScrollProps } from './utils';
+import {
+  createContainer,
+  CreateContainerParams,
+  CreateInfiniteScrollProps,
+  createInfiniteScrollProps,
+  MockScrollingElementRef,
+} from './utils';
 
 const render = (containerParams: CreateContainerParams, hookProps: CreateInfiniteScrollProps) => {
   const container = createContainer(containerParams);
@@ -10,8 +16,8 @@ const render = (containerParams: CreateContainerParams, hookProps: CreateInfinit
   };
 
   const result = renderHook(() => {
-    const { setRef } = useInfiniteScroll(props);
-    setRef(container);
+    const ref = useInfiniteScroll<MockScrollingElementRef>(props);
+    ref.current = container;
 
     return container;
   });
