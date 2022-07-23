@@ -43,12 +43,17 @@ export type EventListenerFn = (type: 'scroll', callback: () => void) => void;
 
 export type SetRefFn = (ref: any) => void;
 
-export type ScrollingContainerRef = Required<ScrollSize> &
-  Required<ScrollPosition> &
-  Required<ClientSize> & {
-    addEventListener: EventListenerFn;
-    removeEventListener: EventListenerFn;
-  };
+export type ScrollingElementRef = Required<ScrollSize> & Required<ScrollPosition> & Required<ClientSize>;
+
+export type RegisterEventListener = {
+  addEventListener: EventListenerFn;
+  removeEventListener: EventListenerFn;
+};
+
+export interface ScrollingContainerRef {
+  scrollingElement: ScrollingElementRef | null;
+  registerEventListener: RegisterEventListener | null;
+}
 
 export type InfiniteScrollState = DatasetLength &
   Required<ScrollSize> &
@@ -71,6 +76,7 @@ export type UseInfiniteScrollProps = DatasetLength & {
     column?: boolean;
     row?: boolean;
   };
+  windowScroll?: boolean;
 };
 
 export interface UseInfiniteScrollResult {
