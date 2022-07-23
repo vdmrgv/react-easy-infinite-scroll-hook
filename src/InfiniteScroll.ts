@@ -258,9 +258,6 @@ class InfiniteScroll {
         scrollLeft: initialScroll.left,
       });
 
-    // do cleanup before adding new listeners
-    this._onCleanup();
-
     this._scrollingContainerRef.registerEventListener!.addEventListener('scroll', onScrollListener);
 
     this.state.cleanup.push(() =>
