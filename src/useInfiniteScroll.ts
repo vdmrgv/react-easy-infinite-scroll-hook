@@ -3,6 +3,7 @@ import { UseInfiniteScrollResult, UseInfiniteScrollProps } from './types';
 import InfiniteScroll from './InfiniteScroll';
 
 const useInfiniteScroll = (props: UseInfiniteScrollProps): UseInfiniteScrollResult => {
+  const mounted = useRef(false);
   const {
     rowCount,
     columnCount,
@@ -15,9 +16,13 @@ const useInfiniteScroll = (props: UseInfiniteScrollProps): UseInfiniteScrollResu
   } = useRef<InfiniteScroll>(new InfiniteScroll(props));
 
   useLayoutEffect(() => {
+    mounted.current = true;
+
     if (windowScroll) setRef(null);
 
-    return onCleanup;
+    return () => {
+      if (mounted.current) onCleanup();
+    };
   }, []);
 
   useEffect(() => onPropsChange(props), [rowCount, columnCount, up, down, left, right, next]);
