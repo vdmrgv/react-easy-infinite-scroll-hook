@@ -13,7 +13,6 @@ import {
 class InfiniteScroll {
   props: InfiniteScrollProps;
   state: InfiniteScrollState;
-  onCleanup?: () => void;
 
   _scrollingContainerRef?: ScrollingContainerRef;
 
@@ -32,6 +31,7 @@ class InfiniteScroll {
         horizontal: 0,
       },
       thresholdReached: {},
+      cleanup: [],
     };
   }
 
@@ -259,8 +259,9 @@ class InfiniteScroll {
       });
 
     this._scrollingContainerRef.registerEventListener!.addEventListener('scroll', onScrollListener);
-    this.onCleanup = () =>
-      this._scrollingContainerRef?.registerEventListener?.removeEventListener('scroll', onScrollListener);
+    this.state.cleanup.push(() =>
+      this._scrollingContainerRef?.registerEventListener?.removeEventListener('scroll', onScrollListener)
+    );
 
     // initial loading
     this._checkOffsetAndLoadMore();
@@ -337,8 +338,21 @@ class InfiniteScroll {
     }
   };
 
+  _onCleanup = function (this: InfiniteScroll) {
+    const {
+      state: { cleanup },
+    } = this;
+
+    if (!cleanup.length) return;
+
+    cleanup.forEach((f) => f());
+
+    this.state.cleanup = [];
+  };
+
   setRef = this._setRef.bind(this);
   onPropsChange = this._onPropsChange.bind(this);
+  onCleanup = this._onCleanup.bind(this);
 }
 
 export default InfiniteScroll;

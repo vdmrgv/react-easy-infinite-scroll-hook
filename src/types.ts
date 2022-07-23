@@ -61,6 +61,7 @@ export type InfiniteScrollState = DatasetLength &
     isLoading: boolean;
     thresholdReached: ScrollDirectionState;
     computedScrollThreshold: Required<ScrollAxis<number>>;
+    cleanup: (() => void)[];
   };
 
 export type UseInfiniteScrollProps = DatasetLength & {

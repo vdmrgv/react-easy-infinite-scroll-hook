@@ -246,17 +246,20 @@ describe('InfiniteScroll', () => {
 
       it('should add remove event listener', () => {
         const spyRemoveEventListener = jest.spyOn(container!, 'removeEventListener');
-        const { setRef, onCleanup } = instance;
+        const {
+          setRef,
+          state: { cleanup },
+        } = instance;
 
-        expect(onCleanup).toEqual(undefined);
+        expect(cleanup.length).toEqual(0);
 
         setRef(container);
 
-        const { onCleanup: onCleanupListener } = instance;
+        expect(cleanup.length).toEqual(1);
 
-        expect(onCleanupListener).not.toEqual(undefined);
+        const { onCleanup } = instance;
 
-        onCleanupListener!();
+        onCleanup();
 
         expect(spyRemoveEventListener).toHaveBeenCalled();
         expect(container?.scroll).toEqual(undefined);
