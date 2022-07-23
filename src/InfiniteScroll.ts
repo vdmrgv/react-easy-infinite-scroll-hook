@@ -258,6 +258,9 @@ class InfiniteScroll {
         scrollLeft: initialScroll.left,
       });
 
+    // do cleanup before adding new listeners
+    this._onCleanup();
+
     this._scrollingContainerRef.registerEventListener!.addEventListener('scroll', onScrollListener);
 
     this.state.cleanup.push(() =>
@@ -342,9 +345,13 @@ class InfiniteScroll {
   _onCleanup = function (this: InfiniteScroll) {
     const {
       state: { cleanup },
+      _scrollingContainerRef,
     } = this;
 
-    if (!cleanup.length) return;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (_scrollingContainerRef?.scrollingElement && _scrollingContainerRef?.scrollingElement.nodeName !== 'HTML')
+      return;
 
     cleanup.forEach((f) => f());
 
