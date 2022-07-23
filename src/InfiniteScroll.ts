@@ -259,6 +259,7 @@ class InfiniteScroll {
       });
 
     this._scrollingContainerRef.registerEventListener!.addEventListener('scroll', onScrollListener);
+
     this.state.cleanup.push(() =>
       this._scrollingContainerRef?.registerEventListener?.removeEventListener('scroll', onScrollListener)
     );
