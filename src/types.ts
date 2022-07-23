@@ -80,9 +80,7 @@ export type UseInfiniteScrollProps = DatasetLength & {
   windowScroll?: boolean;
 };
 
-export interface UseInfiniteScrollResult {
-  setRef: SetRefFn;
-}
+export type InfiniteScrollRef<T> = React.MutableRefObject<T | null>;
 
 export type InfiniteScrollProps = UseInfiniteScrollProps;
 
