@@ -40,9 +40,14 @@ This hook allows you to create simple, lightweight components with infinite scro
 
 You can create infinite scrolling in `any direction` and in `any pair`, for example: `up-down`, `down-right`, `etc.` and even `all at once`.
 
-### Simple Example
+Try it live:
 
-[![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb)
+| Name | Description | Link |
+| :--: | -- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Simple List | Simple list component with infinite scroll `down` | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb) |
+| Window List | Infinite scroll list that uses the window's scroll as its container | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-window-scroll-863k1m) |
+
+### Simple Example
 
 ```js
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
@@ -142,7 +147,7 @@ After initialization, this hook returns a `setRef` function, which you must pass
 | initialScroll   |           | The initial scroll position of the element, which is applied after the ref has been initialized                                                                                                             | object           |               |
 | reverse         |           | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'`                                                | object           |               |
 | scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the container size `from 0.1 to 1` (`1` is `100%`) | number or string | `1`            |
-| windowScroll |           | When set to `true`, uses a window as the scroll element. If you are using scroll window don't use `setRef` function | boolean | `false`            |
+| windowScroll |           | When set to `true`, uses a window as the scroll element. If you are using a scroll window, then anything you pass to the `setRef` function will be ignored | boolean | `false`            |
 
 ## Friends
 
@@ -150,6 +155,10 @@ After initialization, this hook returns a `setRef` function, which you must pass
 - [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
 
 ## FAQ
+
+### Can I use it with other virtualized or components libraries?
+
+> Yes you can! To use it with other libraries you must specify the correct DOM element for the `setRef` function.
 
 ### Can I use it with `flex-direction: 'column-reverse'`?
 
@@ -187,11 +196,6 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
   );
 };
 ```
-
-### Can I use it with other virtualized or components libraries?
-
-> Yes you can! To use it with other libraries you must specify the correct DOM element for the `setRef` function.
-
 
 ## Contributing
 
