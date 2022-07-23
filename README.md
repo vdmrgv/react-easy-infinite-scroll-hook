@@ -42,9 +42,9 @@ You can create infinite scrolling in `any direction` and in `any pair`, for exam
 
 Try it live:
 
-| Name | Description | Link |
-| :--: | -- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| Simple List | Simple list component with infinite scroll `down` | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb) |
+|    Name     | Description                                                         |                                                                                Link                                                                                |
+| :---------: | ------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Simple List | Simple list component with infinite scroll `down`                   |        [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb)        |
 | Window List | Infinite scroll list that uses the window's scroll as its container | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-window-scroll-863k1m) |
 
 ### Simple Example
@@ -53,7 +53,8 @@ Try it live:
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 
 const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
-  const { setRef } = useInfiniteScroll({
+  // FYI TypeScript usage: const ref = useInfiniteScroll<YourElemntType>(...props);
+  const ref = useInfiniteScroll({
     // Function to fetch more items
     next,
     // The number of items loaded if you use the "Y-scroll" axis ("up" and "down")
@@ -68,7 +69,7 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
 
   return (
     <div
-      ref={setRef}
+      ref={ref}
       style={{
         height: 500,
         overflowY: 'auto',
@@ -89,10 +90,10 @@ This hook supports all [react-virtualized](https://www.npmjs.com/package/react-v
 
 Try it live:
 
-| Component | Description | Link |
-| :--: | -- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| List | Virtualized `List` component with infinite scroll | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)             |
-| Grid | Virtualized `Grid` component with infinite scroll `down` and `right` | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-grid-rlmfd9?file=/src/App.tsx) |
+| Component | Description                                                          |                                                                                          Link                                                                                           |
+| :-------: | -------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|   List    | Virtualized `List` component with infinite scroll                    |            [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-mdfpyu)             |
+|   Grid    | Virtualized `Grid` component with infinite scroll `down` and `right` | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-virtualized-grid-rlmfd9?file=/src/App.tsx) |
 
 <br />
 
@@ -101,7 +102,7 @@ import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import { List } from 'react-virtualized';
 
 const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
-  const { setRef } = useInfiniteScroll({
+  const ref = useInfiniteScroll({
     next,
     rowCount: items.length,
     hasMore: { down: canLoadMore },
@@ -110,7 +111,7 @@ const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next 
   return (
     <div>
       <List
-        ref={setRef}
+        ref={ref}
         width={500}
         height={500}
         rowHeight={60}
@@ -133,21 +134,21 @@ const VirtualizedInfiniteListComponent = ({ isLoading, items, canLoadMore, next 
 
 ## API
 
-After initialization, this hook returns a `setRef` function, which you must pass to your element `ref`.
+After initialization, this hook returns a React `ref` object, which you must pass to your element `ref`.
 
 ### Props
 
-| Name            | Required  | Description                                                                                                                                                                                                 | Type             | Default Value |
-| --------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | :-----------: |
-| next            | Yes       | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction) => Promise<void>`                                                      | Function         |               |
-| hasMore         | Yes       | Whether there are more items to load. If marked `true` in the specified direction, it will try to load more items if the threshold is reached. Expect object with directions to load `{ up: false, down: false, left: false, right: false }`      | object           |               |
-| rowCount        | Condition | Number of items in a `vertical` list (scroll axis `Y`). Required if you are using `vertical` scroll.                                                                                                        | number           |               |
-| columnCount     | Condition | Number of items in a `horizontal` list (scroll axis `X`). Required if you are using `horizontal` scroll.                                                                                                    | number           |               |
-| onScroll        |           | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }) => void`          | Function         |               |
-| initialScroll   |           | The initial scroll position of the element, which is applied after the ref has been initialized                                                                                                             | object           |               |
-| reverse         |           | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'`                                                | object           |               |
-| scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the container size `from 0.1 to 1` (`1` is `100%`) | number or string | `1`            |
-| windowScroll |           | When set to `true`, uses a window as the scroll element. If you are using a scroll window, then anything you pass to the `setRef` function will be ignored | boolean | `false`            |
+| Name            | Required  | Description                                                                                                                                                                                                                                  | Type             | Default Value |
+| --------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | :-----------: |
+| next            | Yes       | A callback when more items are requested by the user. Receives a single parameter specifying the direction to load e.g. `(direction) => Promise<void>`                                                                                       | Function         |               |
+| hasMore         | Yes       | Whether there are more items to load. If marked `true` in the specified direction, it will try to load more items if the threshold is reached. Expect object with directions to load `{ up: false, down: false, left: false, right: false }` | object           |               |
+| rowCount        | Condition | Number of items in a `vertical` list (scroll axis `Y`). Required if you are using `vertical` scroll.                                                                                                                                         | number           |               |
+| columnCount     | Condition | Number of items in a `horizontal` list (scroll axis `X`). Required if you are using `horizontal` scroll.                                                                                                                                     | number           |               |
+| onScroll        |           | The callback is called when the container is scrolled: `({ clientHeight: number, scrollHeight: number, scrollTop: number, clientWidth: number, scrollWidth: number, scrollLeft: number }) => void`                                           | Function         |               |
+| initialScroll   |           | The initial scroll position of the element, which is applied after the ref has been initialized                                                                                                                                              | object           |               |
+| reverse         |           | The direction of the scroll axis is used to create scrolling in the opposite direction, for example when using the CSS style `flex-direction: 'row-reverse'`                                                                                 | object           |               |
+| scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the container size `from 0.1 to 1` (`1` is `100%`)                                  | number or string |      `1`      |
+| windowScroll    |           | When set to `true`, uses a window as the scroll element. If you are using a scroll window, then anything you pass to the `ref` will be ignored                                                                                               | boolean          |    `false`    |
 
 ## Friends
 
@@ -158,7 +159,7 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ### Can I use it with other virtualized or components libraries?
 
-> Yes you can! To use it with other libraries you must specify the correct DOM element for the `setRef` function.
+> Yes you can! To use it with other libraries you must specify the correct DOM element for the `ref` object.
 
 ### Can I use it with `flex-direction: 'column-reverse'`?
 
@@ -166,7 +167,7 @@ After initialization, this hook returns a `setRef` function, which you must pass
 
 ### How to use it with `react-virtualized` `MultiGrid` component?
 
-> `MultiGrid` is a complex component with a lot of scrollable containers, and to use it you must specify the correct container for the `setRef` function:
+> `MultiGrid` is a complex component with a lot of scrollable containers, and to use it you must specify the correct container for the `ref` object:
 
 ```js
 import React, { useCallback } from 'react';
@@ -174,7 +175,7 @@ import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 import { MultiGrid } from 'react-virtualized';
 
 const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, next }) => {
-  const { setRef } = useInfiniteScroll({
+  const ref = useInfiniteScroll({
     next,
     columnCount: items.length,
     hasMore: { right: canLoadMore },
@@ -183,9 +184,9 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
   // Use `useCallback` so we don't recreate the function on each render - Could result in infinite loop
   const selectRef = useCallback(
     (node) => {
-      setRef(node._bottomRightGrid);
+      ref.current = node._bottomRightGrid;
     },
-    [setRef]
+    [ref]
   );
 
   return (
