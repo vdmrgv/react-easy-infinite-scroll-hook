@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import InfiniteScroll from '../InfiniteScroll';
 import { InfiniteScrollProps, ScrollDirection } from '../types';
 import { createContainer, createInfiniteScrollProps, settleUpdate, MockScrollingElementRef } from './utils';
@@ -11,7 +12,7 @@ describe('InfiniteScroll', () => {
 
   let instance: InfiniteScroll = new InfiniteScroll(mockInfiniteScrollProps);
   let container: MockScrollingElementRef | null = null;
-  const update = async (time = 150) => {
+  const update = async (time = 0) => {
     container!.scroll!();
     await settleUpdate(time);
   };
@@ -22,6 +23,8 @@ describe('InfiniteScroll', () => {
   beforeEach(() => {
     instance = new InfiniteScroll(mockInfiniteScrollProps);
     container = createContainer({});
+    // @ts-ignore
+    jest.spyOn(window, 'setTimeout').mockImplementation((callback: (args: void) => void) => callback());
   });
 
   describe('initialize "_scrollingContainerRef" via "setRef', () => {
