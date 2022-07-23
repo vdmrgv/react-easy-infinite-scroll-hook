@@ -1,5 +1,4 @@
 import {
-  ScrollingContainerRef,
   ScrollSize,
   ScrollPosition,
   ClientSize,
@@ -8,14 +7,17 @@ import {
   ScrollDirectionState,
   ScrollDirection,
   ScrollParams,
+  ScrollingElementRef,
+  RegisterEventListener,
 } from '../../types';
 
 export type CreateContainerParams = ScrollSize & ScrollPosition & ClientSize;
 
-export type MockScrollingContainerRef = ScrollingContainerRef & {
-  scrollTo: (top?: number, left?: number) => void;
-  scroll?: () => void;
-};
+export type MockScrollingElementRef = ScrollingElementRef &
+  RegisterEventListener & {
+    scrollTo: (top?: number, left?: number) => void;
+    scroll?: () => void;
+  };
 
 export const createContainer = ({
   scrollHeight = 200,
@@ -24,7 +26,7 @@ export const createContainer = ({
   scrollLeft = 0,
   clientHeight = 100,
   clientWidth = 100,
-}: CreateContainerParams): MockScrollingContainerRef => ({
+}: CreateContainerParams): MockScrollingElementRef => ({
   scrollHeight,
   scrollWidth,
   scrollTop,

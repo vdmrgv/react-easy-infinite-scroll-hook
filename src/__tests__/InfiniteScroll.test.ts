@@ -1,6 +1,6 @@
 import InfiniteScroll from '../InfiniteScroll';
 import { InfiniteScrollProps, ScrollDirection } from '../types';
-import { createContainer, createInfiniteScrollProps, settleUpdate, MockScrollingContainerRef } from './utils';
+import { createContainer, createInfiniteScrollProps, settleUpdate, MockScrollingElementRef } from './utils';
 
 describe('InfiniteScroll', () => {
   const mockInfiniteScrollProps = createInfiniteScrollProps({
@@ -10,7 +10,7 @@ describe('InfiniteScroll', () => {
   });
 
   let instance: InfiniteScroll = new InfiniteScroll(mockInfiniteScrollProps);
-  let container: MockScrollingContainerRef | null = null;
+  let container: MockScrollingElementRef | null = null;
   const update = async (time = 150) => {
     container!.scroll!();
     await settleUpdate(time);
@@ -39,7 +39,7 @@ describe('InfiniteScroll', () => {
         const { _scrollingContainerRef: updatedSrollingContainerRef } = instance;
 
         expect(consoleErrorSpy).not.toHaveBeenCalled();
-        expect(JSON.stringify(updatedSrollingContainerRef)).toEqual(JSON.stringify(container));
+        expect(JSON.stringify(updatedSrollingContainerRef?.scrollingElement)).toEqual(JSON.stringify(container));
       });
 
       test('set react-virtualized component', () => {
@@ -52,7 +52,7 @@ describe('InfiniteScroll', () => {
         const { _scrollingContainerRef: updatedSrollingContainerRef } = instance;
 
         expect(consoleErrorSpy).not.toHaveBeenCalled();
-        expect(JSON.stringify(updatedSrollingContainerRef)).toEqual(JSON.stringify(container));
+        expect(JSON.stringify(updatedSrollingContainerRef?.scrollingElement)).toEqual(JSON.stringify(container));
       });
     });
 
