@@ -244,7 +244,7 @@ describe('InfiniteScroll', () => {
         expect(spyAddEventListener).toHaveBeenCalled();
       });
 
-      it('should add remove event listener', () => {
+      it('should remove event listener', () => {
         const spyRemoveEventListener = jest.spyOn(container!, 'removeEventListener');
         const {
           setRef,

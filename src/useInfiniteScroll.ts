@@ -17,7 +17,8 @@ const useInfiniteScroll = (props: UseInfiniteScrollProps): UseInfiniteScrollResu
   useLayoutEffect(() => {
     if (windowScroll) setRef(null);
 
-    return onCleanup;
+    // do cleanup for document events only
+    return windowScroll ? onCleanup : undefined;
   }, []);
 
   useEffect(() => onPropsChange(props), [rowCount, columnCount, up, down, left, right, next]);
