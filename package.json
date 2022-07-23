@@ -1,6 +1,6 @@
 {
   "name": "react-easy-infinite-scroll-hook",
-  "version": "1.8.1",
+  "version": "1.8.7",
   "license": "MIT",
   "description": "A react hook for creating simple, fast and lightweight components with infinite scrolling in any direction, supporting both windowed and scrollable elements.",
   "author": "Vadim Rogov <vadimrogovd@gmail.com>",
