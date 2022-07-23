@@ -199,7 +199,7 @@ Please read through our [contributing guidelines](https://github.com/vdmrgv/reac
 
 ## License
 
-Code released under the [MIT License][license-url] © [vdmrgv](https://github.com/vdmrgv)
+Code released under the [MIT License][license-url] © [Vadim Rogov](https://github.com/vdmrgv).
 
 [package-url]: https://npmjs.org/package/react-easy-infinite-scroll-hook
 [npm-version-svg]: https://img.shields.io/npm/v/react-easy-infinite-scroll-hook.svg
