@@ -53,7 +53,8 @@ Try it live:
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 
 const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
-  // FYI TypeScript usage: const ref = useInfiniteScroll<YourElemntType>(...props);
+  // FYI TypeScript usage:
+  // const ref = useInfiniteScroll<YourElemntType>(...props);
   const ref = useInfiniteScroll({
     // Function to fetch more items
     next,
