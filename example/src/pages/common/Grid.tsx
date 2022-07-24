@@ -5,7 +5,7 @@ import ExampleCard from '../../components/ExampleCard';
 import Item from '../../components/Item';
 
 const Grid = () => {
-  const [data, setData] = useState(createGridItems(6, 6));
+  const [data, setData] = useState(createGridItems(10, 10));
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<ScrollDirectionState>({
     up: false,
