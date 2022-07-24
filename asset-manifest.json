@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1a4bda20.css",
+    "main.js": "/static/js/main.5d3a7ef8.js",
+    "static/media/infinity-emoji.png": "/static/media/infinity-emoji.0a64fd545100f7334c1d.png",
+    "index.html": "/index.html",
+    "main.1a4bda20.css.map": "/static/css/main.1a4bda20.css.map",
+    "main.5d3a7ef8.js.map": "/static/js/main.5d3a7ef8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1a4bda20.css",
+    "static/js/main.5d3a7ef8.js"
+  ]
+}
