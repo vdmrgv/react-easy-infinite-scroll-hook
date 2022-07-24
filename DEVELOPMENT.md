@@ -6,12 +6,14 @@
 ```bash
 yarn build && yarn link
 ```
-4. To test your changes locally, you should use any separate project with `React`, if you don't have one, I highly recommend creating a new one via `create-react-app`.
-5. Link this package in other project directory:
+4. To test your changes locally, you can use project in `example` folder or create a new one via `create-react-app`.
+5. Go to `example` folder and run `yarn` to install all necessary dependencies.
+6. Link this package in other project directory:
 ```bash
 yarn link react-easy-infinite-scroll-hook
 ```
-6. Now you have a linked changes and ready to test it.
+7. Now you have a linked changes and ready to test it.
+8. Run `yarn start` to test your changes.
 
 ## Troubleshooting
 

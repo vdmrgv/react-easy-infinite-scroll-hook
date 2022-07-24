@@ -8,8 +8,10 @@
 [![NPM total downloads](https://img.shields.io/npm/dt/react-easy-infinite-scroll-hook.svg?style=flat)](https://npmcharts.com/compare/react-easy-infinite-scroll-hook?minimal=true)
 [![Downloads][downloads-image]][downloads-url]
 
-A hook that will save you from endless scrolling problems! Infinite scrolling that really works and is very easy to integrate!
-This hook allows you to create simple, lightweight components with infinite scrolling in all directions, supporting both windowed and scrollable elements.
+A hook that will save you from endless scrolling problems! Infinite scrolling that really works and is very easy to integrate!<br />
+This hook allows you to create simple, lightweight components with infinite scrolling in all directions, supporting both windowed and scrollable elements.<br />
+<br />
+Check out [the demo](https://vdmrgv.github.io/react-easy-infinite-scroll-hook) for some examples.
 
 ## Features
 
@@ -40,20 +42,16 @@ This hook allows you to create simple, lightweight components with infinite scro
 
 You can create infinite scrolling in `any direction` and in `any pair`, for example: `up-down`, `down-right`, `etc.` and even `all at once`.
 
-Try it live:
-
-|    Name     | Description                                                         |                                                                                Link                                                                                |
-| :---------: | ------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| Simple List | Simple list component with infinite scroll `down`                   |        [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb)        |
-| Window List | Infinite scroll list that uses the window's scroll as its container | [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-window-scroll-863k1m) |
-
 ### Simple Example
+
+Try it live:<br />
+[![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb)
 
 ```js
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 
 const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
-  // FYI TypeScript usage:
+  // TypeScript example:
   // const ref = useInfiniteScroll<YourElemntType>(...props);
   const ref = useInfiniteScroll({
     // Function to fetch more items
@@ -87,7 +85,7 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
 
 ### Virtualized Example (react-virtualized)
 
-This hook supports all [react-virtualized](https://www.npmjs.com/package/react-virtualized) components (`Collection`, `Grid`, `MultiGrid`, `List`, `Masonry`, `Table`).
+This hook supports all [react-virtualized](https://www.npmjs.com/package/react-virtualized) components (`Collection`, `Grid`, `MultiGrid`, `List`, `Masonry`, `Table`). Check out [the demo](https://vdmrgv.github.io/react-easy-infinite-scroll-hook) for more examples.
 
 Try it live:
 
@@ -185,6 +183,7 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
   // Use `useCallback` so we don't recreate the function on each render - Could result in infinite loop
   const selectRef = useCallback(
     (node) => {
+      if (!node) return;
       ref.current = node._bottomRightGrid;
     },
     [ref]
