@@ -1,0 +1,35 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "index.tsx",
+  "license": "MIT",
+  "homepage": "https://vdmrgv.github.io/react-easy-infinite-scroll-hook",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --public-url /react-easy-infinite-scroll-hook/",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.9.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-easy-infinite-scroll-hook": "^1.9.1",
+    "react-router-dom": "^6.3.0",
+    "react-virtualized": "^9.22.3",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.26",
+    "@types/react": "^17.0.41",
+    "@types/react-dom": "^17.0.14",
+    "@types/react-virtualized": "^9.21.21",
+    "@types/uuid": "^8.3.4",
+    "gh-pages": "^4.0.0",
+    "parcel": "1.12.3",
+    "typescript": "^4.7.4"
+  }
+}

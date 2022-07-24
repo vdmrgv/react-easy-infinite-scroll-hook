@@ -23,5 +23,5 @@
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "exclude": ["src/__tests__", "examples"]
+  "exclude": ["src/__tests__", "example"]
 }
