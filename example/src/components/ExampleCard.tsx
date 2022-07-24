@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { ScrollDirection, ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
-import { LinearProgress, Switch } from '@mui/material';
+import { LinearProgress, Link, Switch } from '@mui/material';
 
 interface ExampleCardProps {
   hasMore?: ScrollDirectionState;
@@ -12,9 +12,18 @@ interface ExampleCardProps {
   title?: string;
   description?: string;
   loading?: boolean;
+  source?: string;
 }
 
-const ExampleCard = ({ onChangeHasMore, hasMore = {}, children, title, description, loading }: ExampleCardProps) => {
+const ExampleCard = ({
+  onChangeHasMore,
+  hasMore = {},
+  children,
+  title,
+  description,
+  loading,
+  source,
+}: ExampleCardProps) => {
   const handleChangeHasMore = ({ target: { name, checked } }: React.ChangeEvent<HTMLInputElement>) => {
     if (onChangeHasMore && hasMore) onChangeHasMore({ ...hasMore, [name]: checked });
   };
@@ -23,7 +32,12 @@ const ExampleCard = ({ onChangeHasMore, hasMore = {}, children, title, descripti
     <>
       {title && (
         <Typography variant="h6" fontWeight="bold">
-          {title}
+          {title}{' '}
+          {source && (
+            <Link variant="body2" target="_blank" href={source} rel="noreferrer noopener">
+              Source
+            </Link>
+          )}
         </Typography>
       )}
       {description && <Typography variant="body2">{description}</Typography>}

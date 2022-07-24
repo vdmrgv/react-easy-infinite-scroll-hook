@@ -4,7 +4,7 @@
   "license": "MIT",
   "homepage": "https://vdmrgv.github.io/react-easy-infinite-scroll-hook",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "parcel index.html --no-source-maps --open",
     "build": "parcel build index.html --public-url /react-easy-infinite-scroll-hook/",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist"

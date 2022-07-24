@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useInfiniteScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
 import ExampleCard from '../../components/ExampleCard';
-import { createItems, createNext } from '../../utils';
+import { createItems, createNext, getSourceUrl } from '../../utils';
 import Item from '../../components/Item';
 
 const ReversedHorizontalList = () => {
@@ -20,7 +20,13 @@ const ReversedHorizontalList = () => {
   });
 
   return (
-    <ExampleCard title="Reversed Horizontal List" hasMore={hasMore} onChangeHasMore={setHasMore} loading={loading}>
+    <ExampleCard
+      title="Reversed Horizontal List"
+      hasMore={hasMore}
+      onChangeHasMore={setHasMore}
+      loading={loading}
+      source={getSourceUrl('ReversedHorizontalList')}
+    >
       <div
         ref={ref}
         className="List"

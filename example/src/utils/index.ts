@@ -73,3 +73,6 @@ export const createNextGrid =
       setLoading(false);
     }
   };
+
+export const getSourceUrl = (componentName: string) =>
+  `https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/example/src/pages/common/${componentName}.tsx`;

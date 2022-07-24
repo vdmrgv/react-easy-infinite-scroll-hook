@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import useInfinityScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
-import { createGridItems, createNextGrid } from '../../utils';
+import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import ExampleCard from '../../components/ExampleCard';
 import Item from '../../components/Item';
 import { MultiGrid } from 'react-virtualized';
@@ -48,7 +48,13 @@ const VirtualizedMultiGrid = () => {
   );
 
   return (
-    <ExampleCard title="Virtualized MultiGrid" hasMore={hasMore} onChangeHasMore={setHasMore} loading={loading}>
+    <ExampleCard
+      title="Virtualized MultiGrid"
+      hasMore={hasMore}
+      onChangeHasMore={setHasMore}
+      loading={loading}
+      source={getSourceUrl('VirtualizedMultiGrid')}
+    >
       {/* @ts-ignore */}
       <MultiGrid
         ref={selectRef}

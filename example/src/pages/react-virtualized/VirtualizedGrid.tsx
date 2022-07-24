@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useInfinityScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
-import { createGridItems, createNextGrid } from '../../utils';
+import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import ExampleCard from '../../components/ExampleCard';
 import Item from '../../components/Item';
 import { Grid } from 'react-virtualized';
@@ -24,7 +24,13 @@ const VirtualizedGrid = () => {
   });
 
   return (
-    <ExampleCard title="Virtualized Grid" hasMore={hasMore} onChangeHasMore={setHasMore} loading={loading}>
+    <ExampleCard
+      title="Virtualized Grid"
+      hasMore={hasMore}
+      onChangeHasMore={setHasMore}
+      loading={loading}
+      source={getSourceUrl('VirtualizedGrid')}
+    >
       {/* @ts-ignore */}
       <Grid
         ref={ref}

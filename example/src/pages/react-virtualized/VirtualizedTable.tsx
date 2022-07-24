@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useInfiniteScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
 import ExampleCard from '../../components/ExampleCard';
-import { createGridItems, createNextGrid } from '../../utils';
+import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import { Table, Column } from 'react-virtualized';
 
 const VirtualizedTable = () => {
@@ -19,7 +19,13 @@ const VirtualizedTable = () => {
   });
 
   return (
-    <ExampleCard title="Virtualized Table" hasMore={hasMore} onChangeHasMore={setHasMore} loading={loading}>
+    <ExampleCard
+      title="Virtualized Table"
+      hasMore={hasMore}
+      onChangeHasMore={setHasMore}
+      loading={loading}
+      source={getSourceUrl('VirtualizedTable')}
+    >
       {/* @ts-ignore */}
       <Table
         ref={ref}

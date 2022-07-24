@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { createGridItems, createNextGrid } from '../../utils';
+import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import ExampleCard from '../../components/ExampleCard';
 
 const Table = () => {
@@ -28,7 +28,13 @@ const Table = () => {
   });
 
   return (
-    <ExampleCard title="Table" hasMore={hasMore} onChangeHasMore={setHasMore} loading={loading}>
+    <ExampleCard
+      title="Table"
+      hasMore={hasMore}
+      onChangeHasMore={setHasMore}
+      loading={loading}
+      source={getSourceUrl('Table')}
+    >
       <TableContainer ref={ref} className="Table" sx={{ maxWidth: 500, maxHeight: 500, overflow: 'auto' }}>
         <MaterialTable sx={{ minWidth: 350 }} stickyHeader aria-label="simple table">
           <TableHead>
