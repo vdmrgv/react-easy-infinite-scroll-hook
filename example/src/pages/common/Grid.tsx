@@ -5,7 +5,7 @@ import ExampleCard from '../../components/ExampleCard';
 import Item from '../../components/Item';
 
 const Grid = () => {
-  const [data, setData] = useState(createGridItems(10, 10));
+  const [data, setData] = useState(createGridItems(15, 15));
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<ScrollDirectionState>({
     up: false,
@@ -15,7 +15,7 @@ const Grid = () => {
   });
 
   const ref = useInfinityScroll<HTMLDivElement>({
-    next: createNextGrid({ data, setData, setLoading, offset: 3 }),
+    next: createNextGrid({ data, setData, setLoading, offset: 6 }),
     rowCount: data.length,
     columnCount: data[0].length,
     scrollThreshold: '100px',
