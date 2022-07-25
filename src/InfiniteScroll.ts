@@ -159,7 +159,8 @@ class InfiniteScroll {
           await next(loadDirection);
         } finally {
           // make an axis check after the download is complete
-          setTimeout(() => this._onLoadComplete(axis), 0);
+          // if new items are not received (339-343)
+          setTimeout(() => this._onLoadComplete(axis), 1000);
         }
       }
     }
@@ -335,6 +336,11 @@ class InfiniteScroll {
         `You provided props with "hasMore: { left: ${!!hasMore.left}, right: ${!!hasMore.right} }" but "columnCount" is "undefined"`
       );
 
+    if (isLoading && (props.rowCount || 0) > (this.state.rowCount || 0)) {
+      this._onLoadComplete(ScrollAxisName.VERTICAL);
+    } else if (isLoading && (props.columnCount || 0) > (this.state.columnCount || 0)) {
+      this._onLoadComplete(ScrollAxisName.HORIZONTAL);
+    }
     if (!isLoading) {
       this._checkOffsetAndLoadMore();
     }
