@@ -5,7 +5,7 @@ import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import { Table, Column } from 'react-virtualized';
 
 const VirtualizedTable = () => {
-  const [data, setData] = useState(createGridItems(20, 4));
+  const [data, setData] = useState(createGridItems(100, 7));
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<ScrollDirectionState>({
     up: false,
@@ -13,7 +13,7 @@ const VirtualizedTable = () => {
   });
 
   const ref = useInfiniteScroll<Table>({
-    next: createNextGrid({ data, setData, setLoading, offset: 10 }),
+    next: createNextGrid({ data, setData, setLoading, offset: 30 }),
     rowCount: data.length,
     hasMore,
   });
@@ -29,11 +29,11 @@ const VirtualizedTable = () => {
       {/* @ts-ignore */}
       <Table
         ref={ref}
-        className="List"
+        className="VirtualizedTable"
         disableHeader={false}
         width={600}
         height={500}
-        overscanRowCount={3}
+        overscanRowCount={5}
         headerClassName="VirtualizedTable-header"
         rowClassName="VirtualizedTable-row"
         headerHeight={60}

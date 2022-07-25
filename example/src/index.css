@@ -158,6 +158,10 @@ code {
   min-height: 4px;
 }
 
+.VirtualizedTable {
+  border: gray solid 1px;
+}
+
 .VirtualizedTable-row {
   display: flex;
   align-items: center;
