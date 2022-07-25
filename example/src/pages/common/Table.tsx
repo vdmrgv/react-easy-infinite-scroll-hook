@@ -10,7 +10,7 @@ import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import ExampleCard from '../../components/ExampleCard';
 
 const Table = () => {
-  const [data, setData] = useState(createGridItems(15, 8));
+  const [data, setData] = useState(createGridItems(20, 10));
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<ScrollDirectionState>({
     up: false,
@@ -20,10 +20,10 @@ const Table = () => {
   });
 
   const ref = useInfinityScroll<HTMLTableElement>({
-    next: createNextGrid({ data, setData, setLoading, offset: 6 }),
+    next: createNextGrid({ data, setData, setLoading, offset: 10 }),
     rowCount: data.length,
     columnCount: data[0].length,
-    scrollThreshold: '100px',
+    scrollThreshold: '80px',
     hasMore,
   });
 
