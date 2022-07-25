@@ -216,8 +216,6 @@ class InfiniteScroll {
 
     this._scrollingContainerRef = scrollingContainerRef;
 
-    let ticking = false;
-
     const onScrollListener = () => {
       if (!this._scrollingContainerRef?.scrollingElement) return;
 
@@ -238,14 +236,7 @@ class InfiniteScroll {
           scrollTop,
         });
 
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          this._checkOffsetAndLoadMore();
-          ticking = false;
-        });
-
-        ticking = true;
-      }
+      if (!this.state.isLoading) this._checkOffsetAndLoadMore();
     };
 
     this.state.rowCount = this.props.rowCount;
