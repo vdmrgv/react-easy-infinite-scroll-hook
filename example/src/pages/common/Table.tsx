@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useInfinityScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
+import useInfiniteScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
 import MaterialTable from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
 import TableBody from '@mui/material/TableBody';
@@ -19,7 +19,7 @@ const Table = () => {
     right: true,
   });
 
-  const ref = useInfinityScroll<HTMLTableElement>({
+  const ref = useInfiniteScroll<HTMLTableElement>({
     next: createNextGrid({ data, setData, setLoading, offset: 10 }),
     rowCount: data.length,
     columnCount: data[0].length,

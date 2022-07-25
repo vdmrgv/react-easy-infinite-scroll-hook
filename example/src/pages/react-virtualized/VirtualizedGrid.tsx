@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useInfinityScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
+import useInfiniteScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
 import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import ExampleCard from '../../components/ExampleCard';
 import Item from '../../components/Item';
@@ -15,7 +15,7 @@ const VirtualizedGrid = () => {
     right: true,
   });
 
-  const ref = useInfinityScroll<Grid>({
+  const ref = useInfiniteScroll<Grid>({
     next: createNextGrid({ data, setData, setLoading, offset: 5 }),
     rowCount: data.length,
     columnCount: data[0].length,
