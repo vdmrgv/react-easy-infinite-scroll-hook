@@ -155,6 +155,10 @@ code {
   min-height: 4px;
 }
 
+.VirtualizedTable {
+  border: 1px solid gray;
+}
+
 .VirtualizedTable-row {
   text-align: center;
   border-bottom: 1px solid gray;
