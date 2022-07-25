@@ -28,11 +28,6 @@ const appTree = [
         Component: HorizontalList,
       },
       {
-        name: 'Window List',
-        path: '/window-list',
-        Component: WindowList,
-      },
-      {
         name: 'Reversed Vertical List',
         path: '/reversed-vertival-list',
         Component: ReversedVerticalList,
@@ -41,6 +36,11 @@ const appTree = [
         name: 'Reversed Horizontal List',
         path: '/reversed-horizontal-list',
         Component: ReversedHorizontalList,
+      },
+      {
+        name: 'Window List',
+        path: '/window-list',
+        Component: WindowList,
       },
       {
         name: 'Grid',

@@ -47,8 +47,8 @@ const Table = () => {
             </TableRow>
           </TableHead>
           <TableBody sx={{ maxHeight: 600, overflow: 'auto' }}>
-            {data.map((row, rowIndex) => (
-              <TableRow key={`row-${rowIndex}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            {data.map((row) => (
+              <TableRow key={`row-${row[0]}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 {row.map((cell) => (
                   <TableCell key={cell} align="right">
                     {cell}
