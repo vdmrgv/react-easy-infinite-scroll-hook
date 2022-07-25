@@ -9,14 +9,16 @@
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist"
   },
+  "alias": {
+    "react": "../node_modules/react",
+    "react-dom": "../node_modules/react-dom"
+  },
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-easy-infinite-scroll-hook": "^1.9.1",
+    "react-easy-infinite-scroll-hook": "^1.9.6",
     "react-router-dom": "^6.3.0",
     "react-virtualized": "^9.22.3",
     "uuid": "^8.3.2"

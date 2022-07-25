@@ -23,7 +23,7 @@ const STYLE_TOP_RIGHT_GRID = {
 };
 
 const VirtualizedMultiGrid = () => {
-  const [data, setData] = useState(createGridItems(10, 10));
+  const [data, setData] = useState(createGridItems(30, 30));
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<ScrollDirectionState>({
     up: false,
@@ -33,7 +33,7 @@ const VirtualizedMultiGrid = () => {
   });
 
   const ref = useInfinityScroll<MultiGrid>({
-    next: createNextGrid({ data, setData, setLoading, offset: 5 }),
+    next: createNextGrid({ data, setData, setLoading, offset: 12 }),
     rowCount: data.length,
     columnCount: data[0].length,
     scrollThreshold: '100px',
