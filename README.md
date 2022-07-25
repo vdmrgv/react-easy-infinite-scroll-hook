@@ -44,7 +44,6 @@ You can create infinite scrolling in `any direction` and in `any pair`, for exam
 
 ### Simple Example
 
-Try it live:<br />
 [![Edit useInfiniteScroll](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-easy-infinite-scroll-hook-6w9szb)
 
 ```js
