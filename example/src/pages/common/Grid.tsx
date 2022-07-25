@@ -17,7 +17,7 @@ const Grid = () => {
   const ref = useInfiniteScroll<HTMLDivElement>({
     next: createNextGrid({ data, setData, setLoading, offset: 8 }),
     rowCount: data.length,
-    columnCount: data[0].length,
+    columnCount: data[0].cells.length,
     scrollThreshold: '300px',
     hasMore,
   });
@@ -42,9 +42,9 @@ const Grid = () => {
         }}
       >
         {data.map((row, rowIndex) => (
-          <div key={`row-${row[0]}`} className="Grid-row">
-            {row.map((column, columnIndex) => (
-              <Item key={column} index={`${rowIndex}-${columnIndex}`} className="Cell" content={column} />
+          <div key={`row-${row.key}`} className="Grid-row">
+            {row.cells.map((cell, cellIndex) => (
+              <Item key={cell} index={`${rowIndex}-${cellIndex}`} className="Cell" content={cell} />
             ))}
           </div>
         ))}

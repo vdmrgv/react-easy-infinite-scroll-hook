@@ -18,7 +18,7 @@ const VirtualizedGrid = () => {
   const ref = useInfiniteScroll<Grid>({
     next: createNextGrid({ data, setData, setLoading, offset: 5 }),
     rowCount: data.length,
-    columnCount: data[0].length,
+    columnCount: data[0].cells.length,
     scrollThreshold: '100px',
     hasMore,
   });
@@ -36,7 +36,7 @@ const VirtualizedGrid = () => {
         ref={ref}
         className="Grid"
         cellRenderer={({ columnIndex, key, rowIndex, style }) => {
-          const item = data[rowIndex][columnIndex];
+          const item = data[rowIndex].cells[columnIndex];
 
           return <Item key={key} style={style} index={`${rowIndex}-${columnIndex}`} className="Cell" content={item} />;
         }}
@@ -45,7 +45,7 @@ const VirtualizedGrid = () => {
         rowHeight={135}
         columnWidth={135}
         rowCount={data.length}
-        columnCount={data[0].length}
+        columnCount={data[0].cells.length}
       />
     </ExampleCard>
   );

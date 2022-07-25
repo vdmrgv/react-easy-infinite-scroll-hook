@@ -37,10 +37,18 @@ export const createNext =
     }
   };
 
-export const createGridItems = (rows = 100, columns = 100): string[][] =>
-  Array.from({ length: rows }).map(() => Array.from({ length: columns }).map(() => uuidv4()));
+interface Row {
+  key: string;
+  cells: string[];
+}
 
-export const loadMoreGridItems = async (rows = 20, columns = 20): Promise<string[][]> =>
+export const createGridItems = (rows = 100, columns = 100): Row[] =>
+  Array.from({ length: rows }).map(() => ({
+    key: uuidv4(),
+    cells: Array.from({ length: columns }).map(() => uuidv4()),
+  }));
+
+export const loadMoreGridItems = async (rows = 20, columns = 20): Promise<Row[]> =>
   new Promise((res) => setTimeout(() => res(createGridItems(rows, columns)), 100));
 
 export const createNextGrid =
@@ -50,8 +58,8 @@ export const createNextGrid =
     setData,
     offset,
   }: {
-    data: string[][];
-    setData: (v: React.SetStateAction<string[][]>) => void;
+    data: Row[];
+    setData: (v: React.SetStateAction<Row[]>) => void;
     setLoading: (v: React.SetStateAction<boolean>) => void;
     offset: number;
   }) =>
@@ -59,14 +67,20 @@ export const createNextGrid =
     try {
       setLoading(true);
       if (direction === 'up' || direction === 'down') {
-        const rows = await loadMoreGridItems(offset, data[0].length);
+        const rows = await loadMoreGridItems(offset, data[0].cells.length);
 
         setData((prev) => (direction === 'up' ? [...rows, ...prev] : [...prev, ...rows]));
       } else {
         const rowColumns = await loadMoreGridItems(data.length, offset);
 
         setData((prev) =>
-          prev.map((row, idx) => (direction === 'left' ? [...rowColumns[idx], ...row] : [...row, ...rowColumns[idx]]))
+          prev.map((row, idx) => ({
+            key: row.key,
+            cells:
+              direction === 'left'
+                ? [...rowColumns[idx].cells, ...row.cells]
+                : [...row.cells, ...rowColumns[idx].cells],
+          }))
         );
       }
     } finally {

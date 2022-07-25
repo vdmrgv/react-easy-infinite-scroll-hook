@@ -38,10 +38,10 @@ const VirtualizedTable = () => {
         rowClassName="VirtualizedTable-row"
         headerHeight={60}
         rowHeight={60}
-        rowGetter={({ index }) => data[index]}
+        rowGetter={({ index }) => data[index].cells}
         rowCount={data.length}
       >
-        {data[0].map((_, index) => {
+        {data[0].cells.map((_, index) => {
           // @ts-ignore
           return <Column key={`Cell-${index}`} label={`Column ${index + 1}`} dataKey={index} width={140} />;
         })}

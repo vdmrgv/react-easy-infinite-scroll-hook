@@ -22,7 +22,7 @@ const Table = () => {
   const ref = useInfiniteScroll<HTMLTableElement>({
     next: createNextGrid({ data, setData, setLoading, offset: 10 }),
     rowCount: data.length,
-    columnCount: data[0].length,
+    columnCount: data[0].cells.length,
     scrollThreshold: '80px',
     hasMore,
   });
@@ -39,7 +39,7 @@ const Table = () => {
         <MaterialTable sx={{ minWidth: 350 }} stickyHeader aria-label="simple table">
           <TableHead>
             <TableRow>
-              {data[0].map((cell, index) => (
+              {data[0].cells.map((cell, index) => (
                 <TableCell key={`tablehead-${cell}`} align="right">
                   {index}
                 </TableCell>
@@ -48,8 +48,8 @@ const Table = () => {
           </TableHead>
           <TableBody sx={{ maxHeight: 600, overflow: 'auto' }}>
             {data.map((row) => (
-              <TableRow key={`row-${row[0]}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                {row.map((cell) => (
+              <TableRow key={`row-${row.key}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                {row.cells.map((cell) => (
                   <TableCell key={cell} align="right">
                     {cell}
                   </TableCell>
