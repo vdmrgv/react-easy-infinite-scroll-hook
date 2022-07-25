@@ -94,7 +94,7 @@ class InfiniteScroll {
     this.state.clientHeight = clientHeight;
   };
 
-  _getPossibleDirections = function (this: InfiniteScroll): Required<ScrollOffsetValues> {
+  _getPossibleDirections = function (this: InfiniteScroll, offset = 0): Required<ScrollOffsetValues> {
     this._computeThreshold();
 
     const {
@@ -111,9 +111,9 @@ class InfiniteScroll {
     const { column, row } = reverse;
 
     const canLoadForward = (scrollPosition: number, threshold: number): boolean =>
-      Math.abs(scrollPosition) <= threshold;
+      Math.abs(scrollPosition) <= threshold - offset;
     const canLoadBack = (scrollPosition: number, scrollSize: number, clientSize: number, threshold: number): boolean =>
-      Math.abs(scrollPosition) >= Math.abs(scrollSize - clientSize - threshold);
+      Math.abs(scrollPosition) >= Math.abs(scrollSize - clientSize - threshold - offset);
 
     return {
       [column ? ScrollDirection.DOWN : ScrollDirection.UP]: canLoadForward(scrollTop, vThreshold),
@@ -159,8 +159,7 @@ class InfiniteScroll {
           await next(loadDirection);
         } finally {
           // make an axis check after the download is complete
-          // if new items are not received (339-343)
-          setTimeout(() => this._onLoadComplete(axis), 1000);
+          setTimeout(() => this._onLoadComplete(axis), 100);
         }
       }
     }
@@ -172,12 +171,6 @@ class InfiniteScroll {
     if (!_scrollingContainerRef) return;
 
     const offset = this._getPossibleDirections();
-
-    const resetThreshold = (d: ScrollDirection) => {
-      if (!offset[d] && this.state.thresholdReached[d]) this.state.thresholdReached[d] = false;
-    };
-
-    Object.values(ScrollDirection).forEach((d) => resetThreshold(d));
 
     this._loadByDirection(ScrollDirection.UP, ScrollDirection.DOWN, offset);
     this._loadByDirection(ScrollDirection.LEFT, ScrollDirection.RIGHT, offset);
@@ -223,6 +216,8 @@ class InfiniteScroll {
 
     this._scrollingContainerRef = scrollingContainerRef;
 
+    let ticking = false;
+
     const onScrollListener = () => {
       if (!this._scrollingContainerRef?.scrollingElement) return;
 
@@ -243,7 +238,14 @@ class InfiniteScroll {
           scrollTop,
         });
 
-      this._checkOffsetAndLoadMore();
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          this._checkOffsetAndLoadMore();
+          ticking = false;
+        });
+
+        ticking = true;
+      }
     };
 
     this.state.rowCount = this.props.rowCount;
@@ -271,7 +273,7 @@ class InfiniteScroll {
   };
 
   _onLoadComplete = function (this: InfiniteScroll, axis: ScrollAxisName) {
-    if (!this._scrollingContainerRef?.scrollingElement) return;
+    if (!this._scrollingContainerRef?.scrollingElement || !this.state.isLoading) return;
 
     const isVertical = axis === ScrollAxisName.VERTICAL;
 
@@ -306,10 +308,17 @@ class InfiniteScroll {
       });
     }
 
-    // download is over
-    this.state.isLoading = false;
+    const resetThreshold = (d: ScrollDirection) => {
+      const offset = this._getPossibleDirections(10);
+
+      if (!offset[d] && this.state.thresholdReached[d]) this.state.thresholdReached[d] = false;
+    };
+
+    Object.values(ScrollDirection).forEach((d) => resetThreshold(d));
+
     this.state[isVertical ? 'scrollHeight' : 'scrollWidth'] = scrollSize;
     this.state[isVertical ? 'rowCount' : 'columnCount'] = newDataLength;
+    this.state.isLoading = false;
 
     // wait a tick to try useEffect
     setTimeout(() => this._checkOffsetAndLoadMore(), 100);
@@ -336,11 +345,6 @@ class InfiniteScroll {
         `You provided props with "hasMore: { left: ${!!hasMore.left}, right: ${!!hasMore.right} }" but "columnCount" is "undefined"`
       );
 
-    if (isLoading && (props.rowCount || 0) > (this.state.rowCount || 0)) {
-      this._onLoadComplete(ScrollAxisName.VERTICAL);
-    } else if (isLoading && (props.columnCount || 0) > (this.state.columnCount || 0)) {
-      this._onLoadComplete(ScrollAxisName.HORIZONTAL);
-    }
     if (!isLoading) {
       this._checkOffsetAndLoadMore();
     }
