@@ -5,7 +5,7 @@ import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import { Table, Column } from 'react-virtualized';
 
 const VirtualizedTable = () => {
-  const [data, setData] = useState(createGridItems(100, 7));
+  const [data, setData] = useState(createGridItems(100, 4));
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState<ScrollDirectionState>({
     up: false,
