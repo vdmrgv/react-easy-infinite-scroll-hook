@@ -24,7 +24,7 @@ const VirtualizedTable = () => {
       hasMore={hasMore}
       onChangeHasMore={setHasMore}
       loading={loading}
-      source={getSourceUrl('VirtualizedTable')}
+      source={getSourceUrl('VirtualizedTable', 'react-virtualized')}
     >
       {/* @ts-ignore */}
       <Table

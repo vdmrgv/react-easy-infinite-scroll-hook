@@ -29,7 +29,7 @@ const VirtualizedGrid = () => {
       hasMore={hasMore}
       onChangeHasMore={setHasMore}
       loading={loading}
-      source={getSourceUrl('VirtualizedGrid')}
+      source={getSourceUrl('VirtualizedGrid', 'react-virtualized')}
     >
       {/* @ts-ignore */}
       <Grid

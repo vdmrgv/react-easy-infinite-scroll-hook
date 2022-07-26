@@ -25,7 +25,7 @@ const VirtualizedList = () => {
       hasMore={hasMore}
       onChangeHasMore={setHasMore}
       loading={loading}
-      source={getSourceUrl('VirtualizedList')}
+      source={getSourceUrl('VirtualizedList', 'react-virtualized')}
     >
       {/* @ts-ignore */}
       <List

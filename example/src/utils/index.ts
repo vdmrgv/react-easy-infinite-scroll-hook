@@ -88,5 +88,5 @@ export const createNextGrid =
     }
   };
 
-export const getSourceUrl = (componentName: string) =>
-  `https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/example/src/pages/common/${componentName}.tsx`;
+export const getSourceUrl = (componentName: string, directory: string = 'common') =>
+  `https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/example/src/pages/${directory}/${componentName}.tsx`;

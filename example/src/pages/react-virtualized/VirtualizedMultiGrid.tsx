@@ -53,7 +53,7 @@ const VirtualizedMultiGrid = () => {
       hasMore={hasMore}
       onChangeHasMore={setHasMore}
       loading={loading}
-      source={getSourceUrl('VirtualizedMultiGrid')}
+      source={getSourceUrl('VirtualizedMultiGrid', 'react-virtualized')}
     >
       {/* @ts-ignore */}
       <MultiGrid
