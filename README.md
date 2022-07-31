@@ -1,11 +1,12 @@
 # react-easy-infinite-scroll-hook
 
 [![Version Badge][npm-version-svg]][package-url]
-![NPM license](https://img.shields.io/npm/l/react-easy-infinite-scroll-hook.svg?style=flat)
-![Test](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/actions/workflows/test.yml/badge.svg)
+![NPM license][license-image]
+![Test][test-svg]
+[![Stars][git-star-svg]][git-url]
 [![GZipped size][npm-minzip-svg]][bundlephobia-url]
-[![PRs Welcome](https://badgen.net/badge/PRs/welcome/cyan)](http://makeapullrequest.com)
-[![NPM total downloads](https://img.shields.io/npm/dt/react-easy-infinite-scroll-hook.svg?style=flat)](https://npmcharts.com/compare/react-easy-infinite-scroll-hook?minimal=true)
+[![PRs Welcome][pr-svg]][pr-url]
+[![NPM total downloads][total-downloads-svg]][total-downloads-url]
 [![Downloads][downloads-image]][downloads-url]
 
 A hook that will save you from endless scrolling problems! Infinite scrolling that really works and is very easy to integrate!<br />
@@ -207,9 +208,18 @@ Code released under the [MIT License][license-url] © [Vadim Rogov](https://gith
 
 [package-url]: https://npmjs.org/package/react-easy-infinite-scroll-hook
 [npm-version-svg]: https://img.shields.io/npm/v/react-easy-infinite-scroll-hook.svg
+[npm-version-svg]: https://img.shields.io/npm/v/react-easy-infinite-scroll-hook.svg
 [npm-minzip-svg]: https://img.shields.io/bundlephobia/minzip/react-easy-infinite-scroll-hook.svg
 [bundlephobia-url]: https://bundlephobia.com/result?p=react-easy-infinite-scroll-hook
-[license-image]: http://img.shields.io/npm/l/react-easy-infinite-scroll-hook.svg
+[license-image]: https://img.shields.io/npm/l/react-easy-infinite-scroll-hook.svg?style=flat
 [license-url]: LICENSE
+[git-url]: https://github.com/vdmrgv/react-easy-infinite-scroll-hook
+[git-star-svg]: https://img.shields.io/github/stars/vdmrgv/react-easy-infinite-scroll-hook.svg?style=social
+[pr-svg]: https://badgen.net/badge/PRs/welcome/cyan
+[pr-url]: http://makeapullrequest.com
 [downloads-image]: http://img.shields.io/npm/dm/react-easy-infinite-scroll-hook.svg
 [downloads-url]: http://npm-stat.com/charts.html?package=react-easy-infinite-scroll-hook
+[test-svg]: https://github.com/vdmrgv/react-easy-infinite-scroll-hook/actions/workflows/test.yml/badge.svg
+[total-downloads-svg]: https://img.shields.io/npm/dt/react-easy-infinite-scroll-hook.svg?style=flat
+[total-downloads-url]: https://npmcharts.com/compare/react-easy-infinite-scroll-hook?minimal=true
+
