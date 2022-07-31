@@ -27,7 +27,7 @@ Check out [the demo](https://vdmrgv.github.io/react-easy-infinite-scroll-hook) f
 - 📲 **Mobile-friendly** - Supports mobile devices and touch screens.
 - ✅ **Fully unit tested** - `100%` test coverage
 - 🌳 **Tree-shakeable** - Only include the parts you use
-- 💥 **Lightweight** - Around `~2kB`
+- 💥 **Lightweight** - Around `~2.4kB`
 - 💨 **No dependencies**
 
 ## Install
