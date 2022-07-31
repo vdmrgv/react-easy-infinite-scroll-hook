@@ -214,7 +214,7 @@ Code released under the [MIT License][license-url] © [Vadim Rogov](https://gith
 [license-image]: https://img.shields.io/npm/l/react-easy-infinite-scroll-hook.svg?style=flat
 [license-url]: LICENSE
 [git-url]: https://github.com/vdmrgv/react-easy-infinite-scroll-hook
-[git-star-svg]: https://img.shields.io/github/stars/vdmrgv/react-easy-infinite-scroll-hook
+[git-star-svg]: https://img.shields.io/github/stars/vdmrgv/react-easy-infinite-scroll-hook.svg?style=social
 [pr-svg]: https://badgen.net/badge/PRs/welcome/cyan
 [pr-url]: http://makeapullrequest.com
 [downloads-image]: http://img.shields.io/npm/dm/react-easy-infinite-scroll-hook.svg
