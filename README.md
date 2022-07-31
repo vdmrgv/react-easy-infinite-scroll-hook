@@ -3,11 +3,11 @@
 [![Version Badge][npm-version-svg]][package-url]
 ![NPM license][license-image]
 ![Test][test-svg]
-[![Stars][git-star-svg]][git-url]
 [![GZipped size][npm-minzip-svg]][bundlephobia-url]
 [![PRs Welcome][pr-svg]][pr-url]
 [![NPM total downloads][total-downloads-svg]][total-downloads-url]
 [![Downloads][downloads-image]][downloads-url]
+[![Stars][git-star-svg]][git-url]
 
 A hook that will save you from endless scrolling problems! Infinite scrolling that really works and is very easy to integrate!<br />
 This hook allows you to create simple, lightweight components with infinite scrolling in all directions, supporting both windowed and scrollable elements.<br />
