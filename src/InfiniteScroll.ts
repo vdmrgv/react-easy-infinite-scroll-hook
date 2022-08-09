@@ -9,7 +9,6 @@ import {
   ScrollPosition,
   ScrollAxisName,
   ElementRef,
-  RefObject,
 } from './types';
 
 class InfiniteScroll {
@@ -186,7 +185,7 @@ class InfiniteScroll {
     };
 
     if (!windowScroll && ref) {
-      let current: RefObject | null = null;
+      let current: HTMLElement | null = null;
 
       // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
       if ('_scrollingContainer' in ref) {
