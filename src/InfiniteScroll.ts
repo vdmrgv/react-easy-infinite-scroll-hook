@@ -8,6 +8,8 @@ import {
   UseInfiniteScrollProps,
   ScrollPosition,
   ScrollAxisName,
+  ElementRef,
+  RefObject,
 } from './types';
 
 class InfiniteScroll {
@@ -176,18 +178,30 @@ class InfiniteScroll {
     this._loadByDirection(ScrollDirection.LEFT, ScrollDirection.RIGHT, offset);
   };
 
-  _setRef = function (this: InfiniteScroll, ref: any): void {
+  _setRef = function (this: InfiniteScroll, ref: ElementRef | null): void {
+    const { windowScroll } = this.props;
     const scrollingContainerRef: ScrollingContainerRef = {
       scrollingElement: null,
       registerEventListener: null,
     };
 
-    if (!this.props.windowScroll) {
+    if (!windowScroll && ref) {
+      let current: RefObject | null = null;
+
       // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
-      const current = ref?._scrollingContainer ?? ref?.Grid?._scrollingContainer ?? ref;
+      if ('_scrollingContainer' in ref) {
+        current = ref._scrollingContainer;
+      }
+      if ('Grid' in ref) {
+        current = ref.Grid._scrollingContainer;
+      }
+      if ('scrollHeight' in ref) {
+        current = ref;
+      }
+
       scrollingContainerRef.scrollingElement = current;
       scrollingContainerRef.registerEventListener = current;
-    } else {
+    } else if (windowScroll) {
       scrollingContainerRef.scrollingElement = document.scrollingElement;
       scrollingContainerRef.registerEventListener = document;
     }

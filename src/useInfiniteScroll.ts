@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { InfiniteScrollRef, UseInfiniteScrollProps } from './types';
+import { ElementRef, InfiniteScrollRef, UseInfiniteScrollProps } from './types';
 import InfiniteScroll from './InfiniteScroll';
 
-const useInfiniteScroll = <T = any>(props: UseInfiniteScrollProps): InfiniteScrollRef<T> => {
-  const containerRef = useRef<T | null>(null);
+const useInfiniteScroll = (props: UseInfiniteScrollProps): InfiniteScrollRef<ElementRef> => {
+  const containerRef = useRef<ElementRef | null>(null);
   const {
     rowCount,
     columnCount,

@@ -55,6 +55,18 @@ export interface ScrollingContainerRef {
   registerEventListener: RegisterEventListener | null;
 }
 
+export type RefObject = ScrollingElementRef & RegisterEventListener;
+
+export interface VirtualizedScrollingContainer {
+  _scrollingContainer: RefObject;
+}
+
+export interface VirtualizedGrid {
+  Grid: VirtualizedScrollingContainer;
+}
+
+export type ElementRef = VirtualizedScrollingContainer | VirtualizedGrid | RefObject;
+
 export type InfiniteScrollState = DatasetLength &
   Required<ScrollSize> &
   Required<ClientSize> & {
