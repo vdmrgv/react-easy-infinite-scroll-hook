@@ -16,7 +16,7 @@ Check out [the demo](https://vdmrgv.github.io/react-easy-infinite-scroll-hook) f
 
 ## Features
 
-- ⏬ **Universal** - Ability to use all types of HTML elements or any UI and virtualized libraries (tested with [react-virtualized](https://www.npmjs.com/package/react-virtualized), [@tanstack/virtual-core](https://www.npmjs.com/package/@tanstack/virtual-core), [@mui/material](https://www.npmjs.com/package/@mui/material), [antd](https://www.npmjs.com/package/antd)) 
+- ⏬ **Universal** - Ability to use all types of HTML elements or any UI and virtualized libraries
 - 📦 **Support for all loading directions** - You can infinitely scroll a component in any direction or in all directions at once (`up`, `down`, `left`, `right`)
 - 📏 **No need to specify heights** - No need to pass the dimensions of the component, scrollbar or element
 - 💬 **Support for "chat history"** - Reverse mode includes
