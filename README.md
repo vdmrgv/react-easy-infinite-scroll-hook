@@ -186,8 +186,7 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
   // Use `useCallback` so we don't recreate the function on each render - Could result in infinite loop
   const selectRef = useCallback(
     (node) => {
-      if (!node) return;
-      ref.current = node._bottomRightGrid;
+      ref.current = node?._bottomRightGrid;
     },
     [ref]
   );
