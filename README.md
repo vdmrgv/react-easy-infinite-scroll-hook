@@ -151,7 +151,7 @@ After initialization, this hook returns a React `ref` object, which you must pas
 
 ## Friends
 
-- Any HTML element with scroll
+- Any DOM element with scroll
 - [react-virtualized](https://www.npmjs.com/package/react-virtualized) components
 - [@tanstack/virtual-core](https://www.npmjs.com/package/@tanstack/virtual-core)
 
