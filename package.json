@@ -63,7 +63,7 @@
   },
   "homepage": "https://vdmrgv.github.io/react-easy-infinite-scroll-hook",
   "devDependencies": {
-    "@babel/core": "^7.18.10",
+    "@babel/core": "^7.18.13",
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-react": "^7.17.12",
     "@babel/preset-typescript": "^7.18.6",
