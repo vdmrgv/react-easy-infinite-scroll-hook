@@ -14,19 +14,19 @@
     "react-dom": "../node_modules/react-dom"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
-    "@mui/icons-material": "^5.10.6",
-    "@mui/material": "^5.10.8",
-    "react-easy-infinite-scroll-hook": "^1.10.4",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.12",
+    "react-easy-infinite-scroll-hook": "^1.10.5",
     "react-router-dom": "^6.4.2",
     "react-virtualized": "^9.22.3",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/node": "^18.8.2",
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6",
+    "@types/node": "^18.11.8",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
     "@types/react-virtualized": "^9.21.21",
     "@types/uuid": "^8.3.4",
     "gh-pages": "^4.0.0",
