@@ -58,7 +58,7 @@ const InfiniteListComponent = ({ isLoading, items, canLoadMore, next }) => {
     next,
     // The number of items loaded if you use the "Y-scroll" axis ("up" and "down")
     // if you are using the "X-scroll" axis ("left" and "right") use "columnCount" instead
-    // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time
+    // you can also use "rowCount" and "columnCount" if you use "Y-scroll" and "X-scroll" at the same time 
     rowCount: items.length,
     // Whether there are more items to load
     // if marked "true" in the specified direction, it will try to load more items if the threshold is reached
