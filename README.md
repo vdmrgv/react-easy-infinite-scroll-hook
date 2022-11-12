@@ -198,6 +198,42 @@ const VirtualizedInfiniteMultiGridComponent = ({ isLoading, items, canLoadMore, 
 };
 ```
 
+### How to use it with `react-window`?
+
+> `react-easy-infinite-scroll-hook` works with any DOM element, so just specify the correct container for the `ref` object:
+
+```js
+import React, { useCallback } from 'react';
+import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
+import { FixedSizeList } from 'react-window';
+
+const Component = ({ isLoading, items, canLoadMore, next }) => {
+  const ref = useInfiniteScroll({
+    next,
+    columnCount: items.length,
+    hasMore: { right: canLoadMore },
+  });
+
+  // Use `useCallback` so we don't recreate the function on each render - Could result in infinite loop
+  const setRef = useCallback((node) => {
+    if(node)
+      ref.current=node._outerRef
+  }, []);
+  
+  return (
+    <FixedSizeList
+      ref={setRef}
+      className="List"
+      width={600}
+      height={500}
+      itemSize={60}
+      itemCount={items.length}
+    >
+      {Row}
+    </FixedSizeList>);
+};
+```
+
 ## Contributing
 
 Please read through our [contributing guidelines](https://github.com/vdmrgv/react-easy-infinite-scroll-hook/blob/main/CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
