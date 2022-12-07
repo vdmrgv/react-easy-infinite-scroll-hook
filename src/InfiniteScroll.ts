@@ -117,14 +117,14 @@ class InfiniteScroll {
       Math.abs(scrollPosition) >= Math.abs(scrollSize - clientSize - threshold);
 
     return {
-      [column ? ScrollDirection.DOWN : ScrollDirection.UP]: canLoadForward(scrollTop, offset || vThreshold),
+      [column ? ScrollDirection.DOWN : ScrollDirection.UP]: canLoadForward(scrollTop, offset ?? vThreshold),
       [column ? ScrollDirection.UP : ScrollDirection.DOWN]: canLoadBack(
         scrollTop,
         scrollHeight,
         clientHeight,
         offset ?? vThreshold
       ),
-      [row ? ScrollDirection.RIGHT : ScrollDirection.LEFT]: canLoadForward(scrollLeft, offset || hThreshold),
+      [row ? ScrollDirection.RIGHT : ScrollDirection.LEFT]: canLoadForward(scrollLeft, offset ?? hThreshold),
       [row ? ScrollDirection.LEFT : ScrollDirection.RIGHT]: canLoadBack(
         scrollLeft,
         scrollWidth,
@@ -316,7 +316,9 @@ class InfiniteScroll {
 
     if (Object.values(ScrollDirection).some((d) => resetThreshold(d))) {
       this._scroll({
-        [`scroll${isVertical ? 'Top' : 'Left'}`]: scrollPosition - signMultiplier,
+        [`scroll${isVertical ? 'Top' : 'Left'}`]: scrollPosition
+          ? scrollPosition - signMultiplier
+          : scrollPosition + signMultiplier,
       });
 
       setTimeout(() => this._onLoadComplete(axis), 100);
