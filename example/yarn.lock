@@ -1958,10 +1958,10 @@ prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-react-easy-infinite-scroll-hook@^1.10.7:
-  version "1.10.7"
-  resolved "https://registry.yarnpkg.com/react-easy-infinite-scroll-hook/-/react-easy-infinite-scroll-hook-1.10.7.tgz#0dd92f7fdf79dca7d9079154b749d691b317e849"
-  integrity sha512-1ELgxqUhBny4mc8BhU1b2t/TUaRsgtFCE3PAfhKFKiN0zpf7U58e8l9oJQ5DtfOZ8C+Chlnn8YvRswytTaS2WA==
+react-easy-infinite-scroll-hook@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/react-easy-infinite-scroll-hook/-/react-easy-infinite-scroll-hook-1.11.0.tgz#6a1c934d7b15c94b5ce584e9ac05b0f379e17b11"
+  integrity sha512-VyhsdXu7f1iFCz2j5ewpaPGGE7jkEJjVU2OWSqc/xf79NItGfTVZ4QTqWPpbi9L8pSU+SrPLSj4gYpQv/Ur1vg==
 
 react-error-overlay@6.0.9:
   version "6.0.9"
