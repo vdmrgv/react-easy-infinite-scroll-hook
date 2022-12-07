@@ -95,7 +95,7 @@ class InfiniteScroll {
     this.state.clientHeight = clientHeight;
   };
 
-  _getPossibleDirections = function (this: InfiniteScroll, offset = 0): Required<ScrollOffsetValues> {
+  _getPossibleDirections = function (this: InfiniteScroll, offset?: number): Required<ScrollOffsetValues> {
     this._computeThreshold();
 
     const {
@@ -112,24 +112,24 @@ class InfiniteScroll {
     const { column, row } = reverse;
 
     const canLoadForward = (scrollPosition: number, threshold: number): boolean =>
-      Math.abs(scrollPosition) <= threshold - offset;
+      Math.abs(scrollPosition) <= threshold;
     const canLoadBack = (scrollPosition: number, scrollSize: number, clientSize: number, threshold: number): boolean =>
-      Math.abs(scrollPosition) >= Math.abs(scrollSize - clientSize - threshold - offset);
+      Math.abs(scrollPosition) >= Math.abs(scrollSize - clientSize - threshold);
 
     return {
-      [column ? ScrollDirection.DOWN : ScrollDirection.UP]: canLoadForward(scrollTop, vThreshold),
+      [column ? ScrollDirection.DOWN : ScrollDirection.UP]: canLoadForward(scrollTop, offset || vThreshold),
       [column ? ScrollDirection.UP : ScrollDirection.DOWN]: canLoadBack(
         scrollTop,
         scrollHeight,
         clientHeight,
-        vThreshold
+        offset ?? vThreshold
       ),
-      [row ? ScrollDirection.RIGHT : ScrollDirection.LEFT]: canLoadForward(scrollLeft, hThreshold),
+      [row ? ScrollDirection.RIGHT : ScrollDirection.LEFT]: canLoadForward(scrollLeft, offset || hThreshold),
       [row ? ScrollDirection.LEFT : ScrollDirection.RIGHT]: canLoadBack(
         scrollLeft,
         scrollWidth,
         clientWidth,
-        hThreshold
+        offset ?? hThreshold
       ),
     } as { [k in ScrollDirection]: boolean };
   };
@@ -302,27 +302,34 @@ class InfiniteScroll {
     const scrollSize = isVertical ? scrollHeight : scrollWidth;
     const cachedScrollSize = isVertical ? cachedScrollHeight : cachedScrollWidth;
     const clientSize = isVertical ? clientHeight : clientWidth;
+    const signMultiplier = reverse[isVertical ? 'column' : 'row'] ? -1 : 1;
+
+    const resetThreshold = (d: ScrollDirection) => {
+      const offset = this._getPossibleDirections(0);
+
+      if (!offset[d] && this.state.thresholdReached[d]) {
+        this.state.thresholdReached[d] = false;
+      }
+
+      return this.state.thresholdReached[d];
+    };
+
+    if (Object.values(ScrollDirection).some((d) => resetThreshold(d))) {
+      this._scroll({
+        [`scroll${isVertical ? 'Top' : 'Left'}`]: scrollPosition - signMultiplier,
+      });
+
+      setTimeout(() => this._onLoadComplete(axis), 100);
+      return;
+    }
 
     // if new data is loaded and the scroll position is less than the visible area, reset the scroll position
     // if the scroll position is at zero and new data is loaded to the beginning of the list, you need to shift the scroll position
     if (newDataReceived && Math.abs(scrollPosition) < clientSize) {
-      const signMultiplier = reverse[isVertical ? 'column' : 'row'] ? -1 : 1;
       this._scroll({
         [`scroll${isVertical ? 'Top' : 'Left'}`]: scrollPosition + (scrollSize - cachedScrollSize) * signMultiplier,
       });
     }
-
-    const resetThreshold = (d: ScrollDirection) => {
-      const offset = this._getPossibleDirections(10);
-
-      if (!offset[d] && this.state.thresholdReached[d]) {
-        this.state.thresholdReached[d] = false;
-      } else {
-        setTimeout(() => this._onLoadComplete(axis), 100);
-      }
-    };
-
-    Object.values(ScrollDirection).forEach((d) => resetThreshold(d));
 
     this.state[isVertical ? 'scrollHeight' : 'scrollWidth'] = scrollSize;
     this.state[isVertical ? 'rowCount' : 'columnCount'] = newDataLength;
