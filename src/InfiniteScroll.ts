@@ -315,7 +315,11 @@ class InfiniteScroll {
     const resetThreshold = (d: ScrollDirection) => {
       const offset = this._getPossibleDirections(10);
 
-      if (!offset[d] && this.state.thresholdReached[d]) this.state.thresholdReached[d] = false;
+      if (!offset[d] && this.state.thresholdReached[d]) {
+        this.state.thresholdReached[d] = false;
+      } else {
+        setTimeout(() => this._onLoadComplete(axis), 100);
+      }
     };
 
     Object.values(ScrollDirection).forEach((d) => resetThreshold(d));
