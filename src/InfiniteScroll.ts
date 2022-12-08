@@ -134,6 +134,47 @@ class InfiniteScroll {
     } as { [k in ScrollDirection]: boolean };
   };
 
+  _getScreenOffset = function (this: InfiniteScroll, isVertical: boolean) {
+    const offset = this._getPossibleDirections(0);
+
+    const {
+      state: {
+        clientHeight,
+        clientWidth,
+        computedScrollThreshold: { vertical: vThreshold, horizontal: hThreshold },
+      },
+      props: { reverse = {} },
+      _scrollingContainerRef,
+    } = this;
+
+    const { scrollHeight, scrollWidth } = _scrollingContainerRef!.scrollingElement!;
+    const { column, row } = reverse;
+
+    const canLoadForward = (threshold: number, reverse?: boolean): number => threshold * (reverse ? -1.1 : 1.1);
+    const canLoadBack = (scrollSize: number, clientSize: number, threshold: number, reverse?: boolean): number =>
+      scrollSize - clientSize - threshold * (reverse ? -1.1 : 1.1);
+
+    const scrollOffset = {
+      [column ? ScrollDirection.DOWN : ScrollDirection.UP]: canLoadForward(vThreshold, column),
+      [column ? ScrollDirection.UP : ScrollDirection.DOWN]: canLoadBack(scrollHeight, clientHeight, vThreshold, column),
+      [row ? ScrollDirection.RIGHT : ScrollDirection.LEFT]: canLoadForward(hThreshold, row),
+      [row ? ScrollDirection.LEFT : ScrollDirection.RIGHT]: canLoadBack(scrollWidth, clientWidth, hThreshold, row),
+    } as { [k in ScrollDirection]: number | undefined };
+
+    const {
+      props: { hasMore },
+    } = this;
+
+    Object.keys(offset).forEach((d) => {
+      const direction = d as ScrollDirection;
+      if (offset[direction] && hasMore[direction]) {
+        this._scroll({
+          [`scroll${isVertical ? 'Top' : 'Left'}`]: scrollOffset[direction],
+        });
+      }
+    });
+  };
+
   _loadByDirection = async function (
     this: InfiniteScroll,
     direction1: ScrollDirection.UP | ScrollDirection.LEFT,
@@ -315,11 +356,7 @@ class InfiniteScroll {
     };
 
     if (Object.values(ScrollDirection).some((d) => resetThreshold(d))) {
-      this._scroll({
-        [`scroll${isVertical ? 'Top' : 'Left'}`]: scrollPosition
-          ? scrollPosition - signMultiplier
-          : scrollPosition + signMultiplier,
-      });
+      this._getScreenOffset(isVertical);
 
       setTimeout(() => this._onLoadComplete(axis), 100);
       return;
