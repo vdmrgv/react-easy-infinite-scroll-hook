@@ -39,7 +39,7 @@ export type ScrollDirectionState = Partial<Record<ScrollDirection, boolean>>;
 
 export type ScrollParams = ScrollSize & ScrollPosition & ClientSize;
 
-export type EventListenerFn = (type: 'scroll', callback: () => void) => void;
+export type EventListenerFn = (type: 'scroll' | 'mouseup', callback: () => void) => void;
 
 export type SetRefFn = (ref: any) => void;
 
