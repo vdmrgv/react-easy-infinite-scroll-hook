@@ -1,5 +1,6 @@
 import { checkOffsetAndLoadMore, scroll } from './handlers';
 import { ElementRef, InfiniteScrollProps, InfiniteScrollState, ScrollingContainerRef } from './types/InfiniteScroll';
+import { getScrollingContainerRef, isValidScrollingContainerRef } from './utils';
 
 export class InfiniteScroll {
   props: InfiniteScrollProps;
@@ -28,50 +29,9 @@ export class InfiniteScroll {
 
   _setRef = function (this: InfiniteScroll, ref: ElementRef | null): void {
     const { windowScroll } = this.props;
-    const scrollingContainerRef: ScrollingContainerRef = {
-      scrollingElement: null,
-      registerEventListener: null,
-    };
+    const scrollingContainerRef = getScrollingContainerRef({ ref, windowScroll });
 
-    if (!windowScroll && ref) {
-      let current: HTMLElement | null = null;
-
-      // check if this ref contains a react-virtualized _scrollingContainer or use the incoming argument
-      if ('_scrollingContainer' in ref) {
-        current = ref._scrollingContainer;
-      }
-      if ('Grid' in ref) {
-        current = ref.Grid._scrollingContainer;
-      }
-      if ('scrollHeight' in ref) {
-        current = ref;
-      }
-
-      scrollingContainerRef.scrollingElement = current;
-      scrollingContainerRef.registerEventListener = current;
-    } else if (windowScroll) {
-      scrollingContainerRef.scrollingElement = document.scrollingElement;
-      scrollingContainerRef.registerEventListener = document;
-    }
-
-    const { scrollingElement, registerEventListener } = scrollingContainerRef;
-
-    if (
-      (scrollingElement &&
-        registerEventListener &&
-        !(
-          typeof scrollingElement.scrollHeight === 'number' &&
-          typeof scrollingElement.scrollWidth === 'number' &&
-          typeof scrollingElement.scrollLeft === 'number' &&
-          typeof scrollingElement.scrollTop === 'number' &&
-          typeof scrollingElement.clientHeight === 'number' &&
-          typeof scrollingElement.clientWidth === 'number' &&
-          typeof registerEventListener.addEventListener === 'function' &&
-          typeof registerEventListener.removeEventListener === 'function'
-        )) ||
-      !scrollingElement ||
-      !registerEventListener
-    ) {
+    if (!isValidScrollingContainerRef(scrollingContainerRef)) {
       console.error('Sorry I can\'t use this container - try using a different DOM element.');
       return;
     }
