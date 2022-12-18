@@ -1,15 +1,15 @@
 import {
+  InfiniteScrollProps,
+  RegisterEventListener,
+  ScrollDirectionBooleanState,
+  ScrollingElementRef,
   ScrollSize,
   ScrollPosition,
   ClientSize,
-  UseInfiniteScrollProps,
-  DatasetLength,
-  ScrollDirectionState,
   ScrollDirection,
   ScrollParams,
-  ScrollingElementRef,
-  RegisterEventListener,
-} from '../../types';
+  Dataset,
+} from '../../InfiniteScroll/types';
 
 export type CreateContainerParams = ScrollSize & ScrollPosition & ClientSize;
 
@@ -46,8 +46,8 @@ export const createContainer = ({
   },
 });
 
-export type CreateInfiniteScrollProps = DatasetLength & {
-  hasMore?: ScrollDirectionState;
+export type CreateInfiniteScrollProps = Dataset & {
+  hasMore?: ScrollDirectionBooleanState;
   next?: (direction: ScrollDirection) => Promise<void>;
   onScroll?: (value: Required<ScrollParams>) => void;
   scrollThreshold?: number | string;
@@ -73,7 +73,7 @@ export const createInfiniteScrollProps = ({
   scrollThreshold,
   initialScroll,
   reverse,
-}: CreateInfiniteScrollProps): UseInfiniteScrollProps => ({
+}: CreateInfiniteScrollProps): InfiniteScrollProps => ({
   hasMore,
   next,
   onScroll,

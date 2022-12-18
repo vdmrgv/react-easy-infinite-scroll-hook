@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import InfiniteScroll from '../InfiniteScroll';
-import { InfiniteScrollProps, ScrollDirection } from '../types';
+import { InfiniteScroll, InfiniteScrollProps, ScrollDirection } from '../InfiniteScroll';
 import { createContainer, createInfiniteScrollProps, settleUpdate, MockScrollingElementRef } from './utils';
 
 describe('InfiniteScroll', () => {
@@ -265,7 +264,7 @@ describe('InfiniteScroll', () => {
         expect(container?.scroll).toEqual(undefined);
       });
 
-      it('should NOT call "onScroll" callback', async () => {
+      it('should call "onScroll" callback', async () => {
         const instanceProps: InfiniteScrollProps = {
           ...mockInfiniteScrollProps,
           onScroll: () => {},
@@ -281,7 +280,7 @@ describe('InfiniteScroll', () => {
 
         await update();
 
-        expect(spyOnScroll).not.toHaveBeenCalled();
+        expect(spyOnScroll).toHaveBeenCalled();
       });
     });
   });
