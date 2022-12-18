@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import InfiniteScroll from '../InfiniteScroll';
-import { InfiniteScrollProps, ScrollDirection } from '../types';
+import { InfiniteScroll, InfiniteScrollProps, ScrollDirection } from '../InfiniteScroll';
 import { createContainer, createInfiniteScrollProps, settleUpdate, MockScrollingElementRef } from './utils';
 
 describe('InfiniteScroll', () => {
