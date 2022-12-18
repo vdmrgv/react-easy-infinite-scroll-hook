@@ -20,4 +20,4 @@ export interface Dataset {
 
 export type ScrollParams = ScrollSize & ScrollPosition & ClientSize;
 
-export type EventListenerFn = (type: 'scroll' | 'mouseup', callback: () => void) => void;
+export type EventListenerFn = (type: 'scroll', callback: () => void) => void;

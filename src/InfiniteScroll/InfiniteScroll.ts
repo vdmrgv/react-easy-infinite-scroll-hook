@@ -76,11 +76,9 @@ export class InfiniteScroll {
 
     this._onCleanup();
     this._scrollingContainerRef.registerEventListener!.addEventListener('scroll', onScrollListener);
-    this._scrollingContainerRef.registerEventListener!.addEventListener('mouseup', onScrollListener);
 
     this.state.cleanup.push(() => {
       this._scrollingContainerRef?.registerEventListener?.removeEventListener('scroll', onScrollListener);
-      this._scrollingContainerRef?.registerEventListener?.removeEventListener('mouseup', onScrollListener);
     });
 
     // initial loading

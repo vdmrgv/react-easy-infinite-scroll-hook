@@ -1,2 +1,4 @@
+import useInfiniteScroll from './useInfiniteScroll';
+
 export * from './InfiniteScroll';
-export * from './useInfiniteScroll';
+export default useInfiniteScroll;
