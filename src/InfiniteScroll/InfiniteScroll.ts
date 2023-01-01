@@ -31,10 +31,7 @@ export class InfiniteScroll {
     const { windowScroll } = this.props;
     const scrollingContainerRef = getScrollingContainerRef({ ref, windowScroll });
 
-    if (!isValidScrollingContainerRef(scrollingContainerRef)) {
-      console.error('Sorry I can\'t use this container - try using a different DOM element.');
-      return;
-    }
+    if (!isValidScrollingContainerRef(scrollingContainerRef)) return;
 
     this._scrollingContainerRef = scrollingContainerRef;
 
