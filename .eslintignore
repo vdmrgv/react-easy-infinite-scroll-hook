@@ -1,4 +1,5 @@
 /.git
+/dist
 /node_modules/*
 /*.md
 /*.config.*
