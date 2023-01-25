@@ -18,7 +18,7 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
-    "react-easy-infinite-scroll-hook": "^2.0.0",
+    "react-easy-infinite-scroll-hook": "^2.1.0",
     "react-router-dom": "^6.7.0",
     "react-virtualized": "^9.22.3",
     "uuid": "^9.0.0"
