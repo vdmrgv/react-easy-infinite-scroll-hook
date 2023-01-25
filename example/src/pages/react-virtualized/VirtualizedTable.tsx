@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useInfiniteScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
+import useInfiniteScroll, { ScrollDirectionBooleanState } from 'react-easy-infinite-scroll-hook';
 import ExampleCard from '../../components/ExampleCard';
 import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import { Table, Column } from 'react-virtualized';
@@ -7,7 +7,7 @@ import { Table, Column } from 'react-virtualized';
 const VirtualizedTable = () => {
   const [data, setData] = useState(createGridItems(100, 4));
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState<ScrollDirectionState>({
+  const [hasMore, setHasMore] = useState<ScrollDirectionBooleanState>({
     up: false,
     down: true,
   });

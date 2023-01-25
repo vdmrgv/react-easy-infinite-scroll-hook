@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import useInfiniteScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
+import useInfiniteScroll, { ScrollDirectionBooleanState } from 'react-easy-infinite-scroll-hook';
 import { createGridItems, createNextGrid, getSourceUrl } from '../../utils';
 import ExampleCard from '../../components/ExampleCard';
 import Item from '../../components/Item';
@@ -25,7 +25,7 @@ const STYLE_TOP_RIGHT_GRID = {
 const VirtualizedMultiGrid = () => {
   const [data, setData] = useState(createGridItems(30, 30));
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState<ScrollDirectionState>({
+  const [hasMore, setHasMore] = useState<ScrollDirectionBooleanState>({
     up: false,
     down: true,
     left: false,

@@ -2,12 +2,12 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { ScrollDirection, ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
+import { ScrollDirection, ScrollDirectionBooleanState } from 'react-easy-infinite-scroll-hook';
 import { LinearProgress, Link, Switch } from '@mui/material';
 
 interface ExampleCardProps {
-  hasMore?: ScrollDirectionState;
-  onChangeHasMore?: (state: ScrollDirectionState) => void;
+  hasMore?: ScrollDirectionBooleanState;
+  onChangeHasMore?: (state: ScrollDirectionBooleanState) => void;
   children: React.ReactNode;
   title?: string;
   description?: string;

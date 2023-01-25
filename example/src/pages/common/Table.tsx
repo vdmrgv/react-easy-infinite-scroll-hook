@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useInfiniteScroll, { ScrollDirectionState } from 'react-easy-infinite-scroll-hook';
+import useInfiniteScroll, { ScrollDirectionBooleanState } from 'react-easy-infinite-scroll-hook';
 import MaterialTable from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
 import TableBody from '@mui/material/TableBody';
@@ -12,7 +12,7 @@ import ExampleCard from '../../components/ExampleCard';
 const Table = () => {
   const [data, setData] = useState(createGridItems(20, 10));
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState<ScrollDirectionState>({
+  const [hasMore, setHasMore] = useState<ScrollDirectionBooleanState>({
     up: false,
     down: true,
     left: false,
