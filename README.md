@@ -149,6 +149,11 @@ After initialization, this hook returns a React `ref` object, which you must pas
 | scrollThreshold |           | The threshold at which the next function is called. It can be specified in pixels from the scrollbar value, for example `'200px'` and as a percentage of the container size `from 0.1 to 1` (`1` is `100%`)                                  | number or string |      `1`      |
 | windowScroll    |           | When set to `true`, uses a window as the scroll element. If you are using a scroll window, then anything you pass to the `ref` will be ignored                                                                                               | boolean          |    `false`    |
 
+## Supported Browsers
+`react-easy-infinite-scroll-hook` aims to support all evergreen browsers and recent mobile browsers for iOS and Android. IE 9+ is also supported.
+
+If you find a browser-specific problem, please report it.
+
 ## Friends
 
 - Any DOM element with scroll
