@@ -11,6 +11,7 @@
 
 A hook that will save you from endless scrolling problems! Infinite scrolling that really works and is very easy to integrate!<br />
 This hook allows you to create simple, lightweight components with infinite scrolling in all directions, supporting both windowed and scrollable elements.<br />
+Works with any third-party libraries, you just need to specify the correct container for the `ref` object.<br />
 <br />
 Check out [the demo](https://vdmrgv.github.io/react-easy-infinite-scroll-hook) for some examples.
 
